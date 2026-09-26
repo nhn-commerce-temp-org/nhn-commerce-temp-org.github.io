@@ -12,6 +12,8 @@ exclude:
   - scripts/
   - README.md
   - CONTRIBUTING.md
+  - vendor/
+  - .bundle/
 
 defaults:
   - scope:
