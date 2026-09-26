@@ -1,0 +1,5 @@
+title: My Blog Org
+description: "Organization 소속 여러 명이 함께 쓰는 블로그"
+theme: minima
+permalink: /:year/:month/:day/:title/
+markdown: kramdown
