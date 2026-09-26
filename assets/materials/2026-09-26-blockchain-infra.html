@@ -1,15 +1,606 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <title>블록체인 인프라 심화자료</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>블록체인 생태계 '인프라' — 스터디 발표자료</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg: #EEF0F4;
+    --bg-card: #E4E7EE;
+    --bg-quote: #E7E9EF;
+    --ink: #1A2033;
+    --ink-soft: #525A70;
+    --ink-faint: #7B8299;
+    --rule: #C7CBD4;
+    --navy: #1F3A63;
+    --navy-deep: #14284A;
+    --gold: #9C6B26;
+    --gold-bg: #F3EADA;
+    --warn: #8B3A3A;
+    --warn-bg: #F2E3E1;
+    --teal: #2E6B5E;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    line-height: 1.8;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page{
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 72px 28px 120px;
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    margin-bottom: 56px;
+  }
+  .hero .kicker{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.03em;
+    margin-bottom: 18px;
+  }
+  .hero h1{
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    line-height: 1.3;
+    color: var(--navy-deep);
+    margin: 0 0 8px;
+  }
+  .hero .sub{
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    font-weight: 400;
+    margin: 0 0 32px;
+  }
+  .chainmark{
+    display:flex;
+    gap: 6px;
+    margin-bottom: 32px;
+  }
+  .chainmark span{
+    width: 34px; height: 10px;
+    background: var(--navy);
+    opacity: 0.15;
+  }
+  .chainmark span:nth-child(1){ opacity: 1; }
+  .chainmark span:nth-child(2){ opacity: 0.6; }
+  .chainmark span:nth-child(3){ opacity: 0.35; }
+  .chainmark span:nth-child(4){ opacity: 0.15; }
+  .chainmark span:nth-child(5){ opacity: 0.15; }
+  .chainmark span:nth-child(6){ opacity: 0.6; }
+
+  .meta-card{
+    background: var(--bg-quote);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--navy);
+    padding: 20px 24px;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+  .meta-card div{ margin: 4px 0; }
+  .meta-card b{ color: var(--ink); font-weight: 500; }
+  .meta-card a{ color: var(--navy); }
+
+  .note-box{
+    background: var(--gold-bg);
+    border-left: 3px solid var(--gold);
+    padding: 16px 20px;
+    margin: 32px 0 0;
+    font-size: 0.94rem;
+    color: #5A4319;
+  }
+
+  /* ===== Section structure ===== */
+  section.chapter{
+    margin-top: 84px;
+    padding-top: 40px;
+    border-top: 1px solid var(--rule);
+  }
+  .chapter-head{
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    margin-bottom: 26px;
+  }
+  .chapter-num{
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: 2.6rem;
+    color: var(--navy);
+    opacity: 0.85;
+    line-height: 1;
+    min-width: 52px;
+  }
+  .chapter-head h2{
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--navy-deep);
+    margin: 0;
+    line-height: 1.4;
+  }
+  .chapter-head .en{
+    display:block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    font-weight: 400;
+    margin-top: 4px;
+  }
+
+  .lead{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--navy);
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+  }
+
+  .chapter p{
+    margin: 0 0 16px;
+    color: var(--ink);
+  }
+  .chapter ul, .chapter ol{
+    margin: 0 0 20px;
+    padding-left: 22px;
+  }
+  .chapter li{
+    margin-bottom: 8px;
+  }
+  .chapter strong{ color: var(--navy-deep); font-weight: 600; }
+
+  .subhead{
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.12rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 28px 0 12px;
+  }
+
+  /* ===== Callout boxes ===== */
+  .deepdive{
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--gold);
+    padding: 22px 26px;
+    margin: 26px 0;
+  }
+  .deepdive .tag{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .deepdive h4{
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.02rem;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: var(--ink);
+  }
+  .deepdive p, .deepdive ul{ margin-bottom: 10px; font-size: 0.96rem; color: var(--ink-soft); }
+  .deepdive p:last-child, .deepdive ul:last-child{ margin-bottom: 0; }
+  .deepdive li{ font-size: 0.96rem; color: var(--ink-soft); margin-bottom: 6px; }
+  .deepdive code{
+    font-family: 'IBM Plex Mono', monospace;
+    background: #DADFE8;
+    padding: 1px 6px;
+    font-size: 0.88em;
+    color: var(--navy-deep);
+  }
+
+  .risk{
+    background: var(--warn-bg);
+    border: 1px solid #DCC3C0;
+    border-left: 4px solid var(--warn);
+    padding: 20px 26px;
+    margin: 20px 0;
+  }
+  .risk .tag{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--warn);
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .risk h4{
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.02rem;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: #5C2626;
+  }
+  .risk p, .risk li{ font-size: 0.96rem; color: #6B3535; margin-bottom: 8px; }
+
+  .compare{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .compare .col{
+    border: 1px solid var(--rule);
+    padding: 18px 20px;
+  }
+  .compare .col h5{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--navy);
+    margin: 0 0 10px;
+    font-weight: 500;
+  }
+  .compare .col ul{ margin: 0; padding-left: 18px; }
+  .compare .col li{ font-size: 0.92rem; color: var(--ink-soft); margin-bottom: 6px; }
+
+  table.reftable{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.88rem;
+  }
+  table.reftable th{
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--navy);
+    color: #EEF0F4;
+    text-align: left;
+    padding: 10px 12px;
+    font-weight: 500;
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+  }
+  table.reftable td{
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+  table.reftable tr:nth-child(even) td{ background: var(--bg-card); }
+  table.reftable td.key{ color: var(--ink); font-weight: 500; }
+
+  /* ===== Closing ===== */
+  .closing{
+    margin-top: 84px;
+    padding-top: 40px;
+    border-top: 1px solid var(--rule);
+  }
+  .closing h2{
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.7rem;
+    color: var(--navy-deep);
+    margin: 0 0 20px;
+  }
+  .closing .thesis{
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.2rem;
+    color: var(--ink);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .closing .thesis em{
+    font-style: normal;
+    color: var(--navy);
+    border-bottom: 2px solid var(--gold);
+  }
+
+  footer{
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 600px){
+    .page{ padding: 44px 18px 90px; }
+    .hero h1{ font-size: 1.9rem; }
+    .chapter-num{ font-size: 2rem; min-width: 40px; }
+    .chapter-head h2{ font-size: 1.35rem; }
+    .compare{ grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
-  <h1>블록체인 인프라 심화자료 (예시)</h1>
-  <p>
-    이 파일은 발표자가 만든 심화 학습 HTML 자료가 이 위치에 원본 그대로
-    업로드된다는 것을 보여주는 예시입니다. 실제 스터디 자료는 이 파일을
-    교체하면 됩니다.
-  </p>
+<div class="page">
+
+  <div class="hero">
+    <div class="kicker">쟁글 아카데미 · 블록체인 스터디 발표자료</div>
+    <div class="chainmark"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <h1>블록체인 생태계 '인프라'</h1>
+    <p class="sub">지갑부터 브릿지까지 — 읽으며 설명하는 발표 스크립트 &amp; 심화 노트</p>
+    <div class="meta-card">
+      <div><b>원문</b> · [쟁글 아카데미] 블록체인 생태계 '인프라' (2022.12.20, xangle.io)</div>
+      <div><b>담당</b> · 인프라 섹션 심화 발표</div>
+      <div><b>구성</b> · 원문 핵심 요약 + 심화 내용 (스터디 중 함께 설명할 내용)</div>
+      <div><b>범위 제외</b> · 2-3. NFT 마켓플레이스, 5. 오라클 (이번 발표에서 생략)</div>
+    </div>
+    <div class="note-box">
+      블록체인 생태계는 메인넷(독립적인 네트워크)과 그 위에서 돌아가는 DApp(탈중앙화 애플리케이션)으로 구성된다. 스마트폰의 iOS/Android가 OS이고 그 위 앱들이 DApp에 해당하는 것과 같은 비유다. 메인넷과 DApp이 원활히 작동하려면 이를 뒷받침하는 '인프라'가 필요하며, 이번 발표에서는 지갑 · 거래소 · 블록 익스플로러 · DAO · 브릿지 다섯 가지 핵심 인프라를 다룬다.
+    </div>
+  </div>
+
+  <!-- 1. 지갑 -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chapter-num">1</div>
+      <h2>지갑<span class="en">WALLET</span></h2>
+    </div>
+
+    <p class="lead">원문 핵심</p>
+    <p>지갑은 블록체인 기반 가상자산을 관리하는 도구다. 가상자산을 활용하는 디앱에서는 지갑을 먼저 연결해야 보관·전송·서비스 이용이 가능하다.</p>
+    <ul>
+      <li>가입 방식에 따라 <strong>중앙화 지갑</strong>(KYC 필요)과 <strong>탈중앙화 지갑</strong>(KYC 없이 가입 가능) 두 형태로 나뉜다.</li>
+      <li>탈중앙화 지갑에서는 지갑주소 자체가 곧 본인임을 증명하는 아이디 역할을 한다.</li>
+      <li>대표 사례는 이더리움 기반 <strong>메타마스크</strong>로, 폴리곤·클레이튼 등 다른 네트워크도 지원한다.</li>
+    </ul>
+
+    <div class="deepdive">
+      <span class="tag">💡 심화 — KYC란?</span>
+      <p>Know Your Customer(고객확인제도)의 약자. 금융회사가 고객 신원을 확인하는 절차로, 원래 은행권 자금세탁방지(AML) 목적에서 출발했다. 신분증, 실명확인 계좌 등을 요구하며, 한국은 특금법에 따라 가상자산사업자도 이를 의무적으로 시행해야 한다.</p>
+    </div>
+
+    <div class="deepdive">
+      <span class="tag">💡 심화 — 수탁형 / 비수탁형과 CEX·DEX의 관계</span>
+      <p>"지갑 종류"와 "거래소 종류"는 서로 다른 축이지만, 실무에서는 짝을 이루는 경우가 많다.</p>
+      <div class="compare">
+        <div class="col">
+          <h5>수탁형(Custodial) 지갑</h5>
+          <ul>
+            <li>개인키를 거래소(제3자)가 보관</li>
+            <li>주로 <code>CEX</code>와 짝을 이룸</li>
+            <li>편리하지만 통제권을 위탁</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h5>비수탁형(Non-custodial) 지갑</h5>
+          <ul>
+            <li>개인키를 본인이 직접 보관</li>
+            <li>주로 <code>DEX</code>와 짝을 이룸</li>
+            <li>완전한 통제권, 대신 자기책임</li>
+          </ul>
+        </div>
+      </div>
+      <p>업계 격언으로 <code>"Not your keys, not your coins"</code> — 개인키를 직접 보유하지 않으면 진정한 소유가 아니라는 뜻이다.</p>
+    </div>
+  </section>
+
+  <!-- 2. 거래소 -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chapter-num">2</div>
+      <h2>거래소<span class="en">EXCHANGE — CEX &amp; DEX</span></h2>
+    </div>
+
+    <p class="lead">원문 핵심</p>
+    <p>가상자산을 법정화폐로 바꾸거나 다른 가상자산과 교환하려면 거래소를 거쳐야 한다. 거래소는 CEX와 DEX로 구분된다.</p>
+
+    <div class="compare">
+      <div class="col">
+        <h5>2-1. CEX (Centralized Exchange)</h5>
+        <ul>
+          <li>중앙화된 중개인이 거래 중개 (바이낸스, 업비트 등)</li>
+          <li>자체 검증된 토큰만 거래 지원, 자산을 직접 보관·관리</li>
+          <li>법정화폐 마켓 지원 → 현금화 창구</li>
+          <li>장점: 정부 규제 하 투자자 보호</li>
+          <li>단점: 입출금 통제 가능, 오프체인 장부 조작 리스크</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h5>2-2. DEX (Decentralized Exchange)</h5>
+        <ul>
+          <li>스마트 컨트랙트 기반 탈중앙 거래 (유니스왑 등)</li>
+          <li>CEX의 신뢰 문제에 대한 대응으로 등장</li>
+          <li>장점: 수수료 절감, 거래 내역 투명 조회</li>
+          <li>단점: 자금세탁 악용 우려, 법정화폐 미지원, 유동성 불안정</li>
+        </ul>
+      </div>
+    </div>
+    <p>CEX와 DEX는 상호 보완 관계로 생태계에서 공존한다.</p>
+
+    <div class="deepdive">
+      <span class="tag">💡 심화 — 한국에는 왜 DEX가 없을까? 불법이라서?</span>
+      <p>아니다. DEX 이용 자체는 불법이 아니며, 한국 투자자도 유니스왑 같은 해외 DEX에 개인 지갑으로 직접 접속해 사용 중이다. 다만 국내 '사업자'로 등록된 DEX가 없는 이유는 다음과 같다.</p>
+      <ul>
+        <li>특금법상 가상자산사업자 신고 요건(실명확인 입출금계정, KYC, 트래블룰)을 지키려면 '중앙 운영 주체'가 있어야 한다.</li>
+        <li>그러나 DEX는 구조적으로 운영 주체 없이 스마트 컨트랙트가 자동으로 거래를 체결하므로, 애초에 신고할 대상 자체가 존재하지 않는다.</li>
+      </ul>
+      <p>→ "불법"이 아니라 <strong>"규제 대상 자체가 성립하지 않는 사각지대"</strong>에 가깝다.</p>
+    </div>
+
+    <div class="risk">
+      <span class="tag">⚠️ 실제 위험성 — 2026.06 금융감독원 발표</span>
+      <ul>
+        <li>전 세계 DEX 거래 비중: 2021.1월 6% → 밈코인 열풍으로 2025.6월 25% 최고치 → 현재 13~15% 유지</li>
+        <li>누구나 쉽게 코인을 발행할 수 있어 <strong>러그풀(Rug Pull) 사기</strong>가 빈발 — 개발자가 코인을 발행·상장 후 허위 홍보로 투자자를 유인, 가격이 오르면 보유 물량을 매도해 유동성을 빼가는 수법</li>
+        <li>회원가입·본인인증 없이 지갑 연결만으로 거래 가능하다는 게 장점이자 약점</li>
+        <li>운영 주체가 없어 해킹·탈취 사고가 나도 책임 소재 규명이 어렵고 피해 구제도 사실상 불가능</li>
+        <li>실제 사례: 밈코인 약 10억 개 발행 후 50% 이상을 저가에 선매수, SNS 허위 홍보로 투자자 유인 → 검찰 기소</li>
+      </ul>
+    </div>
+
+    <div class="deepdive">
+      <span class="tag">참고 (발표에서 생략 가능) — 2-3. NFT 마켓플레이스</span>
+      <p>오픈씨(이더리움), Magic Eden(솔라나), Pala(클레이튼) 등 메인넷별로 존재하며 NFT의 2차 거래를 지원한다.</p>
+    </div>
+  </section>
+
+  <!-- 3. 블록 익스플로러 -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chapter-num">3</div>
+      <h2>블록체인 익스플로러<span class="en">BLOCK EXPLORER</span></h2>
+    </div>
+
+    <p class="lead">원문 핵심</p>
+    <p>블록체인상의 거래 기록을 사용자 친화적 UI로 조회할 수 있는 서비스다.</p>
+    <ul>
+      <li>확인 가능한 정보: <strong>TXID</strong>(거래 고유번호), 블록 높이, 지갑 정보·보유 토큰·거래 내역 등</li>
+      <li>거래 '투명성' 검증이 필요할 때 사용된다.</li>
+      <li>메인넷별 대표 익스플로러: 비트코인(bitcoin.com), 이더리움(etherscan.io), 클레이튼(scope.klaytn.com), 아발란체(subnets.avax.network)</li>
+    </ul>
+
+    <div class="deepdive">
+      <span class="tag">💡 심화 — 트랜잭션 문서와의 연결</span>
+      <p>이전 발표에서 다룬 '트랜잭션' 문서와 직접 연결되는 부분이니 상기시키면 좋다. 이더스캔에서 확인 가능한 핵심 항목은 <code>Txn Hash</code>(고유ID), <code>Method</code>(Transfer/Mint 등 작업 유형), <code>Block</code>(블록 높이=거래 시간), <code>From/To</code>(송수신 주소), <code>Txn Fee</code>(수수료)다.</p>
+      <p>익스플로러는 익명 지갑 주소만으로 자금 흐름을 추적할 수 있게 해준다. 위 DEX 유의사항에서도 "상위 보유자 집중도를 블록체인 탐색기로 점검하라"고 권고했듯, 익스플로러는 <strong>사기 예방 도구</strong>로도 실전 활용된다.</p>
+    </div>
+  </section>
+
+  <!-- 4. DAO -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chapter-num">4</div>
+      <h2>DAO<span class="en">DECENTRALIZED AUTONOMOUS ORGANIZATION</span></h2>
+    </div>
+
+    <p class="lead">원문 핵심</p>
+    <p>특정 주체의 중앙화된 의사결정이 아니라, 조직 운영 규칙을 블록체인 기반으로 만들어 의사결정하는 방식이다.</p>
+    <ul>
+      <li>제안 → 투표 → 결과가 모두 투명하게 공개된다.</li>
+      <li>거버넌스 토큰 보유량에 따라 의사결정 참여(투표력)가 결정된다.</li>
+      <li>대표 사례: 메이커다오(DAI 발행, MKR 토큰으로 투표) / 메타카르텔(거버넌스 토큰 없는 투자 DAO)</li>
+    </ul>
+
+    <div class="deepdive">
+      <span class="tag">💡 심화 — "규칙을 블록체인 기반으로 만들어 의사결정"의 의미</span>
+      <p>일반 회사는 이사회·경영진이 규정(정관)을 만들고 '사람'이 그 규정에 따라 판단한다 — 불투명해질 여지가 있고, 규정을 어겨도 모를 수 있다.</p>
+      <p>DAO는 이 규칙 자체를 스마트 컨트랙트 코드로 블록체인에 올린다. 예를 들면:</p>
+      <ul>
+        <li>"제안 등록 후 7일간 투표"</li>
+        <li>"토큰 보유량 비례 투표권"</li>
+        <li>"찬성 51% 초과 시 트레저리 자금 자동 집행"</li>
+      </ul>
+      <p>→ 사람이 임의로 '봐주기'를 할 수 없고, 전 과정이 온체인에 기록되어 누구나 검증 가능하다. 이것이 "탈중앙 자율" 조직인 이유다.</p>
+    </div>
+
+    <div class="deepdive">
+      <span class="tag">💡 심화 — 거버넌스 토큰이란?</span>
+      <p>DAO·프로토콜의 의사결정(투표) 권한을 주는 토큰. 주식회사의 '의결권 있는 주식'과 유사한 개념이다. 예: MKR을 많이 보유할수록 메이커다오의 담보 정책·이자율 결정에 더 큰 영향력을 행사한다.</p>
+    </div>
+
+    <div class="risk">
+      <span class="tag">⚠️ 발행 주체가 이걸 악용할 수 있지 않을까? — 그렇다, 실제로 문제되는 지점</span>
+      <ul>
+        <li><strong>고래(Whale) 지배 / 거버넌스 중앙화</strong> — 토큰을 대량 보유한 소수(창업팀·초기투자자·VC)가 사실상 모든 투표를 좌우. "탈중앙"을 표방하지만 실질은 소수 지배 구조가 된다.</li>
+        <li><strong>투표권 매수(Vote buying) / 거버넌스 공격</strong> — 대량 매집 후 자신에게 유리한 제안을 통과시키려는 시도 (실제 디파이 프로토콜 대상 공격 사례 존재)</li>
+        <li><strong>초기 배분 편중</strong> — 팀·투자자에게 토큰이 몰빵 배분되면, 커뮤니티 투표라는 외피 아래 사실상 내부자 결정이 된다.</li>
+      </ul>
+      <p>→ 토큰 분배 구조·락업 스케줄의 투명성이 거버넌스 신뢰의 전제조건이다. (1강 유통량·락업 내용과 직결되는 지점 — 여기서 연결지어 설명하면 좋다.)</p>
+    </div>
+
+    <div class="deepdive">
+      <span class="tag">💡 심화 — 엔젤투자란? (메타카르텔 이해를 위한 배경지식)</span>
+      <p>스타트업이 매출·제품도 없는 아주 초기 단계일 때 개인이 자기 돈으로 소액 투자하는 것. 은행 대출·VC 투자를 받기 어려운 시점에 '천사'처럼 자금을 대준다는 의미다. 고위험·고수익 구조이며, 돈뿐 아니라 네트워크·조언도 함께 제공하는 경우가 많다. 메타카르텔은 이 엔젤투자를 개인이 아닌 DAO(공동 풀) 형태로 하는 사례다.</p>
+    </div>
+  </section>
+
+  <!-- 6. 브릿지 -->
+  <section class="chapter">
+    <div class="chapter-head">
+      <div class="chapter-num">6</div>
+      <h2>브릿지<span class="en">BRIDGE</span></h2>
+    </div>
+
+    <p class="lead">원문 핵심</p>
+    <p>서로 다른 블록체인 네트워크를 연결해 상호작용(자산 교환)을 가능케 하는 프로토콜이다.</p>
+    <ul>
+      <li>예: 비트코인을 매각 → 현금화 → 이더리움 매수의 비효율적 과정 없이, BTC를 바로 이더리움 네트워크로 전송 가능케 한다.</li>
+      <li>레이어1·레이어2 등 이종 체인 간 자산·데이터 교환을 지원해 생태계 확장성을 높인다.</li>
+    </ul>
+
+    <div class="deepdive">
+      <span class="tag">💡 심화 — 교환은 어떻게 '적절한 가치'로 이뤄지나? (상호 합의가 아님)</span>
+      <p>가장 흔한 방식은 <strong>Lock-and-Mint</strong> 구조다.</p>
+      <ol>
+        <li>원본 자산(예: BTC)이 브릿지 컨트랙트/커스터디에 <strong>락업(잠김)</strong>된다.</li>
+        <li>그 가치를 1:1로 대표하는 <strong>래핑 토큰</strong>(예: WBTC)이 목적지 체인에 새로 <strong>발행(mint)</strong>되어 지급된다.</li>
+        <li>반대로 되돌릴 때는 래핑 토큰을 <strong>소각(burn)</strong>하고, 잠겨있던 원본을 해제한다.</li>
+      </ol>
+      <p>즉 실제 자산이 이동하는 게 아니라, 원본은 묶이고 그 가치를 대변하는 대체 토큰이 발행되는 구조다. 1:1 페깅(peg)이 유지되도록 설계돼 있어 가치 교환이 자동으로 보장된다 — 사람 간 합의가 아니라 코드·담보 구조로 보장되는 것이다.</p>
+    </div>
+
+    <div class="risk">
+      <span class="tag">⚠️ 가장 큰 리스크 — 브릿지 해킹</span>
+      <p>원본 자산이 한 곳(브릿지 컨트랙트/커스터디)에 몰려 락업되어 있다는 것 자체가 최대 공격 표적이 된다. 역대 최대 규모 크립토 해킹 다수가 브릿지 해킹 사례였다 (Ronin Bridge, Wormhole 등). 편리함과 보안 리스크가 트레이드오프 관계에 있는 인프라라는 점을 강조하면 좋다.</p>
+    </div>
+  </section>
+
+  <!-- Closing -->
+  <div class="closing">
+    <h2>마무리 정리</h2>
+    <p class="thesis">블록체인 인프라 다섯 요소를 관통하는 공통 키워드는 <em>"신뢰를 누가·어떻게 보증하는가"</em>다.</p>
+
+    <table class="reftable">
+      <thead>
+        <tr>
+          <th>인프라</th>
+          <th>신뢰 보증 방식</th>
+          <th>핵심 리스크</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="key">지갑</td>
+          <td>개인키 소유 여부 (본인 vs 제3자)</td>
+          <td>수탁형: 거래소 리스크 / 비수탁형: 본인 키 관리 실수</td>
+        </tr>
+        <tr>
+          <td class="key">CEX</td>
+          <td>정부 규제 + 중앙 운영자</td>
+          <td>장부 조작, 자산 동결 가능성</td>
+        </tr>
+        <tr>
+          <td class="key">DEX</td>
+          <td>스마트 컨트랙트 코드</td>
+          <td>러그풀, 운영주체 부재로 피해구제 어려움</td>
+        </tr>
+        <tr>
+          <td class="key">익스플로러</td>
+          <td>온체인 데이터 공개</td>
+          <td>검증 도구 자체의 리스크는 낮음</td>
+        </tr>
+        <tr>
+          <td class="key">DAO</td>
+          <td>코드화된 투표 규칙</td>
+          <td>토큰 편중에 따른 거버넌스 중앙화</td>
+        </tr>
+        <tr>
+          <td class="key">브릿지</td>
+          <td>락업–발행 페깅 구조</td>
+          <td>락업 자산 해킹 위험</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>결론: 블록체인은 "탈중앙화"를 지향하지만, 인프라 단계마다 여전히 신뢰·보안 트레이드오프가 존재한다. 이 트레이드오프를 이해하는 것이 인프라를 제대로 아는 것이다.</p>
+  </div>
+
+  <footer>
+    쟁글 아카데미 원문 기반 재구성 · 스터디 내부 공유용
+  </footer>
+
+</div>
 </body>
 </html>
