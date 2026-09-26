@@ -1,0 +1,28 @@
+# 글쓰기 가이드
+
+이 블로그는 Organization 멤버 누구나 글을 올릴 수 있습니다. Claude Code를
+쓰고 있다면 그냥 "이런 내용으로 글 써서 올려줘"라고 요청하세요 —
+`CLAUDE.md`에 정리된 절차를 따라 브랜치 생성부터 PR까지 대신
+처리해줍니다.
+
+## 직접 작성하는 경우
+
+1. `main`에서 `post/YYYY-MM-DD-제목` 브랜치를 만드세요
+2. `_posts/YYYY-MM-DD-title.md` 파일을 만들고 아래 형식을 채우세요:
+
+   ```yaml
+   ---
+   title: "글 제목"
+   date: YYYY-MM-DD
+   author: "본인 GitHub 아이디"
+   categories: [분류]
+   ---
+   ```
+
+3. PR을 올리면 `build-check`가 자동으로 빌드를 확인합니다
+4. 다른 멤버의 리뷰 승인을 받으면 자동으로 배포됩니다
+
+## 리뷰
+
+- 리뷰어는 Organization 멤버 누구나 가능합니다 (본인 PR 제외)
+- 최소 1명의 승인이 있어야 병합할 수 있습니다
