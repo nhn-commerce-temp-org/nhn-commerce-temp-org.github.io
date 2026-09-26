@@ -12,6 +12,8 @@ exclude:
   - scripts/
   - README.md
   - CONTRIBUTING.md
+  - vendor/
+  - .bundle/
 
 defaults:
   - scope:
@@ -19,3 +21,6 @@ defaults:
       type: posts
     values:
       layout: post
+
+header_pages:
+  - sessions.md
