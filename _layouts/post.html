@@ -11,6 +11,9 @@ layout: default
       {% if page.categories.size > 0 %}
       · {{ page.categories | join: ", " }}
       {% endif %}
+      {% if page.session %}
+      · 회차 {{ page.session }}
+      {% endif %}
     </p>
   </header>
   <div class="post-content">

@@ -6,6 +6,8 @@
 
 - [ ] `_posts/YYYY-MM-DD-title.md` 형식으로 파일을 만들었어요
 - [ ] front matter에 `title`, `date`, `author`, `categories`를 모두 채웠어요
+- [ ] (스터디 회차 글인 경우) `session` 필드를 채웠어요
+- [ ] (심화자료 HTML이 있는 경우) `assets/materials/`에 원본 그대로 올리고 본문에 링크를 남겼어요
 - [ ] CI 빌드 체크(`build-check`)가 통과했어요
 - [ ] (선택) 로컬에서 미리보기를 확인했어요
 

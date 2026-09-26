@@ -19,6 +19,18 @@
    ---
    ```
 
+   스터디 회차 정리 글이라면 `session`(회차 번호) 필드도 추가하세요.
+   `session`이 있는 글은 [회차별 아카이브](/sessions/) 페이지에 자동으로
+   모입니다.
+
+   발표 때 만든 심화자료 HTML이 있다면, 원본 그대로
+   `assets/materials/YYYY-MM-DD-slug.html`에 올려두고 본문에 요약과
+   함께 링크를 남기세요:
+
+   ```markdown
+   [전체 자료 보기]({{ "/assets/materials/YYYY-MM-DD-slug.html" | relative_url }})
+   ```
+
 3. PR을 올리면 `build-check`가 자동으로 빌드를 확인합니다
 4. 다른 멤버의 리뷰 승인을 받은 뒤, 리뷰어 또는 작성자가 PR을 직접
    Merge 버튼으로 병합해야 합니다. 승인만으로는 병합도 배포도 되지
