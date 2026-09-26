@@ -16,4 +16,11 @@ if missing:
     print(f"FAIL: workflow missing: {missing}")
     sys.exit(1)
 
+forbidden_snippets = ["deploy-pages", "gh-pages", "actions/deploy-pages"]
+found_deploy = [s for s in forbidden_snippets if s in workflow]
+
+if found_deploy:
+    print(f"FAIL: workflow must not contain a deploy step: {found_deploy}")
+    sys.exit(1)
+
 print("PASS: build-check workflow has required sections")

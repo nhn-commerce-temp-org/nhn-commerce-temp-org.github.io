@@ -1,4 +1,3 @@
-import re
 import sys
 
 with open("_config.yml", encoding="utf-8") as f:

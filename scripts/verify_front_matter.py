@@ -5,7 +5,7 @@ from pathlib import Path
 REQUIRED_FIELDS = ["title", "date", "author", "categories"]
 
 def extract_front_matter(text: str) -> str:
-    match = re.match(r"^---\n(.*?)\n---\n", text, re.DOTALL)
+    match = re.match(r"^---\r?\n(.*?)\r?\n---\r?\n", text, re.DOTALL)
     if not match:
         return None
     return match.group(1)

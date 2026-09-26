@@ -9,8 +9,9 @@ Organization 소속 여러 명이 함께 운영하는 Jekyll 블로그. 자세�
    이름을 실제 이름으로 바로 정했다면 그 이름 사용)
 2. **리포지토리 이름**: Organization 이름과 정확히 같은
    `<org-name>.github.io`로 생성 (또는 이 리포를 그대로 옮기고 rename)
-3. **멤버 초대 + 권한**: Settings → Member privileges (또는
-   People 탭에서 팀 생성) → 모든 멤버에게 Write 권한 부여
+3. **멤버 초대 + 권한**: Organization Settings → Member privileges →
+   Base permissions: Write 로 설정 (모든 멤버에게 기본적으로 Write
+   권한 부여)
 4. **브랜치 보호**: Settings → Branches → `main`에 규칙 추가:
    - "Require a pull request before merging" 체크
    - "Require approvals" 체크, 최소 1
