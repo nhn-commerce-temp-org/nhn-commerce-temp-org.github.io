@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>스터디 은행 프로젝트 - 발표 슬라이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3F6F4;
+    --panel: #FFFFFF;
+    --ink: #16293D;
+    --ink-soft: #4B5D6E;
+    --teal: #0D6E5F;
+    --teal-deep: #094F44;
+    --mint: #DAEBE4;
+    --gold: #D4A017;
+    --red: #B9382B;
+    --red-tint: #F6DFDB;
+    --line: #C9D6D0;
+    --serif: "Noto Serif KR", "Nanum Myeongjo", "Batang", serif;
+    --sans: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  }
+  :root:not([data-theme="light"]) {}
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #101B22;
+      --panel: #172730;
+      --ink: #E7EEEA;
+      --ink-soft: #A5B6B0;
+      --teal: #4FB8A3;
+      --teal-deep: #0B3A33;
+      --mint: #1C3A36;
+      --gold: #E3B93C;
+      --red: #F08A7C;
+      --red-tint: #3A2220;
+      --line: #2C4249;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: clamp(16px, 1.55vw, 22px);
+    line-height: 1.6;
+    overflow: hidden;
+  }
+  .slide {
+    display: none;
+    position: absolute;
+    inset: 0;
+    padding: clamp(28px, 6vh, 72px) clamp(20px, 7vw, 110px) 84px;
+    overflow-y: auto;
+  }
+  .slide.is-active { display: flex; flex-direction: column; justify-content: center; }
+  .inner { width: 100%; max-width: 1080px; margin: 0 auto; }
+
+  h1, h2 { font-family: var(--serif); font-weight: 700; line-height: 1.3; margin: 0 0 0.5em; word-break: keep-all; }
+  h1 { font-size: clamp(34px, 5.6vw, 76px); }
+  h2 { font-size: clamp(26px, 3.6vw, 48px); }
+  h3 { font-size: 1.05em; margin: 0 0 0.25em; font-weight: 600; }
+  p { margin: 0 0 0.8em; word-break: keep-all; }
+  .lead { font-size: 1.12em; color: var(--ink-soft); max-width: 36em; }
+  .small { font-size: 0.82em; color: var(--ink-soft); }
+  code, .mono { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 0.9em; background: var(--mint); padding: 0.05em 0.4em; border-radius: 4px; }
+
+  /* title slide */
+  .title-slide { background: var(--teal-deep); color: #F3F6F4; }
+  .title-slide .lead { color: #CFE3DC; }
+  .title-slide .small { color: #A9C9BF; }
+  .title-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(24px, 5vw, 70px); align-items: center; }
+  .ledger { background: #F7FAF8; color: #16293D; border-radius: 6px; padding: 18px 22px 10px; box-shadow: 0 0 0 1px rgba(0,0,0,.08); font-size: 0.8em; }
+  .ledger .ledger-head { font-weight: 600; margin-bottom: 8px; border-bottom: 2px solid #0D6E5F; padding-bottom: 6px; }
+  .ledger .row { display: grid; grid-template-columns: 3.2em 1fr; gap: 10px; padding: 9px 0; border-bottom: 1px solid #D6E0DB; }
+  .ledger .row:last-child { border-bottom: 0; }
+  .ledger .tag { font-weight: 600; color: #0D6E5F; }
+  .ledger .ok { color: #0D6E5F; font-weight: 600; }
+
+  /* tables */
+  table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+  th, td { text-align: left; padding: 0.65em 0.9em 0.65em 0; border-bottom: 1px solid var(--line); vertical-align: top; word-break: keep-all; }
+  th { font-weight: 600; color: var(--teal); border-bottom: 2px solid var(--teal); }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+  td.wrap, th.wrap { white-space: normal; }
+
+  /* split blocks */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 3vw, 40px); }
+  .block { border-left: 4px solid var(--teal); padding: 4px 0 4px 18px; }
+  .block.gold { border-left-color: var(--gold); }
+  .block.alert { border-left-color: var(--red); }
+  .panel { background: var(--panel); border-radius: 10px; padding: 18px 22px; box-shadow: 0 0 0 1px var(--line); }
+
+  .terms { display: grid; gap: 14px; }
+  .term { display: grid; grid-template-columns: 8.5em 1fr; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .term:last-child { border-bottom: 0; }
+  .term dt { font-family: var(--serif); font-weight: 700; font-size: 1.2em; color: var(--teal); }
+  .term dd { margin: 0; }
+  .term dd strong { display: block; }
+
+  /* flow (a true sequence, so numbered) */
+  ol.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; counter-reset: s; }
+  ol.flow li { counter-increment: s; border-top: 3px solid var(--teal); padding-top: 12px; font-size: 0.88em; }
+  ol.flow li::before { content: counter(s); display: inline-grid; place-items: center; width: 1.7em; height: 1.7em; border-radius: 50%; background: var(--teal); color: #fff; font-weight: 600; margin-bottom: 8px; }
+  ol.flow li b { display: block; font-size: 1.1em; }
+  ol.flow li span { color: var(--ink-soft); }
+  ol.flow.four { grid-template-columns: repeat(4, 1fr); }
+
+  .chain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .chain .panel { padding: 14px 16px; font-size: 0.88em; }
+  .chain .panel b { display: block; font-size: 1.1em; margin-bottom: 4px; color: var(--teal); }
+
+  /* demo */
+  .demo { background: var(--panel); border-radius: 12px; padding: clamp(14px, 2vw, 24px); box-shadow: 0 0 0 1px var(--line); }
+  .modes { display: inline-flex; border: 1px solid var(--teal); border-radius: 8px; overflow: hidden; margin-bottom: 14px; }
+  .modes button { font: inherit; font-size: 0.85em; padding: 7px 14px; background: transparent; color: var(--teal); border: 0; cursor: pointer; }
+  .modes button[aria-pressed="true"] { background: var(--teal); color: #fff; }
+  .bars { display: grid; gap: 10px; margin: 6px 0 14px; }
+  .bar-row { display: grid; grid-template-columns: 7em 1fr 8em; gap: 12px; align-items: center; font-size: 0.88em; }
+  .bar-track { height: 22px; background: var(--mint); border-radius: 5px; overflow: hidden; }
+  .bar-fill { height: 100%; width: 0; background: var(--teal); transition: width .25s; }
+  .bar-fill.issued.over { background: var(--red); }
+  .bar-val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .btn { font: inherit; font-size: 0.82em; padding: 8px 14px; border-radius: 6px; border: 1px solid var(--teal); background: var(--panel); color: var(--teal); cursor: pointer; }
+  .btn.primary { background: var(--teal); color: #fff; }
+  .btn:hover { filter: brightness(0.95); }
+  .log { font-size: 0.84em; min-height: 3.4em; padding: 10px 12px; border-radius: 6px; background: var(--mint); }
+  .log.warn { background: var(--red-tint); color: var(--red); font-weight: 500; }
+
+  .callout { background: var(--mint); border-radius: 8px; padding: 12px 16px; font-size: 0.9em; }
+  .callout.warn { background: var(--red-tint); }
+
+  /* chrome */
+  .topbar { position: fixed; left: 0; right: 0; top: 0; height: 4px; background: transparent; z-index: 5; }
+  .topbar i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .2s; }
+  .dock { position: fixed; left: 0; right: 0; bottom: 0; height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(14px, 3vw, 36px); font-size: 14px; color: var(--ink-soft); z-index: 5; background: linear-gradient(to top, var(--paper) 70%, transparent); }
+  .dock .nav button { font: inherit; font-size: 14px; padding: 6px 14px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; margin-left: 6px; }
+  .dock .nav button:disabled { opacity: .4; cursor: default; }
+  .dock button:focus-visible, .btn:focus-visible, .modes button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .note { display: none; position: fixed; left: 0; right: 0; bottom: 54px; background: var(--ink); color: var(--paper); padding: 14px clamp(20px, 7vw, 110px); font-size: 15px; line-height: 1.6; z-index: 6; max-height: 34vh; overflow-y: auto; }
+  .notes-on .slide.is-active .note { display: block; }
+  .note b { color: var(--gold); }
+
+  @media (max-width: 820px) {
+    body { font-size: 16px; }
+    .title-grid, .split { grid-template-columns: 1fr; }
+    ol.flow, ol.flow.four, .chain { grid-template-columns: 1fr; }
+    ol.flow li { display: grid; grid-template-columns: 2.2em 1fr; column-gap: 8px; }
+    ol.flow li::before { grid-row: 1 / span 2; }
+    .term { grid-template-columns: 1fr; gap: 4px; }
+    .bar-row { grid-template-columns: 5.5em 1fr 6.5em; }
+    td:first-child { white-space: normal; }
+    .table-scroll { overflow-x: auto; }
+  }
+  @media print {
+    body { overflow: visible; height: auto; }
+    .slide { display: flex !important; position: static; min-height: 100vh; page-break-after: always; }
+    .dock, .topbar, .note { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar" aria-hidden="true"><i id="progress"></i></div>
+
+<main id="deck">
+
+<!-- 1 -->
+<section class="slide title-slide" aria-label="표지">
+  <div class="inner title-grid">
+    <div>
+      <h1>스터디 은행 프로젝트</h1>
+      <p class="lead">우리만의 스테이블코인 SKRW를 직접 만들고, 그 돈으로 스터디를 운영해 봅니다.</p>
+      <p class="small">블록체인 스터디 미니 프로젝트 제안 · 4명 · 테스트넷에서만 진행</p>
+    </div>
+    <div class="ledger" aria-label="예시 거래 장부">
+      <div class="ledger-head">SKRW 거래 장부 (예시)</div>
+      <div class="row"><span class="tag">개설</span><span>지갑 4개 생성</span></div>
+      <div class="row"><span class="tag">입금</span><span>모의 원화 100,000</span></div>
+      <div class="row"><span class="tag">발행</span><span>+100,000 SKRW</span></div>
+      <div class="row"><span class="tag">송금</span><span>A가 B에게 20,000 SKRW</span></div>
+      <div class="row"><span class="tag">공시</span><span class="ok">준비금 100,000 = 발행량 100,000 일치</span></div>
+    </div>
+  </div>
+  <aside class="note"><b>말할 내용</b> 오늘은 설명보다 제안 발표입니다. 우리가 배운 걸 직접 만져 보는 프로젝트를 하자는 이야기예요. 핵심은 "스터디 안에 작은 은행을 만든다"는 한 줄입니다. 전부 연습용 네트워크에서 하니 진짜 돈은 오가지 않습니다.</aside>
+</section>
+
+<!-- 2 -->
+<section class="slide" aria-label="왜 하나요">
+  <div class="inner">
+    <h2>듣고 읽기만 하던 것을, 이번엔 직접 눌러 봅니다</h2>
+    <p class="lead">4회차까지 개념을 배웠습니다. 이제 각 개념을 한 번씩 손으로 확인해 보려고 합니다.</p>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>스터디에서 배운 것</th><th class="wrap">이번에 직접 해보는 것</th></tr></thead>
+      <tbody>
+        <tr><td>지갑 (1회차)</td><td class="wrap">내 지갑을 만들고 첫 트랜잭션 보내기</td></tr>
+        <tr><td>블록 익스플로러 (1회차)</td><td class="wrap">내가 보낸 거래를 공개 장부에서 직접 찾아보기</td></tr>
+        <tr><td>스테이블코인 (4회차)</td><td class="wrap">발행량만큼 준비금을 지키는 1:1 규칙을 직접 운영하기</td></tr>
+        <tr><td>오라클</td><td class="wrap">"출석했는지는 누가 판단하나?"라는 문제를 부딪혀 보기</td></tr>
+        <tr><td>브릿지 (1회차)</td><td class="wrap">보너스: 다른 네트워크로 옮겨 보며 속도·수수료 비교</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <aside class="note"><b>말할 내용</b> 오른쪽 열이 이번 프로젝트의 실제 활동입니다. 왼쪽은 우리가 이미 배운 회차예요. "아, 그때 들은 게 이거였구나"를 느끼는 게 목표입니다.</aside>
+</section>
+
+<!-- 3 -->
+<section class="slide" aria-label="프로젝트 한눈에">
+  <div class="inner">
+    <h2>프로젝트는 두 파트입니다</h2>
+    <p class="lead">파트 1에서 화폐를 만들고, 파트 2에서 그 화폐를 실제로 써 봅니다.</p>
+    <div class="split">
+      <div class="block">
+        <h3>파트 1. 스테이블코인 발행소</h3>
+        <p>스터디 전용 코인 <code>SKRW</code>를 발행하고, 준비금 장부와 맞추는 은행 놀이를 합니다. 발행사, 은행, 감사자, 사용자 역할을 돌아가며 맡습니다.</p>
+      </div>
+      <div class="block gold">
+        <h3>파트 2. 보증금·벌금 컨트랙트</h3>
+        <p>스터디 시작 때 SKRW로 보증금을 맡기고, 결석하면 벌금이 자동으로 차감됩니다. 남은 돈은 마지막 회차에 정산합니다.</p>
+      </div>
+    </div>
+    <p class="small" style="margin-top:1.4em">SKRW는 스터디 안에서만 쓰는 연습용 코인이며, 실제 원화나 자산과 아무 관련이 없습니다.</p>
+  </div>
+  <aside class="note"><b>말할 내용</b> 파트 1이 "화폐 만들기", 파트 2가 "그 화폐로 규칙 돌리기"입니다. 두 개가 이어져 있어서 하나의 이야기로 진행됩니다.</aside>
+</section>
+
+<!-- 4 -->
+<section class="slide" aria-label="용어 세 개">
+  <div class="inner">
+    <h2>용어는 세 개만 먼저 잡고 갑니다</h2>
+    <dl class="terms">
+      <div class="term"><dt>지갑</dt><dd><strong>계좌번호와 도장이 한 세트</strong>주소는 계좌번호처럼 알려줘도 되지만, 개인키와 시드 문구는 도장과 비밀번호라서 절대 남에게 보여주면 안 됩니다.</dd></div>
+      <div class="term"><dt>토큰</dt><dd><strong>블록체인 장부에 적힌 잔액 숫자</strong>SKRW는 이 장부에 "우리 스터디 코인"이라는 항목을 새로 만드는 일입니다.</dd></div>
+      <div class="term"><dt>스마트 컨트랙트</dt><dd><strong>블록체인에 올려둔 자판기 같은 프로그램</strong>조건이 맞으면 사람 없이 알아서 실행됩니다. 한 번 올리면 코드를 고칠 수 없습니다.</dd></div>
+    </dl>
+  </div>
+  <aside class="note"><b>말할 내용</b> 이 세 개만 알면 오늘 발표는 따라올 수 있습니다. 비유로 말하면 충분해요. 지갑은 계좌+도장, 토큰은 장부 속 숫자, 컨트랙트는 자판기. 더 깊은 건 질문이 나오면 그때 답하면 됩니다.</aside>
+</section>
+
+<!-- 5 -->
+<section class="slide" aria-label="테스트넷과 안전 규칙">
+  <div class="inner">
+    <h2>테스트넷: 진짜 돈이 없는 연습장에서만 합니다</h2>
+    <p class="lead">이더리움에는 연습용 네트워크인 Sepolia가 있고, 여기서 쓰는 테스트 ETH는 무료이며 가치가 없습니다.</p>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>규칙</th><th class="wrap">이유</th></tr></thead>
+      <tbody>
+        <tr><td>새 지갑을 따로 만든다</td><td class="wrap">평소 쓰는 지갑, 실제 자산이 든 지갑과 섞이지 않게 합니다.</td></tr>
+        <tr><td>시드 문구는 아무에게도 알리지 않는다</td><td class="wrap">연습용이어도 습관이 중요합니다. 팀원, 채팅창, 스크린샷 모두 금지입니다.</td></tr>
+        <tr><td>실제 자금은 쓰지 않는다</td><td class="wrap">모든 발행, 송금, 보증금은 테스트넷 안에서만 오갑니다.</td></tr>
+        <tr><td>이름은 SKRW로 고정한다</td><td class="wrap">실제 원화 스테이블코인으로 오해될 여지를 없앱니다.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <aside class="note"><b>말할 내용</b> 안전 규칙은 시작 전에 꼭 합의하자고 말씀하세요. 특히 시드 문구 이야기는 강조해 주세요. 테스트 ETH는 "faucet"이라는 무료 배급소에서 받습니다.</aside>
+</section>
+
+<!-- 6 -->
+<section class="slide" aria-label="SKRW 한 사이클">
+  <div class="inner">
+    <h2>SKRW는 이렇게 태어나고 사라집니다</h2>
+    <p class="lead">실제 스테이블코인도 큰 틀은 같습니다. 돈이 들어오면 코인을 찍고, 코인이 돌아오면 없애고 돈을 돌려줍니다.</p>
+    <ol class="flow">
+      <li><b>입금</b><span>사용자가 은행 담당에게 모의 원화를 냅니다. 은행이 장부에 적습니다.</span></li>
+      <li><b>발행 (mint)</b><span>발행사가 입금액만큼 SKRW를 새로 만들어 줍니다.</span></li>
+      <li><b>유통</b><span>사용자끼리 송금하고 결제해 봅니다.</span></li>
+      <li><b>상환 요청</b><span>사용자가 SKRW를 발행사에게 돌려보냅니다.</span></li>
+      <li><b>소각 (burn)</b><span>발행사가 받은 SKRW를 없애고, 은행이 원화를 돌려줍니다.</span></li>
+    </ol>
+  </div>
+  <aside class="note"><b>말할 내용</b> mint는 "찍어낸다", burn은 "태워서 없앤다"입니다. 시중 USDT, USDC도 같은 방식으로 발행과 상환이 일어난다고 4회차에서 배웠습니다. 우리는 그걸 4명이서 축소판으로 해보는 거예요.</aside>
+</section>
+
+<!-- 7 -->
+<section class="slide" aria-label="역할">
+  <div class="inner">
+    <h2>역할은 네 개, 회차마다 돌려 맡습니다</h2>
+    <p class="lead">모두가 발행하는 쪽과 감시하는 쪽을 한 번씩 경험하게 됩니다.</p>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>역할</th><th class="wrap">하는 일</th><th class="wrap">쓰는 도구</th></tr></thead>
+      <tbody>
+        <tr><td>발행사</td><td class="wrap">컨트랙트를 배포하고, 입금 확인 후 mint·burn을 실행합니다.</td><td class="wrap">Remix, 지갑</td></tr>
+        <tr><td>은행</td><td class="wrap">모의 원화 입출금을 장부에 기록하고 준비금을 관리합니다.</td><td class="wrap">공유 스프레드시트</td></tr>
+        <tr><td>감사자</td><td class="wrap">준비금과 발행량을 대조해 공시하고, 어긋나면 지적합니다.</td><td class="wrap">블록 익스플로러, 스프레드시트</td></tr>
+        <tr><td>사용자</td><td class="wrap">입금, 송금, 상환 요청을 하며 실제 사용 경험을 합니다.</td><td class="wrap">지갑</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <aside class="note"><b>말할 내용</b> 개발자 한 명만 바쁜 구조가 되지 않도록 역할을 나눴습니다. 비개발자도 은행, 감사자 역할에서는 할 일이 분명해요. 회차마다 역할을 바꾸면 서로 입장을 이해하게 됩니다.</aside>
+</section>
+
+<!-- 8 demo -->
+<section class="slide" aria-label="준비금 체험">
+  <div class="inner">
+    <h2>준비금 1:1 규칙을 눌러서 느껴 보세요</h2>
+    <p class="lead">4회차에서 본 미국 GENIUS Act의 핵심은 "발행한 만큼 준비금을 쌓아두라"는 것이었습니다.</p>
+    <div class="demo">
+      <div class="modes" role="group" aria-label="감시 방식">
+        <button type="button" id="mode-people" aria-pressed="true">사람이 감시</button>
+        <button type="button" id="mode-code" aria-pressed="false">코드가 차단</button>
+      </div>
+      <div class="bars">
+        <div class="bar-row"><span>준비금(원화)</span><div class="bar-track"><div class="bar-fill" id="bar-reserve"></div></div><span class="bar-val" id="val-reserve">0</span></div>
+        <div class="bar-row"><span>SKRW 발행량</span><div class="bar-track"><div class="bar-fill issued" id="bar-issued"></div></div><span class="bar-val" id="val-issued">0</span></div>
+      </div>
+      <div class="btns">
+        <button type="button" class="btn" id="b-deposit">원화 10,000 입금</button>
+        <button type="button" class="btn primary" id="b-mint">SKRW 10,000 발행</button>
+        <button type="button" class="btn" id="b-redeem">10,000 상환 (소각)</button>
+        <button type="button" class="btn" id="b-audit">감사자: 장부 대조</button>
+        <button type="button" class="btn" id="b-reset">처음부터</button>
+      </div>
+      <div class="log" id="log" role="status" aria-live="polite">입금 없이 먼저 "SKRW 발행"을 눌러 보세요. 모드에 따라 결과가 달라집니다.</div>
+    </div>
+  </div>
+  <aside class="note"><b>말할 내용</b> 먼저 "사람이 감시" 모드에서 입금 없이 발행을 눌러 보여주세요. 컨트랙트는 그냥 실행되고, 감사자가 대조해야 문제를 발견합니다. 그다음 "코드가 차단" 모드로 바꾸면 발행 자체가 막힙니다. 이 차이가 이번 프로젝트의 핵심 교훈입니다.</aside>
+</section>
+
+<!-- 9 -->
+<section class="slide" aria-label="도구">
+  <div class="inner">
+    <h2>코드는 직접 짜지 않고, 클릭으로 만듭니다</h2>
+    <p class="lead">개발자도 컨트랙트가 처음이라서, 검증된 도구로 토큰 코드를 자동 생성합니다.</p>
+    <div class="chain">
+      <div class="panel"><b>OpenZeppelin Wizard</b>체크박스를 고르면 토큰 코드가 만들어집니다.</div>
+      <div class="panel"><b>Remix</b>브라우저에서 코드를 컴파일하고 네트워크에 올립니다.</div>
+      <div class="panel"><b>지갑</b>배포할 때 서명 확인 팝업을 눌러 승인합니다.</div>
+      <div class="panel"><b>Sepolia Etherscan</b>배포 결과와 거래 내역을 공개 장부에서 확인합니다.</div>
+    </div>
+    <div class="table-scroll" style="margin-top:1.4em">
+    <table>
+      <thead><tr><th>Wizard 옵션</th><th class="wrap">SKRW에서 하는 일</th></tr></thead>
+      <tbody>
+        <tr><td>Mintable</td><td class="wrap">발행사만 새로 발행할 수 있게 합니다.</td></tr>
+        <tr><td>Burnable</td><td class="wrap">돌아온 코인을 소각할 수 있게 합니다.</td></tr>
+        <tr><td>Pausable</td><td class="wrap">비상시 모든 송금을 일시 정지할 수 있게 합니다.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <aside class="note"><b>말할 내용</b> "코딩을 못해도 컨트랙트를 배포할 수 있다"가 포인트입니다. 비개발자도 Wizard에서 직접 옵션을 골라 각자 이름의 토큰을 배포해 볼 수 있어요. 이 도구들은 실제 업계에서도 쓰입니다.</aside>
+</section>
+
+<!-- 10 -->
+<section class="slide" aria-label="두 가지 난이도">
+  <div class="inner">
+    <h2>준비금은 사람이 지킬까, 코드가 지킬까</h2>
+    <p class="lead">Wizard가 만든 기본 코드에는 준비금 확인 기능이 없습니다. 그래서 두 단계로 나눠 진행합니다.</p>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th></th><th class="wrap">1단계: 사람이 지킨다</th><th class="wrap">2단계: 코드가 지킨다 (선택)</th></tr></thead>
+      <tbody>
+        <tr><td>준비금 확인</td><td class="wrap">감사자가 장부와 발행량을 대조합니다.</td><td class="wrap">발행 전에 컨트랙트가 자동으로 확인하고 거부합니다.</td></tr>
+        <tr><td>코드</td><td class="wrap">Wizard 결과물을 그대로 씁니다.</td><td class="wrap">작은 템플릿을 AI와 함께 만들고 한 줄씩 읽습니다.</td></tr>
+        <tr><td>배우는 것</td><td class="wrap">감시가 없으면 왜 위험한지</td><td class="wrap">"코드가 규칙을 강제한다"는 말의 의미</td></tr>
+        <tr><td>난이도</td><td class="wrap">클릭 위주</td><td class="wrap">코드를 읽어야 함</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <aside class="note"><b>말할 내용</b> 1단계만으로도 프로젝트는 완성됩니다. 2단계는 분위기가 좋을 때 도전하는 선택 과제예요. 앞 슬라이드에서 눌러 본 두 모드가 바로 이 두 단계입니다.</aside>
+</section>
+
+<!-- 11 -->
+<section class="slide" aria-label="사고 시나리오">
+  <div class="inner">
+    <h2>일부러 사고를 내 봅니다</h2>
+    <p class="lead">마지막 회차에는 실제 스테이블코인에서 벌어졌던 문제를 축소판으로 겪어 봅니다.</p>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>시나리오</th><th class="wrap">벌어지는 일</th><th class="wrap">얻는 것</th></tr></thead>
+      <tbody>
+        <tr><td>몰래 과다 발행</td><td class="wrap">발행사가 입금 없이 SKRW를 더 찍습니다. 감사자가 대조해서 찾아냅니다.</td><td class="wrap">준비금 공시와 감사가 왜 필요한지</td></tr>
+        <tr><td>뱅크런</td><td class="wrap">은행 담당이 준비금 일부를 다른 곳에 썼다고 가정하고, 전원이 동시에 상환을 요구합니다.</td><td class="wrap">1:1 준비금이 깨지면 신뢰가 무너지는 과정</td></tr>
+        <tr><td>긴급 정지</td><td class="wrap">Pausable의 정지 버튼을 눌러 모든 송금을 멈춰 봅니다.</td><td class="wrap">편리함과 중앙화 사이의 논쟁</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="small" style="margin-top:1em">참고: 4회차의 테라·루나 사례는 알고리즘형이라 구조가 다르지만, 신뢰가 한 번에 무너질 수 있다는 점에서 같은 이야기로 토론할 수 있습니다.</p>
+  </div>
+  <aside class="note"><b>말할 내용</b> 이 슬라이드가 하이라이트라고 말해 주세요. 실제 USDT, USDC도 특정 주소를 막거나 전체를 멈출 수 있고, 그래서 "이게 진짜 탈중앙화냐"는 논쟁이 있습니다. 우리 컨트랙트에서는 전체 정지 버튼으로 그 감각을 체험합니다.</aside>
+</section>
+
+<!-- 12 -->
+<section class="slide" aria-label="파트 2">
+  <div class="inner">
+    <h2>파트 2: 스터디 보증금·벌금 컨트랙트</h2>
+    <p class="lead">SKRW를 컨트랙트에 맡기면, 출석에 따라 규칙대로 돈이 움직입니다.</p>
+    <ol class="flow four">
+      <li><b>예치</b><span>스터디 시작 때 각자 SKRW 보증금을 컨트랙트에 맡깁니다.</span></li>
+      <li><b>출석 체크</b><span>운영자가 매 회차 출석 여부를 기록합니다.</span></li>
+      <li><b>차감</b><span>결석하면 정해진 금액이 보증금에서 벌금으로 빠집니다.</span></li>
+      <li><b>정산</b><span>마지막 회차에 남은 보증금을 돌려주고, 벌금은 회식비 등으로 씁니다.</span></li>
+    </ol>
+    <p class="small" style="margin-top:1.2em">예시 금액: 보증금 10,000 SKRW, 결석 1회당 2,000 SKRW. 실제 금액은 팀이 정합니다.</p>
+    <div class="callout">이 파트는 Wizard로 만들 수 없어서 작은 컨트랙트 템플릿이 필요합니다. AI와 함께 작성하고, 한 줄씩 읽으며 이해하는 방식으로 진행합니다.</div>
+  </div>
+  <aside class="note"><b>말할 내용</b> 파트 1에서 만든 SKRW가 여기서 쓰입니다. "코드가 돈을 보관한다"는 걸 체감하는 파트예요. 코드는 템플릿을 미리 준비해서, 모임에서는 읽고 배포하고 써 보는 데 집중합니다.</aside>
+</section>
+
+<!-- 13 -->
+<section class="slide" aria-label="approve">
+  <div class="inner">
+    <h2>보증금을 맡길 때는 승인을 두 번 합니다</h2>
+    <p class="lead">컨트랙트는 허락 없이 내 코인을 가져갈 수 없습니다. 그래서 "승인"이라는 단계가 따로 있습니다.</p>
+    <div class="split">
+      <div class="block">
+        <h3>1단계. approve (승인)</h3>
+        <p>"이 컨트랙트가 내 계좌에서 최대 10,000 SKRW까지 가져가도 좋습니다"라고 허락합니다. 자동이체 동의서를 쓰는 것과 같습니다.</p>
+      </div>
+      <div class="block gold">
+        <h3>2단계. transferFrom (가져가기)</h3>
+        <p>컨트랙트가 허락받은 한도 안에서 실제로 코인을 가져옵니다. 한도를 넘으면 실패합니다.</p>
+      </div>
+    </div>
+    <p style="margin-top:1.2em">그래서 보증금을 맡길 때 지갑 승인 팝업이 두 번 뜹니다. 코인 세계에서 가장 헷갈리지만 가장 중요한 패턴 중 하나입니다.</p>
+  </div>
+  <aside class="note"><b>말할 내용</b> 자동이체 비유가 가장 쉽습니다. 팝업이 두 번 뜨는 이유를 미리 알려주면 당황하지 않아요. 이 패턴은 실제 탈중앙 서비스에서도 거의 그대로 쓰입니다.</aside>
+</section>
+
+<!-- 14 -->
+<section class="slide" aria-label="오라클 문제">
+  <div class="inner">
+    <h2>"출석했는지는 누가 알려주지?"</h2>
+    <p class="lead">스마트 컨트랙트는 블록체인 밖의 세상을 직접 볼 수 없습니다. 오라클 회차에서 배운 바로 그 문제입니다.</p>
+    <div class="split">
+      <div class="block alert">
+        <h3>처음에는</h3>
+        <p>운영자 한 명이 출석을 기록합니다. 편하지만, 그 사람을 믿어야만 하는 구조라서 중앙화입니다.</p>
+      </div>
+      <div class="block">
+        <h3>토론해 볼 것</h3>
+        <p>4명 중 3명이 확인해야 출석이 인정되게 바꾸면 어떨까? 그러면 누구를 얼마나 믿는 구조가 될까?</p>
+      </div>
+    </div>
+  </div>
+  <aside class="note"><b>말할 내용</b> 일부러 불완전하게 시작해서 한계를 직접 느끼는 게 의도입니다. 정답을 말하기보다 토론을 열어 주세요. 여러 명이 확인하는 방식은 멀티시그와 비슷한 발상입니다.</aside>
+</section>
+
+<!-- 15 -->
+<section class="slide" aria-label="일정">
+  <div class="inner">
+    <h2>5회로 진행하는 일정 제안</h2>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>회차</th><th class="wrap">내용</th><th class="wrap">핵심 도구</th></tr></thead>
+      <tbody>
+        <tr><td>0회차</td><td class="wrap">지갑 만들기, 테스트 ETH 받기, 첫 트랜잭션, 익스플로러로 확인</td><td class="wrap">지갑, faucet, Etherscan</td></tr>
+        <tr><td>1회차</td><td class="wrap">SKRW 설계, Wizard로 코드 생성, 발행사 컨트랙트 배포</td><td class="wrap">Wizard, Remix</td></tr>
+        <tr><td>2회차</td><td class="wrap">입금, 발행, 송금, 월간 준비금 공시</td><td class="wrap">지갑, 스프레드시트</td></tr>
+        <tr><td>3회차</td><td class="wrap">보증금·벌금 컨트랙트 배포와 사용</td><td class="wrap">Remix, 템플릿</td></tr>
+        <tr><td>4회차</td><td class="wrap">사고 시나리오, 회고와 토론</td><td class="wrap">전체</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="small" style="margin-top:1em">여유가 생기면 보너스로 브릿지를 타고 속도와 수수료를 비교해 볼 수 있습니다.</p>
+  </div>
+  <aside class="note"><b>말할 내용</b> 한 회차에 한 가지 큰 일만 하도록 나눴습니다. 진도가 느리면 3회차를 줄이거나 2단계 선택 과제를 빼면 돼요. 일정은 팀 사정에 맞게 조정하자고 하세요.</aside>
+</section>
+
+<!-- 16 -->
+<section class="slide" aria-label="준비물">
+  <div class="inner">
+    <h2>시작 전에 이것만 준비하면 됩니다</h2>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>준비물</th><th class="wrap">설명</th></tr></thead>
+      <tbody>
+        <tr><td>브라우저 지갑</td><td class="wrap">MetaMask 같은 확장 프로그램을 설치하고, 이번 프로젝트용 새 지갑을 만듭니다.</td></tr>
+        <tr><td>시드 문구 보관</td><td class="wrap">종이에 적어 두고, 사진이나 메신저로 보내지 않습니다.</td></tr>
+        <tr><td>Sepolia 선택</td><td class="wrap">지갑의 네트워크를 이더리움 Sepolia 테스트넷으로 바꿉니다.</td></tr>
+        <tr><td>테스트 ETH</td><td class="wrap">faucet 사이트에서 받습니다. 조건은 시기마다 달라질 수 있어 모임 전에 미리 시도해 둡니다.</td></tr>
+        <tr><td>공유 스프레드시트</td><td class="wrap">은행 장부와 감사 공시를 기록할 시트를 하나 만듭니다.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="callout warn" style="margin-top:1.2em">테스트 ETH가 가장 자주 막히는 지점입니다. 0회차 전에 각자 미리 받아 오면 모임 시간을 아낄 수 있습니다.</div>
+  </div>
+  <aside class="note"><b>말할 내용</b> 숙제는 이 슬라이드의 앞 세 줄까지만 부탁하면 충분합니다. faucet은 가끔 막히거나 조건이 바뀌니, 안 되면 다른 곳을 시도하거나 팀원끼리 나눠 쓸 수도 있어요.</aside>
+</section>
+
+<!-- 17 -->
+<section class="slide" aria-label="토론">
+  <div class="inner">
+    <h2>같이 이야기해 볼까요</h2>
+    <div class="split">
+      <div class="block">
+        <h3>정하고 싶은 것</h3>
+        <p>이 프로젝트를 할지, 5회 일정이 괜찮은지, 보증금과 벌금 금액은 얼마로 할지, 처음 맡을 역할은 누가 할지.</p>
+      </div>
+      <div class="block gold">
+        <h3>토론 질문</h3>
+        <p>우리 SKRW는 USDT와 무엇이 같고 무엇이 다를까? 긴급 정지 기능은 있어야 할까? 출석 기록은 누구를 믿어야 할까?</p>
+      </div>
+    </div>
+  </div>
+  <aside class="note"><b>말할 내용</b> 질문이 나왔는데 모르겠다면 "좋은 질문이라 다음 모임 전까지 확인해서 공유할게요"라고 해도 충분합니다. 이해 가이드의 Q&A에 예상 질문을 정리해 뒀어요.</aside>
+</section>
+
+</main>
+
+<div class="dock">
+  <span id="counter" aria-live="polite">1 / 17</span>
+  <span class="small">방향키로 이동 · N 키로 발표 메모</span>
+  <span class="nav">
+    <button type="button" id="prev">이전</button>
+    <button type="button" id="next">다음</button>
+  </span>
+</div>
+
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var idx = 0;
+  var counter = document.getElementById('counter');
+  var progress = document.getElementById('progress');
+  var prev = document.getElementById('prev');
+  var next = document.getElementById('next');
+
+  function show(i) {
+    idx = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach(function (s, n) { s.classList.toggle('is-active', n === idx); });
+    slides[idx].scrollTop = 0;
+    counter.textContent = (idx + 1) + ' / ' + slides.length;
+    progress.style.width = ((idx + 1) / slides.length * 100) + '%';
+    prev.disabled = idx === 0;
+    next.disabled = idx === slides.length - 1;
+    try { history.replaceState(null, '', '#' + (idx + 1)); } catch (e) {}
+  }
+
+  prev.addEventListener('click', function () { show(idx - 1); });
+  next.addEventListener('click', function () { show(idx + 1); });
+
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || (e.key === ' ' && tag !== 'BUTTON')) { e.preventDefault(); show(idx + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(idx - 1); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === 'n' || e.key === 'N') { document.body.classList.toggle('notes-on'); }
+  });
+
+  var sx = null;
+  document.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (sx === null) return;
+    var dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 60) show(idx + (dx < 0 ? 1 : -1));
+    sx = null;
+  }, { passive: true });
+
+  var start = parseInt((location.hash || '').replace('#', ''), 10);
+  show(isNaN(start) ? 0 : start - 1);
+
+  /* reserve demo */
+  var STEP = 10000;
+  var st = { reserve: 0, issued: 0, mode: 'people' };
+  var el = function (id) { return document.getElementById(id); };
+  var logEl = el('log');
+
+  function fmt(n) { return n.toLocaleString('ko-KR'); }
+  function say(msg, warn) { logEl.textContent = msg; logEl.className = 'log' + (warn ? ' warn' : ''); }
+  function render() {
+    var max = Math.max(50000, st.reserve, st.issued);
+    el('bar-reserve').style.width = (st.reserve / max * 100) + '%';
+    el('bar-issued').style.width = (st.issued / max * 100) + '%';
+    el('bar-issued').classList.toggle('over', st.issued > st.reserve);
+    el('val-reserve').textContent = fmt(st.reserve);
+    el('val-issued').textContent = fmt(st.issued);
+  }
+  function setMode(m) {
+    st.mode = m;
+    el('mode-people').setAttribute('aria-pressed', m === 'people');
+    el('mode-code').setAttribute('aria-pressed', m === 'code');
+    say(m === 'people'
+      ? '사람이 감시하는 모드입니다. 컨트랙트는 요청을 그대로 실행하고, 장부와 맞는지는 감사자가 확인해야 합니다.'
+      : '코드가 차단하는 모드입니다. 발행 전에 컨트랙트가 준비금을 확인하고, 부족하면 거부합니다.');
+  }
+
+  el('mode-people').addEventListener('click', function () { setMode('people'); });
+  el('mode-code').addEventListener('click', function () { setMode('code'); });
+  el('b-deposit').addEventListener('click', function () {
+    st.reserve += STEP; render();
+    say('은행 장부에 원화 ' + fmt(STEP) + '이 입금 기록되었습니다.');
+  });
+  el('b-mint').addEventListener('click', function () {
+    if (st.mode === 'code' && st.issued + STEP > st.reserve) {
+      say('발행 거부: 준비금이 부족합니다. 코드가 규칙을 강제하는 모습입니다.', true);
+      return;
+    }
+    st.issued += STEP; render();
+    if (st.issued > st.reserve) {
+      say('발행되었습니다. 하지만 준비금보다 많습니다. 감사자가 대조하지 않으면 아무도 모릅니다.', true);
+    } else {
+      say('SKRW ' + fmt(STEP) + '이 발행되었습니다.');
+    }
+  });
+  el('b-redeem').addEventListener('click', function () {
+    if (st.issued < STEP) { say('상환할 SKRW가 없습니다.', true); return; }
+    st.issued -= STEP;
+    st.reserve = Math.max(0, st.reserve - STEP);
+    render();
+    say('SKRW ' + fmt(STEP) + '이 소각되고, 원화 ' + fmt(STEP) + '이 반환되었습니다.');
+  });
+  el('b-audit').addEventListener('click', function () {
+    if (st.issued === st.reserve) {
+      say('감사 결과: 준비금과 발행량이 일치합니다.');
+    } else if (st.issued > st.reserve) {
+      say('감사 결과: 불일치. 발행량이 준비금보다 ' + fmt(st.issued - st.reserve) + ' 많습니다.', true);
+    } else {
+      say('감사 결과: 준비금이 발행량보다 ' + fmt(st.reserve - st.issued) + ' 많습니다. 아직 발행하지 않은 입금액입니다.');
+    }
+  });
+  el('b-reset').addEventListener('click', function () { st.reserve = 0; st.issued = 0; render(); setMode(st.mode); });
+
+  render();
+})();
+</script>
+</body>
+</html>
