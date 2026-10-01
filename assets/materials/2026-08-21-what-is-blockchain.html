@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>블록체인이란 무엇인가</title>
+<style>
+:root{
+  --bg:#0f1420;--panel:#161d2e;--panel-2:#1c2438;
+  --accent:#5ec6c0;--accent-2:#7c9fff;--gold:#f2b950;--red:#ef7373;--green:#6fd19a;
+  --border:#2a3350;--text:#e7ecf5;--text-dim:#9aa5b8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif;line-height:1.75;word-break:keep-all}
+.shell{max-width:1080px;margin:auto;padding:40px 22px 70px}
+.hero{background:linear-gradient(135deg,#101a2e,#1b3a4a);border:1px solid var(--border);padding:44px 46px;border-radius:22px}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--accent)}
+.hero h1{font-size:clamp(28px,4.2vw,42px);margin:12px 0;letter-spacing:-.03em}
+.hero p{color:var(--text-dim);font-size:15.5px;max-width:780px;margin:0}
+.hero .who{margin-top:12px;font-size:13px;color:#7f93b0}
+.src{margin-top:14px;font-size:12px;color:#6c7f9c}
+
+nav.toc{margin-top:20px;padding:14px 18px;background:var(--panel);border:1px solid var(--border);border-radius:14px;display:flex;gap:8px;flex-wrap:wrap}
+nav.toc a{font-size:12.5px;color:var(--accent-2);text-decoration:none;background:var(--panel-2);padding:5px 12px;border-radius:20px;font-weight:700}
+
+section{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:30px 32px;margin-top:20px}
+.label{font-size:11.5px;color:var(--accent);font-weight:800;letter-spacing:.1em}
+.h2{margin:4px 0 14px;font-size:23px;letter-spacing:-.02em}
+.intro{color:var(--text-dim);font-size:15px;margin:0 0 16px}
+p{margin:0 0 12px} p:last-child{margin-bottom:0}
+
+/* block diagram */
+.block-box{border:1.5px solid var(--accent-2);border-radius:14px;overflow:hidden;max-width:380px;margin:16px auto}
+.block-box .bhead{background:var(--panel-2);padding:10px 16px;font-weight:800;font-size:13.5px;color:var(--accent-2);border-bottom:1px solid var(--border)}
+.block-box .bsec{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px}
+.block-box .bsec:last-child{border-bottom:0}
+.block-box .bsec .stag{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:.05em;margin-bottom:6px;display:block}
+.block-box .bsec ul{margin:0;padding-left:16px;color:var(--text-dim)}
+.block-box .bsec ul li{margin:3px 0}
+
+.field-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+.field-card{border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:var(--panel-2)}
+.field-card b{display:block;color:var(--gold);font-size:13.5px;margin-bottom:5px}
+.field-card span{font-size:13px;color:var(--text-dim)}
+
+/* chain diagram */
+.chain-row{display:flex;align-items:stretch;gap:0;margin-top:18px;overflow-x:auto}
+.chain-block{flex:1;min-width:170px;border:1.5px solid var(--accent-2);border-radius:12px;padding:12px 14px;background:var(--panel-2);font-size:12.5px;position:relative}
+.chain-block b{display:block;color:var(--accent-2);font-size:13.5px;margin-bottom:6px}
+.chain-block .hl{color:var(--gold);font-weight:700}
+.chain-arrow{flex:0 0 34px;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--accent)}
+.chain-note{margin-top:12px;padding:12px 16px;background:#20314a;border:1px dashed #3a5478;border-radius:10px;font-size:13.5px;color:#b9cbe0}
+
+/* compare diagram */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.compare-card{border:1px solid var(--border);border-radius:14px;padding:18px;background:var(--panel-2)}
+.compare-card h4{margin:0 0 10px;font-size:14.5px;color:var(--text)}
+.central-diagram{text-align:center;font-size:12.5px;color:var(--text-dim)}
+.central-diagram .node{display:inline-block;border:1px solid var(--border);border-radius:8px;padding:6px 10px;margin:4px;background:var(--bg)}
+.central-diagram .server{display:block;margin:10px auto;border:1.5px solid var(--red);border-radius:8px;padding:8px 14px;width:fit-content;color:#ffb3b3;font-weight:700}
+.mesh{display:grid;grid-template-columns:1fr 1fr;gap:30px 40px;justify-items:center;margin:12px 0;position:relative}
+.mesh .node{border:1.5px solid var(--green);border-radius:8px;padding:8px 12px;background:var(--bg);color:#bdf0d3;font-weight:700;font-size:12.5px}
+
+/* four traits */
+.trait-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
+.trait-card{border:1px solid var(--border);border-radius:14px;padding:16px 18px;background:var(--panel-2)}
+.trait-card .tt{font-size:11px;font-weight:800;color:#fff;background:var(--accent-2);border-radius:6px;padding:2px 8px;display:inline-block;margin-bottom:8px}
+.trait-card h4{margin:0 0 6px;font-size:15px}
+.trait-card p{font-size:13.5px;color:var(--text-dim);margin:0}
+
+/* mining flow */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.flow div{position:relative;text-align:center;padding:16px 10px;border:1px solid var(--border);border-radius:12px;background:var(--panel-2);font-size:13px;color:var(--text-dim)}
+.flow b{display:block;color:var(--accent);font-size:14px;margin-bottom:4px}
+.flow div:not(:last-child)::after{content:"→";position:absolute;right:-9px;top:50%;transform:translate(50%,-50%);width:18px;height:18px;border-radius:50%;background:var(--accent-2);color:#0f1420;display:grid;place-items:center;font-size:10px;z-index:2}
+.hashbox{margin-top:14px;padding:14px 16px;background:#20314a;border:1px dashed #3a5478;border-radius:10px;font-size:13.5px;color:#b9cbe0}
+
+/* use cases */
+.case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.case-card{border:1px solid var(--border);border-radius:14px;padding:16px 18px;background:var(--panel-2)}
+.case-card .icon{font-size:20px}
+.case-card h4{margin:8px 0 6px;font-size:15px}
+.case-card .stat{font-size:19px;font-weight:800;color:var(--accent);margin:4px 0}
+.case-card p{font-size:13px;color:var(--text-dim);margin:0}
+.example-list{margin-top:14px;padding:14px 16px;background:#20314a;border-radius:10px;font-size:13.5px;color:#b9cbe0}
+.example-list b{color:#e7ecf5}
+.example-list div{margin:6px 0}
+
+.end{background:linear-gradient(135deg,#152238,#1b3a4a);}
+.end .label{color:#9adfd8}
+.foot{font-size:12px;color:#6c7f9c;margin-top:18px}
+
+@media(max-width:860px){
+  .field-grid{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}
+  .trait-grid{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}
+  .flow div:nth-child(2n)::after{display:none}.case-grid{grid-template-columns:1fr}
+  .chain-row{flex-direction:column}.chain-arrow{transform:rotate(90deg);padding:4px 0}
+}
+@media(max-width:600px){
+  .shell{padding:16px 12px 50px}.hero,section{padding:22px 18px;border-radius:16px}.h2{font-size:20px}
+}
+</style>
+</head>
+<body><main class="shell">
+
+<header class="hero">
+  <div class="kicker">BLOCKCHAIN STUDY · ACADEMY REVIEW</div>
+  <h1>블록체인이란 무엇인가</h1>
+  <p>블록 안에는 무엇이 들어있고, 블록들은 왜 사슬처럼 연결되며, 기존 중앙화 구조와는 무엇이 다른지 — 그림으로 직관적으로 이해하고 최신 활용 사례까지 정리합니다.</p>
+  <div class="who">발표자: 장윤선</div>
+  <div class="src">원문: Xangle Academy, "블록체인이란 무엇인가" (2022.8.30)</div>
+</header>
+
+<nav class="toc">
+  <a href="#block">블록 내부 구조</a>
+  <a href="#chain">체인 연결 원리</a>
+  <a href="#compare">중앙화 vs 탈중앙화</a>
+  <a href="#traits">4가지 특징</a>
+  <a href="#mining">검증(채굴) 과정</a>
+  <a href="#usecase">활용 사례·최신 동향</a>
+</nav>
+
+<section id="block">
+  <div class="label">01 · BLOCK STRUCTURE</div>
+  <h2 class="h2">블록 안에는 뭐가 들어있나</h2>
+  <p class="intro">블록은 크게 "헤더(신분증 같은 정보)"와 "거래 내역(바디)" 두 칸으로 나뉘어요.</p>
+
+  <div class="chain-note">🔑 해시값이 뭐야? 어떤 데이터를 넣으면 항상 정해진 길이의 무작위 같은 문자열이 나오는 함수의 결과값이에요. ① 같은 걸 넣으면 항상 같은 값이 나오고(재현 가능) ② 입력이 1글자만 바뀌어도 결과값은 완전히 달라지고(예측 불가) ③ 결과값만 보고는 원래 뭘 넣었는지 거꾸로 알아낼 수 없어요(일방향). 블록의 모든 내용(이전 해시값+거래내역+타임스탬프+논스)을 이 함수에 넣은 결과가 "이번 블록의 해시값" — 그 블록만의 지문인 셈이에요.</div>
+
+  <div class="block-box">
+    <div class="bhead">📦 블록 (Block)</div>
+    <div class="bsec">
+      <span class="stag">📋 헤더 (HEADER)</span>
+      <ul>
+        <li>이전 블록의 해시값</li>
+        <li>이번 블록의 해시값</li>
+        <li>타임스탬프 (생성 시각)</li>
+        <li>논스 (nonce)</li>
+      </ul>
+    </div>
+    <div class="bsec">
+      <span class="stag">📄 거래 내역 (BODY)</span>
+      <ul>
+        <li>거래1: A → B, 5만원</li>
+        <li>거래2: C → D, 10만원</li>
+        <li>거래3: E → F, 3만원</li>
+        <li>...</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="field-grid">
+    <div class="field-card"><b>이전 블록의 해시값</b><span>블록들을 사슬처럼 "잠가주는" 연결고리. 앞 블록을 조작하면 이 값이 안 맞아 바로 들통남</span></div>
+    <div class="field-card"><b>이번 블록의 해시값</b><span>이 블록 전체 내용을 해시함수에 넣어 나온 "지문". 다음 블록이 이 값을 참조해 연결됨</span></div>
+    <div class="field-card"><b>타임스탬프</b><span>블록이 언제 만들어졌는지 기록. 블록 순서를 보장하고, 블록 2,016개(약 2주)마다 채굴 난이도를 조절하는 기준값으로도 사용</span></div>
+    <div class="field-card"><b>논스 (nonce), 왜 "자유값"?</b><span>이전해시값·거래내역·타임스탬프는 이미 정해진 사실이라 마음대로 못 바꿔요. 논스만 "의미 있는 데이터"가 아니라, 조건에 맞는 해시값이 나올 때까지 채굴자가 마음대로 골라 넣어보는 시도값이에요. 자물쇠 다이얼을 0부터 돌려보는 것과 같아요</span></div>
+  </div>
+</section>
+
+<section id="chain">
+  <div class="label">02 · CHAIN LINKING</div>
+  <h2 class="h2">블록 --- 블록 --- 블록, 어떻게 연결될까</h2>
+  <p class="intro">각 블록이 자기 안에 "이전 블록의 해시값"을 갖고 있어서 사슬처럼 이어져요.</p>
+
+  <div class="chain-row">
+    <div class="chain-block"><b>블록 #1</b>이전해시: 없음<br>내 해시: <span class="hl">H1</span><br>거래내역...</div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-block"><b>블록 #2</b>이전해시: <span class="hl">H1</span><br>내 해시: H2<br>거래내역...</div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-block"><b>블록 #3</b>이전해시: H2<br>내 해시: H3<br>거래내역...</div>
+  </div>
+
+  <div class="chain-note">💡 만약 블록 #1의 거래 내역을 몰래 바꾸면, 블록 #1의 해시값(H1) 자체가 완전히 다른 값으로 변해요. 그러면 블록 #2가 갖고 있는 "이전 해시: H1"이라는 기록과 안 맞게 되어 바로 조작이 들통나요. 이게 "한 번 기록되면 못 바꾼다(비가역성)"가 실제로 작동하는 원리예요.</div>
+</section>
+
+<section id="compare">
+  <div class="label">03 · STRUCTURE COMPARISON</div>
+  <h2 class="h2">원래 구조 vs 블록체인 구조</h2>
+  <p class="intro">기록을 "누가, 어디에" 보관하느냐가 핵심 차이예요.</p>
+
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h4>🏦 중앙화 구조 (은행 같은 중개자)</h4>
+      <div class="central-diagram">
+        <span class="node">고객A</span><span class="node">고객B</span><span class="node">고객C</span><span class="node">고객D</span>
+        <span class="server">▼ 은행(중앙서버)<br>장부 1권 보관</span>
+        모든 기록이 한 곳에만 저장 → 은행이 조작하거나 멈추면 전체가 흔들림
+      </div>
+    </div>
+    <div class="compare-card">
+      <h4>🔗 블록체인 구조 (탈중앙 네트워크)</h4>
+      <div class="mesh">
+        <span class="node">노드A</span><span class="node">노드B</span>
+        <span class="node">노드D</span><span class="node">노드C</span>
+      </div>
+      <div class="central-diagram">노드 각자가 전체 장부 사본을 보관 → 하나가 망가져도 나머지가 비교해서 바로 확인 가능</div>
+    </div>
+  </div>
+</section>
+
+<section id="traits">
+  <div class="label">04 · FOUR CHARACTERISTICS</div>
+  <h2 class="h2">4가지 특징 — 동아리 회비 장부 비유</h2>
+  <p class="intro">회계 담당자 한 명이 아니라, 회원 전원이 각자 장부를 갖고 있다고 생각하면 돼요.</p>
+
+  <div class="trait-grid">
+    <div class="trait-card"><span class="tt">탈중앙성</span><h4>회원 전원이 회계담당자</h4><p>권한과 책임이 한 사람에게 몰리지 않고 다 같이 나눠 가짐</p></div>
+    <div class="trait-card"><span class="tt">투명성</span><h4>누구나 장부 열람 가능</h4><p>회원 전원이 똑같은 장부를 갖고 있어 허락 없이도 언제든 확인 가능</p></div>
+    <div class="trait-card"><span class="tt">보안성</span><h4>장부 여러 권이라 안전</h4><p>장부가 한 권이면 없어지면 끝. 전원의 장부를 동시에 없애지 않는 한 훼손 어려움</p></div>
+    <div class="trait-card"><span class="tt">비가역성</span><h4>바꾸는 게 사실상 불가능하게 설계됨</h4><p>과거 블록을 바꾸면 그 뒤 모든 블록을 다시 계산해야 하는데, 그러는 동안 나머지 네트워크는 계속 앞서 나가기 때문에 사실상 못 바꿈</p></div>
+  </div>
+
+  <div class="chain-note">🔒 비가역성, 진짜 이유는? "코팅해서 못 바꾼다"는 비유는 정확하지 않아요. 실제로는 이래요 — ① 과거 블록의 거래를 하나 바꾸면 그 블록 해시값이 통째로 달라지고 ② 다음 블록이 갖고 있던 "이전 해시값"과 안 맞아 다음 블록부터 전부 다시 채굴(재계산)해야 해요 ③ 근데 그러는 동안 정직한 나머지 채굴자들은 계속 새 블록을 쌓아가고 있어서, 내가 조작한 체인이 인정받으려면 전 세계 나머지 채굴자를 합친 것보다 더 빨리 계산해서 추월해야 해요("51% 공격"). 비트코인처럼 큰 네트워크에서는 이걸 이기는 데 드는 장비값·전기세가 천문학적이라 사실상 불가능한 거예요 — "절대 불가"가 아니라 "바꾸는 비용이 압도적으로 커서 안 바꾸는" 구조예요.</div>
+</section>
+
+<section id="mining">
+  <div class="label">05 · VALIDATION (MINING)</div>
+  <h2 class="h2">검증(채굴)은 어떻게 이루어지나 — 비트코인 예시</h2>
+  <p class="intro">해시 함수를 "숫자를 넣으면 정해진 단어가 나오는 상자"라고 생각하면 이해가 쉬워요.</p>
+
+  <div class="flow">
+    <div><b>① 후보 블록 생성</b>거래 여러 개를 모아 나만의 블록 구성</div>
+    <div><b>② 논스 대입</b>숫자를 계속 바꿔 해시상자에 넣어보기</div>
+    <div><b>③ 정답 발견</b>목표 결과값이 나오면 정답 논스 확보</div>
+    <div><b>④ 검증·보상</b>과반수 동의 시 체인에 추가 + 보상</div>
+  </div>
+
+  <div class="hashbox">🔐 채굴을 제일 쉽게 말하면 — "자물쇠 다이얼 맞추기": 상자 안에는 이미 정해진 내용(거래내역들 + "몇 시에 만들기 시작함"이라는 시간 메모)이 들어있어요. 이 내용은 절대 안 바뀌어요. 대신 상자를 진짜 "봉인 완료"시키려면 겉에 달린 다이얼(논스)을 정답 숫자로 맞춰야 해요. 정답을 미리 알 방법이 없어서 0, 1, 2, 3...으로 계속 돌려보다가 "딸깍!" 소리가 나는 순간의 숫자가 논스예요. 그 순간 상자(블록)가 완성돼요.</div>
+
+  <div class="hashbox">⏱️ 시간 메모, 왜 살짝 안 맞아도 될까? 시간 메모("1시에 시작함")는 다이얼을 돌리기 <b>전에</b> 미리 적어두는 거라, 다이얼을 아무리 오래 돌려도 이 메모는 안 바뀌어요. 그래서 1시부터 다이얼을 돌리기 시작해서 실제로 2시에 딸깍 소리가 나도, 메모엔 그냥 "1시"라고 적힌 채로 블록이 완성돼요. 괜찮은 이유는 이 메모가 "1초도 안 틀리는 정밀 시계"가 아니라 "대충 이 시간쯤 만들었다"만 확인하는 느슨한 규칙이기 때문이에요. 너무 옛날이거나 너무 먼 미래 시간만 아니면 다 인정해줘요.</div>
+
+  <div class="hashbox">🧮 <b>기술적으로 보면</b> — 해시상자 비유: 1을 넣으면 "고양이", 2를 넣으면 "바나나"가 나와요. "사과"라는 결과물을 봐도 몇을 넣었는지 거꾸로 알아낼 수 없어요. 채굴자들은 논스를 계속 바꿔 넣다가 우연히 4를 넣었더니 목표였던 "사과"가 나오면, 그 사람이 블록 생성 권한을 얻고 다른 검증자들에게 알려요. 과반수가 "맞다"고 동의하면 블록이 체인에 추가되고 보상을 받아요.</div>
+
+  <div class="hashbox">📅 채굴 난이도는 시간 단위로 실시간 조절될까? 매 블록마다 바뀌는 게 아니라, 블록 2,016개가 쌓일 때마다(평균 약 2주) 조정해요. 그 2,016개 블록에 찍힌 타임스탬프를 보고 "실제로 얼마나 걸렸는지" 계산해서, 예상(2주)보다 빨랐으면(채굴자가 늘어 계산 속도가 빨라짐) 조건을 더 어렵게, 느렸으면 더 쉽게 만들어요. 이렇게 주기적으로 조정해서 평균 10분에 블록 하나가 유지되게 맞추는 거예요.</div>
+</section>
+
+<section id="usecase">
+  <div class="label">06 · REAL-WORLD USE CASES (2026)</div>
+  <h2 class="h2">활용 사례 & 최신 동향</h2>
+  <p class="intro">가상자산을 넘어 결제, 실물자산, 공급망까지 실제로 쓰이는 중이에요.</p>
+
+  <div class="case-grid">
+    <div class="case-card">
+      <div class="icon">💳</div>
+      <h4>결제 · 스테이블코인</h4>
+      <div class="stat">33조$</div>
+      <p>약 46,596조원 · 2025년 스테이블코인 온체인 결제액 — 비자+마스터카드 합산 25.5조$(약 36,006조원)을 이미 넘어섰어요</p>
+    </div>
+    <div class="case-card">
+      <div class="icon">🏛️</div>
+      <h4>RWA(실물자산) 토큰화</h4>
+      <div class="stat">약 220~250억$</div>
+      <p>약 31조~35조원 · 2026년 5월 기준 토큰화 자산 운용 규모(2024년초 약 80억$/약 11조 3,000억원에서 급성장)</p>
+    </div>
+    <div class="case-card">
+      <div class="icon">📦</div>
+      <h4>공급망 관리</h4>
+      <div class="stat">7일 → 2.2초</div>
+      <p>월마트·IBM Food Trust의 망고 원산지 추적 시간 단축 사례</p>
+    </div>
+  </div>
+
+  <div class="example-list">
+    <div><b>결제, 실제로 어떻게 만들었나:</b> 스테이블코인(USDC 등)은 이더리움 같은 블록체인 위에 스마트컨트랙트로 발행된 토큰이에요. 발행사가 은행에 1달러가 들어오면 그 블록체인에서 토큰을 새로 발행(민팅)하고, 상환하면 소각해요. 모든 전송 기록이 블록체인에 남아 누구나 검증 가능하고, 은행망(SWIFT 등)을 안 거치고 24시간 즉시 전 세계로 전송돼요. 2026년 8월 Visa가 이 방식 그대로 자사 송금망(Visa Direct)에 USDC를 통합해 195개국 180억 개 카드/계좌/지갑에서 사용 가능해졌어요. 일반 해외송금 수수료 평균 6.35% → 스테이블코인 방식은 1% 미만</div>
+    <div><b>RWA 토큰화, 실제로 어떻게 만들었나:</b> 실물 자산(예: 미국 국채)은 그대로 은행·신탁에 보관하면서, 그 자산에 대한 소유권 지분을 블록체인 위에 토큰으로 발행해요. 토큰을 전송하는 것 = 소유권을 이전하는 것이 되니, 서류·중개인 없이 24시간 즉시 거래되고 다른 대출 서비스에 담보로도 활용할 수 있어요. 국채 토큰화 약 100억$(약 14조 1,200억원)로 최대 비중, BlackRock BUIDL 펀드 약 25억$(약 3조 5,300억원), Franklin Templeton BENJI 약 8.3억$(약 1조 1,700억원)</div>
+    <div><b>공급망, 실제로 어떻게 만들었나:</b> 상품이 이동할 때마다(수확, 선적, 온도체크, 검수 등) 그 이벤트를 블록체인에 하나씩 기록해요. 월마트는 망고에 붙은 QR코드를 스캔하면 이 기록을 즉시 조회해 원산지부터 전체 이동경로가 한 번에 뜨게 만들었고(원래는 관련자들에게 일일이 전화·팩스로 확인해서 7일 걸림), 드비어스(De Beers)는 다이아몬드마다 고유 ID를 붙여 채굴부터 세공·판매까지 모든 단계를 기록해 분쟁광물 여부를 검증해요. 화이자는 백신 운송 중 콜드체인(저온) 기록을 블록체인으로 실시간 관리했어요.</div>
+  </div>
+</section>
+
+<section class="end">
+  <div class="label">KEY TAKEAWAY</div>
+  <h2 class="h2">블록체인 = "믿을 사람"에서 "믿을 구조"로</h2>
+  <p>중앙화 구조는 특정 기관(은행)을 믿어야 하지만, 블록체인은 코드와 네트워크 전체의 구조를 믿는 방식이에요. 이 구조 덕분에 가상자산뿐 아니라 결제, 실물자산 토큰화, 공급망 관리까지 실제 산업에서 쓰이고 있고, 그 규모는 계속 커지는 중이에요.</p>
+</section>
+
+<p class="foot">본 자료는 스터디 발표 준비용으로 제작되었습니다. 시장 규모·통계는 실시간으로 변하므로 발표 시점에 다시 확인해 주세요.</p>
+
+</main></body>
+</html>
