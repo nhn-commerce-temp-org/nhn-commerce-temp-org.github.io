@@ -1,0 +1,688 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Stablecoin Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  /* Layout: single reading column, study-deck sections with collapsible Q&A and two project dossiers */
+  :root {
+    --bg: #f4f6fa;
+    --panel: #ffffff;
+    --panel-2: #eef1f7;
+    --border: #d9dfeb;
+    --text: #172033;
+    --text-dim: #5a6479;
+    --accent: #1f8f89;
+    --accent-soft: rgba(31,143,137,0.10);
+    --accent-2: #4461d6;
+    --accent-2-soft: rgba(68,97,214,0.10);
+    --gold: #b57a0d;
+    --gold-soft: rgba(181,122,13,0.10);
+    --red: #c24545;
+    --red-soft: rgba(194,69,69,0.08);
+    --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1420; --panel: #161d2e; --panel-2: #1c2438; --border: #2a3350;
+      --text: #e7ecf5; --text-dim: #9aa5b8;
+      --accent: #5ec6c0; --accent-soft: rgba(94,198,192,0.12);
+      --accent-2: #7c9fff; --accent-2-soft: rgba(124,159,255,0.14);
+      --gold: #f2b950; --gold-soft: rgba(242,185,80,0.10);
+      --red: #ef7373; --red-soft: rgba(239,115,115,0.10);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1420; --panel: #161d2e; --panel-2: #1c2438; --border: #2a3350;
+    --text: #e7ecf5; --text-dim: #9aa5b8;
+    --accent: #5ec6c0; --accent-soft: rgba(94,198,192,0.12);
+    --accent-2: #7c9fff; --accent-2-soft: rgba(124,159,255,0.14);
+    --gold: #f2b950; --gold-soft: rgba(242,185,80,0.10);
+    --red: #ef7373; --red-soft: rgba(239,115,115,0.10);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    padding-inline: 16px;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding-block: 0 72px; }
+  a { color: var(--accent); }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; border-radius: 6px; }
+
+  header.hero { padding-block: 48px 24px; border-bottom: 1px solid var(--border); }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
+    color: var(--accent); text-transform: uppercase; margin: 0 0 12px;
+  }
+  h1.title { font-size: clamp(30px, 6vw, 46px); margin: 0 0 12px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; text-wrap: balance; }
+  .subtitle { color: var(--text-dim); font-size: 15px; margin: 0; max-width: 62ch; }
+
+  nav.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  nav.toc a {
+    text-decoration: none; color: var(--text); background: var(--panel);
+    border: 1px solid var(--border); padding: 7px 14px; border-radius: 8px;
+    font-size: 13.5px; font-weight: 500; display: inline-flex; gap: 8px; align-items: baseline;
+  }
+  nav.toc a span { font-family: var(--font-mono); font-size: 11px; color: var(--accent); }
+  nav.toc a:hover { border-color: var(--accent); color: var(--accent); }
+
+  section.block { margin-top: 52px; scroll-margin-top: 20px; }
+  .section-label { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.12em; color: var(--accent-2); text-transform: uppercase; margin: 0 0 4px; }
+  section.block h2 { font-size: 23px; margin: 0 0 4px; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+  .section-desc { color: var(--text-dim); font-size: 14px; margin: 0 0 20px; }
+
+  .qcard { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+  .qcard summary { list-style: none; cursor: pointer; padding: 16px 18px; display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 15px; user-select: none; }
+  .qcard summary::-webkit-details-marker { display: none; }
+  .qnum {
+    flex: none; width: 30px; height: 30px; border-radius: 8px;
+    background: var(--accent-2-soft); color: var(--accent-2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+  }
+  .qtext { min-width: 0; }
+  .chevron { margin-left: auto; color: var(--text-dim); transition: transform 0.2s ease; flex: none; }
+  .qcard[open] > summary .chevron { transform: rotate(90deg); }
+  .qcard .body { padding: 0 18px 20px 62px; color: var(--text-dim); font-size: 14.5px; }
+  .qcard .body p { margin: 0 0 12px; max-width: 68ch; }
+  .qcard .body p:last-child { margin-bottom: 0; }
+  .qcard .body strong, .qcard .body b { color: var(--text); }
+
+  .warn-box { background: var(--red-soft); border: 1px solid var(--border); border-left: 3px solid var(--red); border-radius: 8px; padding: 14px 16px; margin-top: 14px; font-size: 14px; color: var(--text); }
+  .warn-box strong { color: var(--red); }
+
+  .project-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 20px; }
+  .project-card h3 { margin: 0 0 6px; font-size: 19px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .dot.pyth { background: #8a5cf6; }
+  .dot.api3 { background: #3b82f6; }
+  .badge { font-family: var(--font-mono); font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+  .project-lede { font-size: 14px; color: var(--text-dim); margin: 0 0 10px; }
+  .as-of { font-size: 12px; color: var(--text-dim); margin-bottom: 14px; font-family: var(--font-mono); }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 12px 0 20px; }
+  .stat-tile { background: var(--panel-2); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+  .stat-label { font-size: 12px; color: var(--text-dim); margin-bottom: 4px; }
+  .stat-value { font-family: var(--font-mono); font-size: 21px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .stat-tile.gold .stat-value { color: var(--gold); }
+  .stat-tile.purple .stat-value { color: var(--accent-2); }
+  .stat-sub { font-size: 11.5px; color: var(--text-dim); margin-top: 4px; line-height: 1.55; }
+
+  .quick-summary { background: var(--panel-2); border-radius: 10px; padding: 14px 16px; margin: 4px 0 18px; font-size: 13.5px; color: var(--text-dim); }
+  .quick-summary ul { margin: 0; padding-left: 18px; display: grid; gap: 5px; }
+  .quick-summary b { color: var(--text); }
+
+  .faq-group { margin: 0 0 20px; }
+  .faq-title { font-family: var(--font-mono); font-size: 11.5px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px; }
+  .qcard.mini { background: var(--panel-2); border-color: transparent; margin-bottom: 8px; }
+  .qcard.mini summary { padding: 12px 16px; font-size: 14px; font-weight: 500; gap: 10px; }
+  .qcard.mini .body { padding: 0 16px 16px; font-size: 13.5px; }
+  .qcard.mini .body ul { margin: 8px 0 12px; padding-left: 18px; display: grid; gap: 8px; }
+  .fine { font-size: 12.5px; opacity: 0.85; }
+
+  .flow { display: flex; flex-direction: column; margin: 18px 0 0; }
+  .flow-step { background: var(--panel-2); border-radius: 10px; padding: 12px 16px; }
+  .step-tag { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .step-text { font-size: 14px; color: var(--text); }
+  .step-text b { color: var(--accent); }
+  .flow-step.security { background: var(--gold-soft); border: 1px solid var(--gold); }
+  .flow-step.security .step-tag { color: var(--gold); }
+  .flow-arrow { display: flex; justify-content: center; color: var(--text-dim); font-size: 16px; padding: 2px 0; }
+
+  .divider { height: 1px; background: var(--border); margin: 52px 0 0; }
+  .compare-note { font-size: 13.5px; color: var(--text-dim); margin-top: 6px; padding: 14px 16px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 6px; }
+  .compare-note b { color: var(--text); }
+
+  .sources { font-size: 12.5px; color: var(--text-dim); margin-top: 40px; padding: 14px 18px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; }
+  .sources summary { cursor: pointer; font-weight: 700; color: var(--text); }
+  .sources ul { margin: 10px 0 0; padding-left: 18px; }
+  .sources a { color: var(--accent-2); word-break: break-all; }
+
+  footer { color: var(--text-dim); font-size: 12.5px; margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); }
+
+  @media (max-width: 560px) {
+    .qcard .body { padding-left: 18px; }
+    .project-card { padding: 18px 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .chevron { transition: none; } }
+
+  .dot.usdt { background: #26a17b; }
+  .dot.usdc { background: #2775ca; }
+  .dot.us { background: #3b82f6; }
+  .dot.kr { background: #e0475b; }
+  .table-wrap { overflow-x: auto; margin: 14px 0 4px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel); }
+  table.cmp { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 13.5px; }
+  table.cmp th, table.cmp td { padding: 11px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+  table.cmp tr:last-child td { border-bottom: 0; }
+  table.cmp thead th { background: var(--panel-2); font-weight: 700; color: var(--text); }
+  table.cmp tbody th { color: var(--text-dim); font-weight: 500; white-space: nowrap; font-family: var(--font-mono); font-size: 12px; }
+  table.cmp td { color: var(--text); }
+  .player-list { display: grid; gap: 10px; margin: 0 0 4px; }
+  .player { background: var(--panel-2); border-radius: 10px; padding: 12px 16px; min-width: 0; }
+  .player-name { font-weight: 700; font-size: 14.5px; color: var(--text); margin-bottom: 2px; display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+  .player-name .when { font-family: var(--font-mono); font-size: 11px; color: var(--accent-2); font-weight: 600; }
+  .player p { margin: 0; font-size: 13.5px; color: var(--text-dim); }
+  .player p b { color: var(--text); }
+  .rule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin: 12px 0; }
+  .rule { background: var(--panel-2); border-radius: 10px; padding: 12px 14px; min-width: 0; }
+  .rule-k { font-weight: 700; color: var(--text); font-size: 14px; margin-bottom: 2px; }
+  .rule p { margin: 0; font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+  .calc { font-family: var(--font-mono); font-size: 12.5px; background: var(--panel-2); border-radius: 8px; padding: 10px 12px; color: var(--text); margin: 8px 0 12px; overflow-x: auto; white-space: nowrap; }
+  .src { font-size: 12px; color: var(--text-dim); font-family: var(--font-mono); }
+</style>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Stablecoin Study · Xangle Academy</p>
+    <h1 class="title">스테이블코인</h1>
+    <p class="subtitle">쟁글 아카데미 「스테이블코인 개념 및 등장배경」 기반 발표자료. 개념과 종류부터 GENIUS Act, 한국은행, 기업들의 움직임, 일상과 기업이 얻는 편익까지 정리했어요 (2026년 9월 기준).<br>원문: <a href="https://xangle.io/research/detail/1102" target="_blank" rel="noopener">xangle.io/research/detail/1102</a></p>
+
+    <nav class="toc" aria-label="목차">
+      <a href="#basic"><span>01</span>기초</a>
+      <a href="#background"><span>02</span>등장배경</a>
+      <a href="#types"><span>03</span>종류</a>
+      <a href="#latest"><span>04</span>최신 현황</a>
+      <a href="#bok"><span>05</span>한국은행</a>
+      <a href="#players"><span>06</span>기업들의 움직임</a>
+      <a href="#life"><span>07</span>일상의 변화</a>
+      <a href="#business"><span>08</span>기업의 편익</a>
+      <a href="#conclusion"><span>09</span>결론</a>
+    </nav>
+  </header>
+
+  <!-- 01 -->
+  <section class="block" id="basic">
+    <p class="section-label">01 · Basics</p>
+    <h2>스테이블코인이 뭘까?</h2>
+    <p class="section-desc">이름 그대로 "가격이 안정적인(stable) 코인"이에요</p>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">1</span><span class="qtext">스테이블코인의 정의</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>스테이블코인은 <strong>가치가 안정적으로 유지되도록 설계된 가상자산</strong>이에요. 대부분 <strong>1개 = 1달러(약 1,400원)</strong>에 맞춰져 있어요. 비트코인처럼 하루에도 가격이 크게 오르내리는 코인과 달리, 오늘도 내일도 1달러 근처를 유지하는 게 목표예요.</p>
+        <p>그럼 왜 굳이 이런 코인이 필요했을까요? 그냥 은행에 있는 달러를 쓰면 되는데 말이에요. 그 이유는 02 등장배경에서 이어서 볼게요.</p>
+      </div>
+    </details>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">2</span><span class="qtext">CBDC와 카카오가 발행한 스테이블코인, 같은 돈 아니야?</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>화면에 찍히는 금액은 똑같이 "1원 = 1원"이에요. 차이는 <strong>그 1원을 누가 책임지느냐</strong>예요.</p>
+        <p><strong>CBDC</strong>는 한국은행이 직접 발행하는 돈이라서 지갑 속 지폐와 똑같아요. 한국은행이 망할 일은 없으니 가치가 흔들리지 않아요. 누가 받을지 말지 고민할 필요도 없는 "진짜 돈"이에요.</p>
+        <p><strong>카카오 스테이블코인</strong>은 카카오 컨소시엄이 "이 코인을 가져오면 1원으로 바꿔줄게요"라고 약속한 <strong>교환권</strong>이에요. 백화점 상품권이 "현금처럼" 쓰이지만 백화점이 책임지는 것과 비슷해요. 그 약속을 지키려고 현금과 국채 같은 준비금을 쌓아두지만, 준비금이 부족하거나 발행사가 흔들리면 1원보다 싸게 거래될 수 있어요 (코인런).</p>
+        <div class="table-wrap">
+          <table class="cmp">
+            <thead><tr><th scope="col"></th><th scope="col">CBDC</th><th scope="col">스테이블코인 (예: 카카오)</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">누가 발행</th><td>중앙은행 (한국은행)</td><td>민간 기업·컨소시엄</td></tr>
+              <tr><th scope="row">누가 책임</th><td>국가 (현금과 같음)</td><td>발행사의 약속 + 준비금</td></tr>
+              <tr><th scope="row">비유</th><td>디지털 지폐</td><td>현금으로 바꿔주는 디지털 상품권</td></tr>
+              <tr><th scope="row">어디서 돌아</th><td>중앙은행이 관리하는 시스템</td><td>퍼블릭 블록체인, 해외 거래소·앱까지</td></tr>
+              <tr><th scope="row">위험</th><td>사실상 없음</td><td>준비금 부족, 발행사 부실 시 1원 연동 흔들림</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>일상에서 쓰는 느낌은 거의 같아요.</strong> 둘 다 앱에서 QR을 찍고, 친구에게 보내고, 잔액이 1원 단위로 보여요. 차이는 <strong>그 돈이 어디까지 갈 수 있느냐</strong>예요.</p>
+        <ul>
+          <li><b>CBDC</b>는 중앙은행이 관리하는 국내 시스템 안에서만 돌아요. 국내 가게와 국내 송금은 문제없지만, 해외 앱이나 거래소로 그대로 보낼 수는 없어요. 대신 가장 안전해요.</li>
+          <li><b>스테이블코인</b>은 퍼블릭 블록체인 위에 있어서 인터넷처럼 국경이 없어요. 베트남 가족에게 3분 만에 보내고, 해외 쇼핑몰에서 바로 결제하고, 새벽이나 주말에도 움직여요. 그 대신 발행사를 믿어야 해요.</li>
+        </ul>
+        <div class="highlight-box">
+          <strong>한국에서 실제로 비교하게 될 것</strong> — 한국은행은 일반인용 CBDC를 당장 내놓을 계획이 없어요. 한은의 CBDC는 은행끼리 정산하는 <b>기관용</b>이고, 일반인이 쓰게 될 건 은행이 발행하는 <b>예금토큰</b>이에요. 그래서 일상의 선택지는 "은행 앱의 예금토큰(예금자보호, 은행 테두리 안) vs 카카오·네이버의 스테이블코인(보호는 약하지만 어디든 이동)"이 될 가능성이 커요 (05에서 자세히).
+        </div>
+        <p>그래서 규제가 중요해요. GENIUS Act나 한국 입법이 준비금, 공시, 환매권을 강제하는 건 "민간이 만든 교환권도 현금만큼 믿을 수 있게" 하려는 거예요.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- 02 -->
+  <section class="block" id="background">
+    <p class="section-label">02 · Background</p>
+    <h2>등장배경: 왜 필요해졌을까?</h2>
+    <p class="section-desc">"블록체인 위에서 쓸 수 있는 안정적인 돈"이 없었기 때문이에요. 문제 → 해결 순서로 따라가 봐요</p>
+
+    <div class="flow" style="margin-top:0; margin-bottom:22px;">
+      <div class="flow-step"><div class="step-tag">출발점</div><div class="step-text">블록체인은 <b>24시간, 국경 없이, 싸고 빠르게</b> 돈을 보낼 수 있는 좋은 길이에요</div></div>
+      <div class="flow-arrow" aria-hidden="true">↓</div>
+      <div class="flow-step"><div class="step-tag">문제 ①</div><div class="step-text">그런데 은행에 있는 원화·달러는 은행 시스템 안에만 있어서 <b>이 길 위로 올라갈 수 없어요</b></div></div>
+      <div class="flow-arrow" aria-hidden="true">↓</div>
+      <div class="flow-step"><div class="step-tag">문제 ②</div><div class="step-text">블록체인 위에 있는 돈은 비트코인·이더리움뿐인데, <b>가격이 너무 흔들려서</b> 돈 역할을 못 해요</div></div>
+      <div class="flow-arrow" aria-hidden="true">↓</div>
+      <div class="flow-step security"><div class="step-tag">해결</div><div class="step-text">그래서 <b>달러를 블록체인 위에 올린 코인</b>, 스테이블코인을 만들었어요</div></div>
+    </div>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">3</span><span class="qtext">출발점: 블록체인이라는 "좋은 길"에 쓸 돈이 없었어요</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>블록체인은 은행을 거치지 않고 돈을 주고받는 길이에요. 은행 영업시간이 없고, 국경이 없고, 중개 수수료도 거의 없어요. 스마트 컨트랙트로 "조건이 맞으면 자동으로 송금" 같은 것도 할 수 있어요.</p>
+        <p>문제는 <strong>우리가 쓰는 원화나 달러가 이 길에 올라갈 수 없다</strong>는 거예요. 은행 예금은 은행 전산망 안에만 존재하는 숫자라서 블록체인으로 바로 보낼 수 없어요. 그래서 블록체인 위에서 쓸 수 있는 돈은 비트코인이나 이더리움 같은 가상자산뿐이었어요.</p>
+      </div>
+    </details>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">4</span><span class="qtext">문제: 그런데 그 가상자산은 가격이 너무 흔들려요</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>송금을 시작할 때 개당 100만 원이던 코인이 송금이 끝났을 때 80만 원이 될 수 있어요. 받는 사람이 얼마를 받게 될지 모르는 돈으로는 물건값을 치르거나 월급을 줄 수 없어요. 그래서 가상자산은 <strong>투자 대상</strong>은 됐지만 <strong>돈</strong>은 되지 못했어요.</p>
+        <p>코인 투자자에게도 불편했어요. 코인을 팔고 잠깐 "현금으로 쉬고" 싶어도, 원화나 달러로 바꾸려면 은행을 거쳐야 해서 느리고 까다로웠어요. 특히 해외 거래소는 은행 계좌와 연결하기가 더 어려웠어요.</p>
+      </div>
+    </details>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">5</span><span class="qtext">해결: 달러를 블록체인 위에 올리자</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>그래서 나온 아이디어가 <strong>"달러를 블록체인에서 쓸 수 있는 코인으로 바꾸자"</strong>예요. 발행사가 진짜 달러 1달러(1,400원)를 금고에 넣어두고, 그 대신 블록체인 위에서 쓸 수 있는 코인 1개를 발행하는 거예요. 코인을 돌려주면 다시 1달러로 바꿔줘요.</p>
+        <p>그러니까 스테이블코인은 <strong>가상자산으로 만든 돈이라기보다, 블록체인 위로 올라간 달러</strong>예요. 블록체인의 장점(싸고 빠른 송금, 24시간, 스마트 컨트랙트)과 달러의 장점(가격 안정)을 합친 거예요.</p>
+        <div class="highlight-box">
+          <strong>결과</strong> — 해외 가상자산 거래소에서는 거래의 상당 부분이 스테이블코인으로 이뤄져요. 코인을 팔고 쉬어가는 "현금 자리"이자 코인 시장의 <b>기축통화</b>가 됐고, 지금은 해외송금과 결제로까지 쓰임새가 넓어지고 있어요.
+        </div>
+        <p>다만 "달러를 금고에 넣어두는 방식"만 있는 건 아니에요. 1달러를 지키는 방법에 따라 종류가 나뉘는데, 바로 다음 섹션에서 살펴봐요.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- 03 -->
+  <section class="block" id="types">
+    <p class="section-label">03 · Types</p>
+    <h2>종류: 1달러를 어떻게 유지할까?</h2>
+    <p class="section-desc">"무엇을 담보로 잡느냐"에 따라 세 가지로 나눠요</p>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">6</span><span class="qtext">법정화폐 담보형: 테더(USDT), USDC</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>발행한 코인 수만큼 <strong>실제 달러(또는 국채 같은 안전자산)를 준비금으로 쌓아둬요</strong>. 1 USDT를 가져오면 언제든 1달러로 바꿔주겠다는 약속이에요. 금 보관증처럼 "창고에 진짜 돈이 있다"는 믿음이 가치를 지켜요.</p>
+        <p><strong>장점</strong>은 안정성이 높다는 거예요. <strong>단점</strong>은 담보를 유지하는 비용이 들고, 창고에 정말 돈이 있는지 <strong>투명하게 증명</strong>해야 한다는 점이에요.</p>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">7</span><span class="qtext">가상자산 담보형: MakerDAO의 DAI (현재 Sky의 USDS)</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>이더리움 같은 <strong>코인을 담보로 맡기면</strong> 스마트 컨트랙트가 그만큼의 DAI를 발행해요. 발행과 가치 안정화를 모두 코드가 처리하기 때문에 특정 회사가 달러를 들고 있을 필요가 없어요. 그래서 <strong>탈중앙화</strong>를 구현할 수 있어요.</p>
+        <p>대신 담보인 코인 가격이 출렁이니까, 150달러(21만 원)어치 ETH를 맡기고 100 DAI(14만 원)만 빌리는 식으로 <strong>초과담보</strong>를 잡아요. 담보 가치가 너무 떨어지면 자동으로 청산돼요. MakerDAO는 2024년 Sky로 리브랜딩하면서 USDS라는 새 코인도 내놨어요.</p>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">8</span><span class="qtext">무담보 알고리즘형</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>담보 없이 <strong>알고리즘이 공급량을 조절</strong>해서 1달러를 맞춰요. 1달러보다 비싸지면 코인을 더 풀어 가격을 낮추고, 싸지면 공급을 줄여 가격을 올리는 식이에요. 최근에는 담보형과 알고리즘형을 섞은 하이브리드도 나왔어요.</p>
+        <div class="warn-box">
+          <strong>원문 이후의 교훈: 테라·루나 사태 (2022년 5월)</strong><br>대표적인 알고리즘 스테이블코인 <b>UST</b>(테라USD)가 1달러 연동이 깨지면서, 자매 코인 <b>루나(LUNA)</b>와 함께 일주일 만에 거의 0원이 됐어요. 약 400억 달러(56조 원)가 사라졌고, 국내 투자자 피해도 컸어요.
+        </div>
+
+        <p style="margin-top:18px;"><strong>① 구조: UST의 1달러는 "루나로 바꿔주겠다는 약속"이었어요</strong></p>
+        <p>UST 금고에는 달러가 없었어요. 대신 규칙이 있었어요. <b>"UST 1개를 가져오면 언제든 1달러어치 루나를 새로 찍어서 준다"</b>는 거예요. UST가 0.98달러로 떨어지면 사람들이 싸게 산 UST를 1달러어치 루나로 바꿔 차익을 챙기고, 그 과정에서 UST가 시장에서 사라지니 가격이 다시 1달러로 돌아온다는 설계였어요. 평소에는 잘 작동했어요.</p>
+
+        <p><strong>② 불씨: 연 20% 이자로 부풀린 수요</strong></p>
+        <p>테라 생태계의 예치 서비스 <b>앵커 프로토콜</b>은 UST를 맡기면 <b>연 약 20% 이자</b>를 줬어요. 은행 이자의 10배가 넘으니 돈이 몰렸고, 한때 전체 UST의 70% 이상이 앵커에 묶여 있었어요. UST를 실제로 쓰는 사람보다 <b>이자만 보고 들어온 사람</b>이 훨씬 많았던 거예요. 이런 돈은 불안해지면 한꺼번에 빠져나가요.</p>
+
+        <p><strong>③ 방아쇠: 대규모 인출과 매도</strong></p>
+        <p>2022년 5월 7일, 앵커에서 수십억 달러의 UST가 빠져나가고 거래소에서 대량 매도가 나오면서 UST가 0.98달러, 0.9달러로 밀렸어요. 금리 인상기라 코인 시장 전체가 약세였던 것도 불안을 키웠어요.</p>
+
+        <p><strong>④ 붕괴: 죽음의 소용돌이(Death Spiral)</strong></p>
+        <div class="flow" style="margin:10px 0 14px;">
+          <div class="flow-step"><div class="step-text">UST가 1달러 아래로 떨어져요 → 사람들이 UST를 루나로 바꿔요</div></div>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <div class="flow-step"><div class="step-text">루나가 대량으로 새로 찍혀요 → <b>루나 가격이 폭락</b>해요</div></div>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <div class="flow-step"><div class="step-text">루나가 싸지니 1달러를 돌려주려면 <b>루나를 더 많이</b> 찍어야 해요</div></div>
+          <div class="flow-arrow" aria-hidden="true">↓</div>
+          <div class="flow-step security"><div class="step-text">"UST의 뒷배인 루나가 휴지가 됐다" → UST 신뢰가 더 무너지고 매도가 늘어요 → 처음으로 돌아가 반복</div></div>
+        </div>
+        <p>결국 루나 발행량은 약 3억 5천만 개에서 <b>6조 5천억 개 이상</b>으로 불어났고, 한 달 전 119달러(약 16만 7천 원)였던 루나는 1원도 안 되는 가격이 됐어요. 테라 측이 비상금으로 모아둔 비트코인 약 8만 개(당시 약 30억 달러, 4조 2천억 원)를 팔아 방어했지만 막지 못했어요.</p>
+
+        <p><strong>⑤ 핵심 원인: 가치를 받쳐주는 게 "자기 자신"이었어요</strong></p>
+        <p>USDT는 UST와 달리, 코인을 가져오면 금고에 있는 <b>진짜 달러</b>로 바꿔줘요. UST는 <b>같은 회사가 찍어내는 루나</b>로 바꿔줬어요. 루나의 가치는 "UST가 잘 돌아간다"는 믿음에서 나오는데, UST의 가치는 다시 루나에서 나오는 <b>순환 구조</b>였던 거예요. 모두가 믿을 때는 서로를 떠받치지만, 믿음이 깨지는 순간 서로를 끌어내려요. 은행 창구에 사람이 몰려도 금고에 돈이 있으면 버티는데, UST의 금고에는 처음부터 돈이 없었어요.</p>
+        <div class="highlight-box">
+          <strong>그 이후</strong> — 창업자 권도형은 2025년 미국에서 사기 혐의를 인정했고, 같은 해 12월 징역 15년을 선고받았어요. 이 사태 이후 각국 규제는 "스테이블코인은 반드시 안전자산으로 1:1 담보해야 한다"는 방향으로 모였어요. GENIUS Act가 1:1 준비금을 요구하고 사실상 알고리즘형을 배제한 것도 이 교훈 때문이에요.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 04 -->
+  <section class="block" id="latest">
+    <p class="section-label">04 · 2026 Status</p>
+    <h2>최신 현황 (2026년 9월 기준)</h2>
+    <p class="section-desc">원문은 2023년 3월 글이라, 지금 시장과 규제가 어떻게 바뀌었는지 살펴봐요 (원화는 1달러 = 1,400원으로 환산한 대략치)</p>
+
+    <div class="stat-grid">
+      <div class="stat-tile gold">
+        <div class="stat-label">전체 시가총액</div>
+        <div class="stat-value">~$305B</div>
+        <div class="stat-sub">약 427조 원 · $303B~$310B (424조~434조 원)</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">USDT (Tether)</div>
+        <div class="stat-value">~$184B</div>
+        <div class="stat-sub">약 258조 원 · 점유율 약 60%, 여전히 1위</div>
+      </div>
+      <div class="stat-tile purple">
+        <div class="stat-label">USDC (Circle)</div>
+        <div class="stat-value">~$75B</div>
+        <div class="stat-sub">약 105조 원 · 점유율 약 24%, 온체인 거래량은 60~70%</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">상위 2개 합산</div>
+        <div class="stat-value">~84%</div>
+        <div class="stat-sub">법정화폐 담보형이 시장을 장악</div>
+      </div>
+    </div>
+
+    <div class="quick-summary">
+      <ul>
+        <li>원문이 3위로 꼽은 <b>BUSD</b>는 2023년 발행이 중단돼 사라졌어요. 현황이 이렇게 빨리 바뀌어요</li>
+        <li><b>USDC</b>는 규모는 2위지만 실제 온체인 거래에서는 더 많이 쓰여요</li>
+        <li>새 유형도 등장했어요. Ethena의 <b>USDe</b>는 ETH 현물을 사고 선물을 공매도하는 "델타 중립" 방식이에요 (약 $4B~$6B, 5.6조~8.4조 원). PayPal의 <b>PYUSD</b>처럼 핀테크가 직접 발행하는 사례도 있어요</li>
+        <li>미국은 <b>GENIUS Act</b>로 제도권에 들였고, 한국은 원화 스테이블코인 <b>입법 논의 중</b>이에요</li>
+      </ul>
+    </div>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">9</span><span class="qtext">지니어스 액트(GENIUS Act)가 뭘까?</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>미국이 <strong>처음으로 스테이블코인을 연방법으로 규율</strong>한 법이에요. 2025년 7월 18일 트럼프 대통령이 서명했고, 정식 이름은 Guiding and Establishing National Innovation for U.S. Stablecoins Act예요.</p>
+        <div class="rule-grid">
+          <div class="rule"><div class="rule-k">1:1 준비금</div><p>발행한 만큼 현금, 연준 예치금, 단기 국채 같은 안전자산을 쌓아둬야 해요</p></div>
+          <div class="rule"><div class="rule-k">매월 공시</div><p>준비금 구성을 외부 감사인이 확인하고 매달 공개해야 해요</p></div>
+          <div class="rule"><div class="rule-k">이자 지급 금지</div><p>보유자에게 이자를 줄 수 없어요. 은행 예금과 경쟁하지 않게 하려는 장치예요</p></div>
+          <div class="rule"><div class="rule-k">파산 시 보유자 우선</div><p>발행사가 망하면 코인 보유자가 다른 채권자보다 먼저 돈을 돌려받아요</p></div>
+          <div class="rule"><div class="rule-k">은행·비은행 모두 발행</div><p>허가를 받고 연방 또는 주 규제 당국의 감독을 받아야 해요</p></div>
+          <div class="rule"><div class="rule-k">시행 시점</div><p>2027년 1월 18일, 또는 최종 규정 발표 후 120일 중 빠른 날</p></div>
+        </div>
+        <div class="highlight-box">
+          <strong>의미</strong> — 원문에서 법정화폐 담보형의 약점으로 꼽은 "투명성 입증"을 법으로 강제한 셈이에요. 규칙이 생기자 대기업과 은행들이 안심하고 뛰어들기 시작했어요.
+        </div>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">10</span><span class="qtext">한국의 원화 스테이블코인 입법은 어디까지 왔을까?</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>관련 법안이 약 10건 발의됐지만, 정부·여당의 통합안은 아직 국회에 제출되지 않았어요. 목표였던 9월 시한도 넘길 전망이에요. 쟁점은 다섯 가지예요.</p>
+        <ul>
+          <li><b>발행 주체</b>: 은행 중심으로 할지, 비은행 사업자도 참여시킬지</li>
+          <li><b>준비자산과 도산절연</b>: 어떤 자산을 준비금으로 인정하고, 발행사가 파산하면 이용자를 어떻게 보호할지</li>
+          <li><b>환매권</b>: 이용자가 언제든 원화로 바꿀 수 있게 보장할지</li>
+          <li><b>감독 권한</b>: 금융위원회와 한국은행이 역할을 어떻게 나눌지</li>
+          <li><b>해외 코인 규율</b>: USDT 같은 해외 스테이블코인을 국내에서 어떻게 다룰지</li>
+        </ul>
+        <p>법 통과는 2027년 상반기 이후, 시행령과 감독규정에 12~18개월이 더 걸려서 <strong>첫 발행은 2028년 이후</strong>로 전망돼요.</p>
+      </div>
+    </details>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 05 -->
+  <section class="block" id="bok">
+    <p class="section-label">05 · Bank of Korea</p>
+    <h2>한국은행은 어떤 움직임을 보이고 있을까?</h2>
+    <p class="section-desc">한은은 직접 코인을 발행하는 게 아니라, 규칙을 제안하고 인프라를 실험하는 쪽이에요</p>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">11</span><span class="qtext">한은의 입장: "은행 중심으로 발행해야 한다"</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>2026년 7월 9일 국회 업무보고에서 한은은 <strong>은행이 지분 50%+1 이상을 가진 컨소시엄이 먼저 발행</strong>해야 한다고 밝혔어요. 관계기관이 함께하는 법정 정책기구를 새로 만들자는 제안도 했어요.</p>
+        <p>한은이 걱정하는 건 세 가지예요. 스테이블코인이 많이 쓰이면 <strong>통화정책 효과가 약해질 수 있고</strong>, 외국환은행 중심의 <strong>외환규제를 우회하는 통로</strong>가 될 수 있고, 거시경제 전반에 예상 못 한 영향을 줄 수 있다는 거예요.</p>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">12</span><span class="qtext">예금토큰과 프로젝트 한강</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>한은이 대안으로 밀고 있는 건 <strong>예금토큰</strong>이에요. 내 은행 예금을 블록체인 위의 토큰으로 바꾼 거라서, 법적으로는 여전히 은행 예금이에요. 예금자보호와 은행 감독을 그대로 받아서 더 안전하다는 논리예요. 한은은 "스테이블코인과 예금토큰이 같이 가는 게 더 안정적"이라는 공존론을 펴고 있어요.</p>
+        <p><strong>프로젝트 한강</strong>은 한은이 금융위원회, 금융감독원과 함께 진행하는 디지털화폐 실험이에요. 시중은행들이 일반 이용자에게 예금토큰을 발행하고 유통해 봤고, 뒤에서는 한은의 기관용 CBDC로 은행 간 최종 정산을 해요. 신현송 총재는 2단계 사업으로 CBDC와 예금토큰 활용을 넓히겠다고 했어요. 다만 264억 원을 들였는데 실제 결제 실적은 집계되지 않았다는 비판 보도도 있어요.</p>
+      </div>
+    </details>
+
+    <h3 style="font-size:17px; margin:28px 0 4px;">한국은행 vs 네이버·카카오, 뭐가 다를까?</h3>
+    <p class="section-desc" style="margin-bottom:0;">한은은 규칙을 정하고 기반을 까는 쪽, 네이버·카카오는 그 안에서 실제로 코인을 만들려는 선수예요</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead>
+          <tr><th scope="col"></th><th scope="col">한국은행 (예금토큰 · 프로젝트 한강)</th><th scope="col">네이버·카카오 (원화 스테이블코인)</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">역할</th><td>규칙 제안, 인프라 실험</td><td>실제 발행·유통</td></tr>
+          <tr><th scope="row">발행 주체</th><td>시중은행</td><td>민간 기업 컨소시엄</td></tr>
+          <tr><th scope="row">뒷받침</th><td>은행 예금</td><td>별도로 쌓은 준비금 (현금, 국채 등)</td></tr>
+          <tr><th scope="row">보호 장치</th><td>예금자보호, 은행 감독</td><td>준비금 규제 (법 제정 전)</td></tr>
+          <tr><th scope="row">강점</th><td>안정성, 기존 금융질서 유지</td><td>플랫폼 확장성, 해외 체인과의 연결성</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="compare-note">완전히 따로 노는 건 아니에요. 한은이 "은행이 과반을 가진 컨소시엄"을 요구하니까 네이버는 하나은행과, 카카오는 시중은행들과 손을 잡는 거예요. <b>누가 주도권을 잡느냐</b>가 지금 입법에서 가장 큰 쟁점인 발행 주체 논쟁이에요.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 06 -->
+  <section class="block" id="players">
+    <p class="section-label">06 · Players</p>
+    <h2>기업들은 어떻게 움직이고 있을까?</h2>
+    <p class="section-desc">미국은 이미 출시 경쟁, 한국은 법이 나오기 전 짝짓기 단계예요</p>
+
+    <div class="project-card">
+      <h3><span class="dot us" aria-hidden="true"></span>미국 <span class="badge">출시 경쟁</span></h3>
+      <p class="project-lede">GENIUS Act로 규칙이 생기자 결제사, 빅테크, 대형 은행이 테더·서클 양강 구도에 도전하고 있어요.</p>
+      <div class="player-list">
+        <div class="player">
+          <div class="player-name">Open USD (OUSD) <span class="when">2026 하반기</span></div>
+          <p><b>Stripe</b>가 주도하고 Visa, BlackRock, American Express, Google 등 <b>140여 개 기업</b>이 참여했어요. 준비금에서 나오는 이자 수익을 소액 수수료만 빼고 참여 기업에 돌려주는 구조예요. 발표 직후 서클 주가가 13% 떨어졌어요.</p>
+        </div>
+        <div class="player">
+          <div class="player-name">글로벌 은행 21곳 컨소시엄 <span class="when">2027 상반기</span></div>
+          <p>Citi, Goldman Sachs, BofA, Wells Fargo, UBS, Deutsche Bank, MUFG 등이 공동 달러 스테이블코인을 준비 중이에요. 이후 유로화 등 G7 통화로 넓힐 계획이에요.</p>
+        </div>
+        <div class="player">
+          <div class="player-name">The Clearing House <span class="when">2026.06 공개</span></div>
+          <p>JPMorgan, BofA, Citi가 함께 만드는 <b>예금토큰 네트워크</b>예요. 한국은행이 밀고 있는 예금토큰 모델과 같은 방향이에요.</p>
+        </div>
+        <div class="player">
+          <div class="player-name">유통·핀테크</div>
+          <p>Klarna는 2025년 11월 <b>KlarnaUSD</b>를 출시했어요. Amazon과 Walmart는 자체 발행을 검토 중이에요.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <h3><span class="dot kr" aria-hidden="true"></span>한국 <span class="badge">진영 구축</span></h3>
+      <p class="project-lede">발행권이 아직 정해지지 않았는데도 플랫폼과 은행이 미리 손을 잡고, 기술검증(PoC)을 쌓고 있어요.</p>
+      <div class="player-list">
+        <div class="player">
+          <div class="player-name">네이버 진영</div>
+          <p>네이버파이낸셜과 두나무(업비트)가 주식 교환을 추진 중이에요. 검색·커머스, <b>네이버페이 결제망</b>, 두나무의 블록체인 기술을 합쳐 발행부터 결제까지 하려는 그림이에요. <b>하나은행</b>이 두나무 지분 6.55%를 사서 4대 주주가 됐어요. 공정위 심사로 일정은 연말로 밀렸어요.</p>
+        </div>
+        <div class="player">
+          <div class="player-name">카카오 진영</div>
+          <p><b>카카오페이와 카카오뱅크</b>가 역량을 모으고, 시중은행들에 컨소시엄을 제안했어요. USDC 발행사인 <b>서클</b>과 MOU도 맺어 해외 연결망을 준비하고 있어요.</p>
+        </div>
+        <div class="player">
+          <div class="player-name">은행·금융사 기술검증</div>
+          <p><b>KB금융</b>은 원화 스테이블코인으로 베트남 은행 계좌까지 3분 안에 송금했고 수수료를 약 87% 줄였어요. 할리스 키오스크 QR 결제도 시연했어요. <b>람다256과 카드사 9곳</b>은 승인, 취소, 정산 전 과정을 검증했고, <b>교보생명</b>은 보험료 자동 납부, <b>NH농협은행</b>은 토큰증권(STO) 청약을 검증했어요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 07 -->
+  <section class="block" id="life">
+    <p class="section-label">07 · Everyday Life</p>
+    <h2>스테이블코인화되면 일상에서 뭐가 편해질까?</h2>
+    <p class="section-desc">돈이 "인터넷 메시지처럼" 빠르고 싸게 움직이게 돼요</p>
+
+    <div class="stat-grid">
+      <div class="stat-tile">
+        <div class="stat-label">해외송금 시간</div>
+        <div class="stat-value">2~3일 → 3분</div>
+        <div class="stat-sub">KB금융 베트남 송금 검증</div>
+      </div>
+      <div class="stat-tile gold">
+        <div class="stat-label">전통 송금 평균 수수료</div>
+        <div class="stat-value">~6.5%</div>
+        <div class="stat-sub">세계은행 · 스테이블코인은 몇 센트(수십 원) 수준</div>
+      </div>
+      <div class="stat-tile purple">
+        <div class="stat-label">송금 수수료 절감</div>
+        <div class="stat-value">~87%</div>
+        <div class="stat-sub">KB금융 기술검증 결과</div>
+      </div>
+    </div>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">13</span><span class="qtext">해외송금이 몇 분이면 끝나요</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>유학 간 자녀에게 생활비를 보내거나 해외 가족에게 송금할 때, 지금은 중개은행을 여러 번 거쳐 2~3일이 걸리고 수수료와 환전 마진도 붙어요. 스테이블코인은 블록체인으로 바로 가니까 <strong>몇 분 안에, 훨씬 싸게</strong> 도착해요.</p>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">14</span><span class="qtext">24시간 365일 이체, 해외 결제도 간편하게</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>은행 영업시간, 마감 시간, 주말과 공휴일 제한이 없어요. 블록체인은 쉬지 않으니까요. 해외여행이나 해외 직구에서도 환전 없이 같은 코인으로 결제할 수 있어서, 해외 결제 수수료와 환전 비용이 줄어들어요.</p>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">15</span><span class="qtext">조건부 자동 결제: 은행 자동이체와 뭐가 다를까?</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>매달 같은 날 같은 금액의 보험료를 내는 것만 보면, 소비자가 느끼는 차이는 거의 없어요. 진짜 차이는 두 가지예요.</p>
+        <p><strong>① 날짜가 아니라 "조건"으로 돈이 움직여요.</strong> 자동이체는 "매달 25일에 5만 원"처럼 날짜와 금액만 정할 수 있어요. 스마트 컨트랙트는 "이 조건이 충족되면"으로 돈을 움직여요.</p>
+        <ul>
+          <li><b>항공 지연 보험</b>: 항공편이 2시간 이상 늦어지면 청구서를 쓰지 않아도 보험금이 바로 지갑에 들어와요</li>
+          <li><b>주행거리 보험</b>: 자동차 보험료를 한 달 고정 금액이 아니라 실제로 운전한 거리만큼 매일 조금씩 내요</li>
+          <li><b>분 단위 구독</b>: 영상·음악 구독료를 본 만큼 내고, 해지하는 순간 결제도 멈춰요</li>
+        </ul>
+        <p><strong>② 돈과 기록이 한곳에 있어요.</strong> 자동이체는 은행에서 돈이 빠지면 보험사가 입금 내역을 따로 받아 누가 냈는지 맞춰보고, 잔액이 부족하면 다시 청구해요. 스마트 컨트랙트는 결제되는 순간 보험 시스템에도 바로 반영돼요 (교보생명 PoC). 이건 소비자보다 <b>기업의 관리 비용</b>을 줄여주는 효과에 가까워요.</p>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">16</span><span class="qtext">새로운 투자에 바로 쓸 수 있어요</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>K팝 저작권 같은 토큰증권(STO)을 스테이블코인으로 바로 청약할 수 있어요 (NH농협은행 PoC). 돈과 증권이 같은 블록체인 위에 있으니, 돈을 내는 순간 증권이 들어오는 식으로 결제와 정산이 한 번에 끝나요.</p>
+        <div class="warn-box">
+          <strong>주의할 점</strong> — GENIUS Act처럼 이자 지급이 금지되면 스테이블코인은 은행 예금을 대신할 수 없어요. 발행사를 믿지 못하게 되면 한꺼번에 환매가 몰리는 "코인런" 위험도 여전히 있어요.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 08 -->
+  <section class="block" id="business">
+    <p class="section-label">08 · Business Impact</p>
+    <h2>기업은 경제적으로 얼마나 이득일까?</h2>
+    <p class="section-desc">국내 연구기관들이 2026년 9월에 내놓은 추정치로 살펴봐요 (연간 기준)</p>
+
+    <div class="stat-grid">
+      <div class="stat-tile gold">
+        <div class="stat-label">가맹점 수수료 절감</div>
+        <div class="stat-value">최대 5.15조</div>
+        <div class="stat-sub">기준 시나리오 1~3조 원 · 국회예산정책처</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">소상공인 정산 비용</div>
+        <div class="stat-value">4,475억</div>
+        <div class="stat-sub">선정산 비용 절감 · 한국경제연구원</div>
+      </div>
+      <div class="stat-tile purple">
+        <div class="stat-label">기업 간(B2B) 거래</div>
+        <div class="stat-value">~1.3조</div>
+        <div class="stat-sub">정산 지연 기회비용 + 내부송금 · 한국경제연구원</div>
+      </div>
+    </div>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">17</span><span class="qtext">가맹점 수수료: 연 3,700억~5조 1,500억 원</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>국회예산정책처가 2025년 국내 카드 이용액 <strong>약 1,314조 원</strong>을 기준으로 추정했어요. 카드 대신 스테이블코인으로 결제하는 비율과 수수료율을 시나리오별로 달리 넣었어요.</p>
+        <div class="calc">낙관: 1,314조 × 대체율 30% × (카드 1.5% − 스테이블코인 0.1%) ≈ 5.5조 → 보고서 추정 최대 5조 1,500억</div>
+        <p>기준 시나리오로는 <strong>연 1~3조 원</strong>대 절감이에요. 카드사는 수수료 수익이 줄지만 승인, 정산, 부정사용 관리 비용도 함께 줄어서 순이익이 그만큼 줄지는 않을 거라는 분석이에요.</p>
+        <p class="src">출처: 국회예산정책처 「스테이블코인의 금융시장에 대한 영향과 시사점」 (2026.09.13)</p>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">18</span><span class="qtext">소상공인 정산: 연 약 4,475억 원</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>지금은 카드 결제 대금이 가게에 들어오기까지 2~3일이 걸려요. 급한 가게는 수수료를 내고 대금을 미리 받는 <strong>선정산</strong>을 써요. 스테이블코인으로 즉시 정산되면 이 비용이 대부분 사라져요.</p>
+        <div class="calc">650조(거래액) × 3.4%(선정산 이용) × 2.7%(수수료) ≈ 5,967억 × 75%(지연정산 몫) ≈ 4,475억</div>
+        <p class="src">출처: 한국경제연구원 (2026.09.27)</p>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">19</span><span class="qtext">기업 간 거래와 해외 거래: 연 약 1조 3,000억 원 +α</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>기업 간 거래는 대금이 오가는 데 평균 4일이 걸려요. 그동안 묶인 돈은 이자를 주고 빌려 메워야 해서 기회비용이 생겨요.</p>
+        <div class="calc">3,500조(B2B) × 4일 지연 × 4.5%(단기금리) ≈ 1조 7,200억 → 50% 전환 시 8,600억 + 내부송금 4,377억 ≈ 1조 2,977억</div>
+        <p>해외 거래에서는 무역 결제 수수료를 <strong>1% 안팎</strong>까지 낮출 수 있다는 전망이 나와요. 해외 거래처를 위해 미리 넣어두던 선입금 계좌 자금도 풀려서 <strong>자금 효율</strong>이 좋아져요.</p>
+        <p class="src">출처: 한국경제연구원 (2026.09.27), 한국데이터경제신문</p>
+      </div>
+    </details>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 09 -->
+  <section class="block" id="conclusion">
+    <p class="section-label">09 · Conclusion</p>
+    <h2>결론</h2>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">20</span><span class="qtext">스테이블코인의 의의와 남은 과제</span><span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>원문의 결론은 "여러 가치 안정화 방식이 나왔지만 <strong>법정화폐 담보형이 시장을 주도</strong>한다"였어요. 2026년에도 USDT와 USDC 두 개가 약 84%를 차지하니, 이 결론은 그대로 유효해요. 알고리즘형은 테라 사태 이후 신뢰를 잃었어요.</p>
+        <div class="warn-box">
+          <strong>2026년 현재 시사점</strong> — 경쟁의 중심이 "어떤 방식으로 1달러를 지키느냐"에서 <b>규제</b>와 <b>실사용</b>으로 옮겨가고 있어요. 미국은 GENIUS Act로 제도권에 들이면서 결제사, 빅테크, 은행이 뛰어들었어요. 한국은 은행 중심을 원하는 한국은행과 플랫폼 기업 사이에서 발행 주체를 정하는 게 첫 관문이에요. 일상과 기업이 얻을 편익은 수조 원 규모로 추정되지만, 통화정책과 외환관리, 코인런 위험을 어떻게 다룰지가 함께 풀어야 할 숙제예요.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <details class="sources">
+    <summary>참고 자료 (최신 현황 데이터 출처)</summary>
+    <ul>
+      <li><a href="https://xangle.io/research/detail/1102" target="_blank" rel="noopener">쟁글 아카데미 - 스테이블코인 개념 및 등장배경 원문</a></li>
+      <li><a href="https://en.cryptonomist.ch/2026/09/06/usdc-stablecoin-growth-expansion/" target="_blank" rel="noopener">USDC Stablecoin Growth Leads Market Expansion in 2026 (Cryptonomist)</a></li>
+      <li><a href="https://stablecoinbeat.com/tracker/" target="_blank" rel="noopener">Stablecoin Market Cap Tracker (Stablecoin Beat)</a></li>
+      <li><a href="https://www.ssga.com/us/en/intermediary/insights/genius-act-explained-what-it-means-for-crypto-and-digital-assets" target="_blank" rel="noopener">GENIUS Act explained (State Street)</a></li>
+      <li><a href="https://en.wikipedia.org/wiki/GENIUS_Act" target="_blank" rel="noopener">GENIUS Act (Wikipedia)</a></li>
+      <li><a href="https://www.asiatoday.co.kr/kn/view.php?key=20260908010002759" target="_blank" rel="noopener">법안 10건인데 발행주체 못 정해…원화 스테이블코인 '5대 난제' (아시아투데이)</a></li>
+      <li><a href="https://edaily.co.kr/News/Read?mediaCodeNo=257&amp;newsId=03404646645512880" target="_blank" rel="noopener">스테이블코인법 시동…한은 "은행 중심 발행으로 가야" (이데일리)</a></li>
+      <li><a href="https://www.etoday.co.kr/news/view/2606769" target="_blank" rel="noopener">원화 스테이블코인 vs 예금토큰, 한은이 주목한 '은행 모델' (이투데이)</a></li>
+      <li><a href="https://www.dailian.co.kr/news/view/1693440/" target="_blank" rel="noopener">264억 들인 '프로젝트 한강', 실제 결제는 미집계 (데일리안)</a></li>
+      <li><a href="https://fortune.com/2026/06/30/stripe-visa-stablecoin-rival-ousd-tether-circle/" target="_blank" rel="noopener">Stripe, Visa and over 140 other businesses to launch stablecoin (Fortune)</a></li>
+      <li><a href="https://genfinity.io/2026/09/01/global-bank-stablecoin-consortium-21-banks-usd-token-2027/" target="_blank" rel="noopener">21 Banks Form a Global Bank Stablecoin Consortium (Genfinity)</a></li>
+      <li><a href="https://biz.heraldcorp.com/article/10828192" target="_blank" rel="noopener">"한국판 테더 잡아라"…네이버·카카오 '원화 코인' 패권전쟁 (헤럴드경제)</a></li>
+      <li><a href="https://dealsite.co.kr/articles/168322" target="_blank" rel="noopener">커피 결제보다 '3분 송금'…원화코인의 존재 이유 (딜사이트)</a></li>
+      <li><a href="https://www.bloter.net/news/articleView.html?idxno=673451" target="_blank" rel="noopener">"스테이블코인, 가맹수수료 최대 5조 절감" (블로터)</a></li>
+      <li><a href="https://www.m-i.kr/news/articleView.html?idxno=1418148" target="_blank" rel="noopener">스테이블코인 도입 땐 4475억 절감 (매일일보)</a></li>
+      <li><a href="https://www.dataeconomy.co.kr/news/articleView.html?idxno=42438" target="_blank" rel="noopener">"무역결제 수수료 1%로 뚝" (한국데이터경제신문)</a></li>
+      <li><a href="https://stripe.com/resources/more/stablecoin-cross-border-payments" target="_blank" rel="noopener">Stablecoins for Cross-Border Payments (Stripe)</a></li>
+    </ul>
+  </details>
+
+  <footer>
+    스테이블코인 스터디 발표자료 · 원문: <a href="https://xangle.io/research/detail/1102" target="_blank" rel="noopener">Xangle</a>
+  </footer>
+
+</div>
+
+</body></html>
