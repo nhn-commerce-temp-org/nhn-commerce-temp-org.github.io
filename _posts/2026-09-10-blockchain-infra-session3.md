@@ -1,9 +1,9 @@
 ---
-title: "1회차 - 블록체인 생태계 '인프라'"
-date: 2026-09-26
+title: "3회차 - 블록체인 생태계 '인프라'"
+date: 2026-09-10
 author: "hoxymola"
 categories: [블록체인 인프라]
-session: 1
+session: 3
 ---
 
 쟁글 아카데미의 블록체인 생태계 '인프라' 문서를 기반으로, 메인넷과
@@ -18,4 +18,4 @@ DApp을 뒷받침하는 다섯 가지 핵심 인프라(지갑, 거래소, 블록
 - DAO: 코드화된 투표 규칙, 거버넌스 토큰, 고래 지배·투표권 매수 리스크
 - 브릿지: Lock-and-Mint 구조로 이종 체인 자산 교환, 브릿지 해킹이 최대 리스크
 
-[전체 자료 보기]({{ "/assets/materials/2026-09-26-blockchain-infra.html" | relative_url }})
+[전체 자료 보기]({{ "/assets/materials/2026-09-10-blockchain-infra.html" | relative_url }})
