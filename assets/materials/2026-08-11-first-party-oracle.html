@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>퍼스트파티 오라클 스터디 발표자료</title>
+<style>
+  :root {
+    --bg: #0f1420;
+    --panel: #161d2e;
+    --panel-2: #1c2438;
+    --accent: #5ec6c0;
+    --accent-2: #7c9fff;
+    --text: #e7ecf5;
+    --text-dim: #9aa5b8;
+    --border: #2a3350;
+    --gold: #f2b950;
+    --red: #ef7373;
+    --green: #6fd19a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(180deg, #0b0f1a 0%, #0f1420 100%);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
+
+  header.hero {
+    padding: 64px 20px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header.hero::before {
+    content: "";
+    position: absolute;
+    top: -120px; left: 50%;
+    transform: translateX(-50%);
+    width: 700px; height: 400px;
+    background: radial-gradient(closest-side, rgba(94,198,192,0.25), transparent);
+    pointer-events: none;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    background: rgba(94,198,192,0.12);
+    border: 1px solid rgba(94,198,192,0.35);
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  h1.title {
+    font-size: clamp(28px, 5.5vw, 44px);
+    margin: 0 0 12px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, #ffffff, var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    position: relative;
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 15px;
+    max-width: 560px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .subtitle a { color: var(--accent); }
+
+  nav.toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 32px 0 8px;
+  }
+  nav.toc a {
+    text-decoration: none;
+    color: var(--text);
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+  }
+  nav.toc a:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+  section.block { margin-top: 56px; scroll-margin-top: 20px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .section-head .emoji { font-size: 28px; }
+  .section-head h2 {
+    font-size: 23px;
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .section-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin: 0 0 24px;
+    padding-left: 40px;
+  }
+
+  .qcard {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .qcard summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-weight: 700;
+    font-size: 15px;
+    user-select: none;
+  }
+  .qcard summary::-webkit-details-marker { display: none; }
+  .qnum {
+    flex: none;
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: rgba(124,159,255,0.15);
+    color: var(--accent-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .qcard summary .chevron {
+    margin-left: auto;
+    color: var(--text-dim);
+    transition: transform 0.2s ease;
+    flex: none;
+  }
+  .qcard[open] summary .chevron { transform: rotate(90deg); }
+  .qcard .body {
+    padding: 0 20px 22px 64px;
+    color: var(--text-dim);
+    font-size: 14.5px;
+  }
+  .qcard .body p { margin: 0 0 12px; }
+  .qcard .body p:last-child { margin-bottom: 0; }
+  .qcard .body strong { color: var(--text); }
+
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(94,198,192,0.10), rgba(124,159,255,0.08));
+    border: 1px solid rgba(94,198,192,0.3);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .highlight-box strong { color: var(--accent); }
+  .warn-box {
+    background: linear-gradient(135deg, rgba(239,115,115,0.10), rgba(242,185,80,0.08));
+    border: 1px solid rgba(239,115,115,0.3);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .warn-box strong { color: var(--red); }
+
+  /* Stat tiles */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin: 14px 0 22px;
+  }
+  .stat-tile {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .stat-tile .stat-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .stat-tile .stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+  .stat-tile.gold .stat-value { color: var(--gold); }
+  .stat-tile.purple .stat-value { color: var(--accent-2); }
+  .stat-tile .stat-sub {
+    font-size: 11.5px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .project-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+  .project-card h3 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .project-card .badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(94,198,192,0.15);
+    color: var(--accent);
+  }
+  .project-card .as-of {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  /* Flowchart */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin: 18px 0;
+  }
+  .flow-step {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    position: relative;
+  }
+  .flow-step .step-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .flow-step .step-text {
+    font-size: 14px;
+    color: var(--text);
+  }
+  .flow-step .step-text b { color: var(--accent); }
+  .flow-step.security {
+    border-color: rgba(242,185,80,0.4);
+    background: linear-gradient(135deg, rgba(242,185,80,0.08), transparent);
+  }
+  .flow-step.security .step-tag { color: var(--gold); }
+  .flow-arrow {
+    display: flex;
+    justify-content: center;
+    color: var(--text-dim);
+    font-size: 18px;
+    padding: 4px 0;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 56px 0 0;
+  }
+
+  .compare-note {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  /* Compact summary + collapsible FAQ */
+  .quick-summary {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 4px 0 18px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+  }
+  .quick-summary ul { margin: 0; padding-left: 18px; }
+  .quick-summary li { margin-bottom: 5px; }
+  .quick-summary li:last-child { margin-bottom: 0; }
+  .quick-summary b { color: var(--text); }
+
+  .faq-group { margin: 0 0 20px; }
+  .faq-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 8px;
+  }
+  .qcard.mini {
+    background: var(--panel-2);
+    margin-bottom: 8px;
+  }
+  .qcard.mini summary {
+    padding: 13px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    gap: 10px;
+  }
+  .qcard.mini .body {
+    padding: 0 16px 16px 16px;
+    font-size: 13.5px;
+  }
+  .qcard.mini .body ul { margin: 8px 0 0; padding-left: 18px; }
+  .qcard.mini .body li { margin-bottom: 8px; }
+  .qcard.mini .body li:last-child { margin-bottom: 0; }
+
+  footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 12.5px;
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--accent); }
+
+  .sources {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 40px;
+    padding: 16px 18px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .sources summary { cursor: pointer; font-weight: 700; color: var(--text); }
+  .sources ul { margin: 10px 0 0; padding-left: 18px; }
+  .sources a { color: var(--accent-2); word-break: break-all; }
+
+  @media (max-width: 560px) {
+    .section-desc { padding-left: 0; }
+    .qcard .body { padding-left: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow">ORACLE STUDY · FIRST-PARTY ORACLE</span>
+    <h1 class="title">퍼스트파티 오라클</h1>
+    <p class="subtitle">쟁글 아카데미 「오라클 ③」 기반 발표자료 — 정의부터 최신 현황까지<br>원문: <a href="https://xangle.io/research/detail/783" target="_blank">xangle.io/research/detail/783</a></p>
+
+    <nav class="toc">
+      <a href="#basic">🔮 오라클 기초</a>
+      <a href="#thirdparty">🥈 써드파티</a>
+      <a href="#firstparty">🥇 퍼스트파티</a>
+      <a href="#latest">📊 대표 사례 & 최신 현황</a>
+      <a href="#conclusion">✅ 결론</a>
+    </nav>
+  </header>
+
+  <!-- 오라클 기초 -->
+  <section class="block" id="basic">
+    <div class="section-head"><span class="emoji">🔮</span><h2>오라클 기초 복습</h2></div>
+    <p class="section-desc">본격적인 내용에 앞서 "오라클이 뭔지"부터 가볍게 짚고 가요</p>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">1</span> 오라클이 뭐고 블록체인에서 왜 필요할까?<span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>블록체인은 사실 바깥세상 소식을 전혀 모르는 폐쇄된 시스템이에요. 모든 노드가 똑같은 데이터만 보고 검증해야 합의가 유지되기 때문에, 스마트 컨트랙트는 "이더리움 현재 가격이 얼마냐" 같은 외부 정보를 스스로 알 방법이 없어요.</p>
+        <p><strong>오라클</strong>은 이 바깥세상 정보(주가, 환율, 날씨 등)를 블록체인 안으로 가져다주는 "정보원" 역할을 해요. 디파이 대출 서비스가 담보를 청산할지 판단하려면 실시간 ETH 가격이 필요한데, 이걸 오라클이 체인 안으로 넣어줘요. 외부와 격리된 배심원단에게 바깥소식을 전해주는 연락책 같은 존재예요.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- 써드파티 -->
+  <section class="block" id="thirdparty">
+    <div class="section-head"><span class="emoji">🥈</span><h2>배경: 써드파티 오라클의 한계</h2></div>
+    <p class="section-desc">퍼스트파티 오라클이 왜 나왔는지 이해하려면 먼저 이걸 알아야 해요</p>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">2</span> 써드파티 오라클이란? 뭐가 문제였을까?<span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>써드파티 오라클은 정보를 원래 갖고 있는 사람(데이터 제공자, 예: 거래소)과, 그 정보를 실제로 체인까지 배달해주는 사람(노드 운영자)이 서로 다른 구조예요. 노드 운영자들이 여러 곳에서 데이터를 모아 체인에 올려주고 검증해주는 대가로 돈을 받아요.</p>
+        <p>문제는 이 배달 비용 때문에 수익을 나눠 가져야 한다는 거예요. 원래 데이터를 만든 제공자 입장에서는, 힘들게 만든 데이터를 팔아 번 돈의 일부를 중간에서 배달만 해준 노드 운영자한테 떼어줘야 하니 수익성이 떨어져요. 정보를 아는 사람과 전달하는 사람이 나뉘어 생기는 "중간 마진" 문제라고 보면 돼요.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- 퍼스트파티 -->
+  <section class="block" id="firstparty">
+    <div class="section-head"><span class="emoji">🥇</span><h2>퍼스트파티 오라클이란?</h2></div>
+    <p class="section-desc">중간 배달원을 없애고 데이터 제공자가 직접 나서는 방식</p>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">3</span> 퍼스트파티 오라클의 정의 — 노드 운영자를 왜, 어떻게 없앴을까?<span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>퍼스트파티 오라클은 중간 배달원(노드 운영자)을 아예 없애고, 정보를 원래 갖고 있는 데이터 제공자(전문가, 거래소, 트레이딩 회사 등)가 직접 체인에 데이터를 올리는 방식이에요. "원래 정보를 아는 사람 → 바로 체인"으로 한 단계에 끝나는 거예요.</p>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">4</span> 스테이킹 & 슬래싱으로 악의적 행동을 막는 원리<span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>중간에 검증해주던 사람이 사라졌으니, 데이터 제공자가 거짓말할까 걱정되죠. 그래서 PoS와 똑같은 원리를 써요 — 데이터 제공자가 토큰을 담보로 걸어두고(스테이킹), 거짓 데이터를 올리거나 악의적으로 행동하면 그 담보를 몰수(슬래싱)당해요. "거짓말하면 내 돈을 잃는다"는 경제적 억제 장치예요.</p>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">5</span> 장점: 수익성 향상 & 속도<span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>중간 배달원한테 수수료를 안 떼어줘도 되니 데이터 제공자의 수익이 좋아져요. 또 중간 단계(노드 운영자의 검증)가 사라지니 데이터가 체인에 올라가는 속도도 훨씬 빨라져요.</p>
+      </div>
+    </details>
+
+    <details class="qcard">
+      <summary><span class="qnum">6</span> 단점: 중앙화 위험 & 악의적 행동 가능성<span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>여러 명의 독립적인 노드 운영자가 서로 감시하며 검증해주던 게 사라졌으니, 소수의 데이터 제공자한테 더 큰 힘과 신뢰가 몰려요. 감시하는 눈이 줄어든 만큼, 그 소수가 잘못된 데이터를 올리거나 악의적으로 행동할 위험도 상대적으로 커져요. "속도와 수익성을 얻은 대신, 여러 명이 서로 검증해주던 안전장치를 좀 내려놓은 것"이라고 보면 돼요.</p>
+      </div>
+    </details>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 최신 현황 -->
+  <section class="block" id="latest">
+    <div class="section-head"><span class="emoji">🏗️</span><h2>대표 프로젝트 & 최신 현황 (2026년 8월 기준)</h2></div>
+    <p class="section-desc">지금 실제로 운영 중인 두 프로젝트를 현재 기준 그대로 살펴봐요 (원화 환산은 2026.08 환율 약 1,418원/$ 기준 대략치)</p>
+
+    <!-- Pyth -->
+    <div class="project-card">
+      <h3>🟣 Pyth Network <span class="badge">Solana 기반</span></h3>
+      <p style="font-size:14px; color:var(--text-dim); margin:0 0 14px;">거래소·트레이딩 회사 같은 "정보를 가진 곳들"이 직접 실시간 가격을 올리는 오라클이에요. 지금은 자체 토큰(PYTH)도 출시돼서 활발히 운영 중이에요.</p>
+      <div class="as-of">TVS = Total Value Secured, 오라클이 보호하는 자산 가치 기준 시장 점유율 지표</div>
+
+      <div class="stat-grid">
+        <div class="stat-tile">
+          <div class="stat-label">시장 점유율 (TVS 기준)</div>
+          <div class="stat-value">10.85%</div>
+          <div class="stat-sub">2024년 초 4.93% → 120%↑ 성장</div>
+        </div>
+        <div class="stat-tile gold">
+          <div class="stat-label">Total Value Secured</div>
+          <div class="stat-value">$4.97B</div>
+          <div class="stat-sub">약 7조 원 · 이 데이터를 믿고 맡겨진 돈의 총액</div>
+        </div>
+        <div class="stat-tile purple">
+          <div class="stat-label">사용 프로토콜 수</div>
+          <div class="stat-value">211개+</div>
+          <div class="stat-sub">Pyth 데이터를 가져다 쓰는 서비스 개수</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">데이터 제공 기관</div>
+          <div class="stat-value">120+</div>
+          <div class="stat-sub">Cboe, Coinbase, Revolut, Virtu 등</div>
+        </div>
+      </div>
+
+      <div class="quick-summary">
+        <ul>
+          <li><b>TVS</b>는 "이 오라클을 믿고 돈을 맡긴 서비스들의 재산 총액" — 클수록 신뢰도가 높다는 뜻이에요</li>
+          <li>Chainlink 대비 강점은 <b>속도 · 직접 출처 · 필요할 때만 비용</b> 세 가지예요</li>
+          <li>매출은 Core(무료)+Pro·Marketplace·Entropy·Express Relay(유료 사업들)로 다각화 → 번 돈으로 <b>매달 PYTH 토큰을 사들여요</b></li>
+          <li>보안은 <b>OIS 스테이킹</b> — 부정확한 데이터엔 5% 슬래싱</li>
+        </ul>
+      </div>
+
+      <div class="faq-group">
+        <p class="faq-title">🔍 자세히 보기 (클릭해서 펼치기)</p>
+
+        <details class="qcard mini">
+          <summary>Total Value Secured(TVS)가 정확히 뭘까?<span class="chevron">▸</span></summary>
+          <div class="body">
+            <p>"이 오라클의 가격 정보를 믿고 자산을 맡긴 서비스들의 총 재산"이에요. 경비업체가 지키는 건물들 안의 재산 총액과 같은 개념 — 이 숫자가 클수록 그만큼 많은 돈이 이 오라클을 신뢰하고 있다는 뜻이에요. 참고로 Chainlink은 45.75%로 아직 TVS 기준 1위예요.</p>
+          </div>
+        </details>
+
+        <details class="qcard mini">
+          <summary>Pyth는 왜 Chainlink 대신 쓸까?<span class="chevron">▸</span></summary>
+          <div class="body">
+            <ul>
+              <li><b>속도</b> — 필요할 때 바로 가져다 쓰는 방식이라 가격이 아주 짧은 주기로 갱신돼서, 레버리지 거래처럼 "0.1초 차이가 중요한" 서비스에 유리해요</li>
+              <li><b>더 직접적인 출처</b> — 중간 노드 없이 실제 거래소·트레이딩회사가 직접 데이터를 올려서 원본에 더 가까워요</li>
+              <li><b>비용 구조</b> — Chainlink은 "Push" 방식이라 아무도 안 봐도 노드들이 계속 최신 가격을 올려두고, 이 유지 비용을 프로토콜이 미리 채워놓다 보니 사실상 구독처럼 돈이 계속 나가요. Pyth는 "Pull" 방식이라 요청하는 그 순간에만 비용이 들어요</li>
+            </ul>
+            <p>다만 Chainlink은 훨씬 오래 검증됐고 압도적으로 많은 곳과 연동돼 있어서, 여전히 "가장 안전한 기본 선택"으로 널리 쓰여요.</p>
+          </div>
+        </details>
+
+        <details class="qcard mini">
+          <summary>매출 모델 — 뭘로 돈을 벌까?<span class="chevron">▸</span></summary>
+          <div class="body">
+            <p>원래 크립토 가격 정보를 무료로 제공하는 서비스(<b>Core</b>)로 시작했는데, 지금은 여러 사업을 더했어요.</p>
+            <ul>
+              <li><b>Pro</b> — 기관 투자자용 유료 구독. 예: 애플·테슬라 주가, 원/달러 환율처럼 블룸버그 터미널이 하던 역할을 대신하는 고급 데이터</li>
+              <li><b>Data Marketplace</b> — 다양한 금융 데이터를 사고파는 장터</li>
+              <li><b>Entropy</b> — "조작 불가능한 무작위 숫자" 판매. 예: 게임 랜덤박스 당첨 확률, NFT 민팅 시 랜덤 속성 부여, 온체인 복권 추첨</li>
+              <li><b>Express Relay</b> — "누가 먼저 하느냐"로 돈이 갈리는 순간(예: 담보가치 떨어진 대출 청산 권리)을 가스 전쟁 대신 경매로 정리해주는 서비스</li>
+            </ul>
+            <p>이렇게 번 돈을 한 곳(Pyth Reserve)에 모아서, 매달 시장에서 PYTH 토큰을 사들이는 데 써요 — 회사가 자기 주식을 다시 사들이는 자사주 매입과 비슷한 효과예요. 지금까지 누적 약 1,200만 PYTH가 이렇게 매입됐어요.</p>
+          </div>
+        </details>
+
+        <details class="qcard mini">
+          <summary>스테이킹(OIS)은 어떻게 작동할까? 델리게이터는 뭐야?<span class="chevron">▸</span></summary>
+          <div class="body">
+            <p>최소 스테이킹 수량 제한은 없고, 퍼블리셔 본인 + <b>델리게이터</b>가 함께 스테이킹해요. 델리게이터는 직접 데이터를 제공하진 않지만 "이 퍼블리셔는 믿을 만하다"고 판단해서 자기 돈을 얹어주는 일반 유저예요 — 선수 뒤에 돈을 거는 후원자 같은 개념이에요.</p>
+            <p>데이터가 부정확한 것으로 판정되면 <b>퍼블리셔와 그를 지지한 델리게이터 모두 스테이크의 5%가 슬래싱</b>돼요. 그래서 델리게이터들은 자연스럽게 믿을 만한 퍼블리셔한테만 돈을 걸게 돼요.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="flow">
+        <div class="flow-step"><div class="step-tag">Step 1 · 보고</div><div class="step-text">거래소·트레이딩 회사 등 <b>120여 곳의 정보원</b>이 "지금 가격은 이거예요"라고 실시간으로 각자 보고해요</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step"><div class="step-tag">Step 2 · 정리</div><div class="step-text">여러 정보원의 보고를 모아서 <b>하나의 대표 가격</b>으로 정리해요 (한 사람 말만 믿는 게 아니라 여러 명 의견을 종합)</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step"><div class="step-tag">Step 3 · 보관</div><div class="step-text">정리된 대표 가격을 임시 저장소에 보관해둬요</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step"><div class="step-tag">Step 4 · 전달</div><div class="step-text">이 가격이 필요한 앱이 있을 때, <b>그 앱이 먼저 "가격 좀 줘"라고 요청</b>하면 그때 원하는 체인으로 가격을 가져다 써요 (필요할 때만 배달)</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step security"><div class="step-tag">🔒 안전장치</div><div class="step-text">정보원들이 미리 보증금을 걸어두고, 거짓 보고를 하면 <b>보증금의 5%를 뺏겨요</b></div></div>
+      </div>
+    </div>
+
+    <!-- API3 -->
+    <div class="project-card">
+      <h3>🔵 API3 <span class="badge">EVM 멀티체인</span></h3>
+      <p style="font-size:14px; color:var(--text-dim); margin:0 0 14px;">데이터를 가진 회사가 중간 업체 없이 직접 자기 전용 창구를 운영해서 데이터를 올리는 오라클이에요. 토큰도 이미 나와서 실제로 거래되고 있어요.</p>
+      <div class="as-of">OEV = Oracle Extractable Value, 가격 업데이트 타이밍을 이용한 차익거래 기회의 가치</div>
+
+      <div class="stat-grid">
+        <div class="stat-tile">
+          <div class="stat-label">라이브 가격 피드</div>
+          <div class="stat-value">200+</div>
+          <div class="stat-sub">40+ EVM 체인</div>
+        </div>
+        <div class="stat-tile purple">
+          <div class="stat-label">사용 dApp 수</div>
+          <div class="stat-value">41개</div>
+          <div class="stat-sub">이 중 12개가 OEV 수익 수령</div>
+        </div>
+        <div class="stat-tile gold">
+          <div class="stat-label">OEV 누적 재분배액</div>
+          <div class="stat-value">$284K+</div>
+          <div class="stat-sub">약 4억 원 · 2025년말 $1M(약 14억 원) 목표</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">최소 스테이킹</div>
+          <div class="stat-value">100 API3</div>
+          <div class="stat-sub">APR 약 18.75% (변동)</div>
+        </div>
+      </div>
+
+      <div class="quick-summary">
+        <ul>
+          <li>API3는 매출액·거래량 같은 전통적 실적 지표는 <b>공개하지 않아요</b> — 대신 <b>OEV 재분배액</b>이 가장 가까운 실적 지표예요</li>
+          <li>운영 주체는 회사가 아니라 <b>DAO</b>(토큰 보유자 투표로 결정하는 조직)예요</li>
+          <li>수익 모델은 가격 업데이트 타이밍을 노린 차익 기회를 경매로 팔아서, 낙찰금의 <b>80%는 dApp, 20%는 API3가 수수료로 가져가는 것(OEV)</b>이에요</li>
+          <li>스테이킹은 최소 100 API3, 부정행위 대비 <b>보험형 담보</b>로 쓰여요</li>
+        </ul>
+      </div>
+
+      <div class="faq-group">
+        <p class="faq-title">🔍 자세히 보기 (클릭해서 펼치기)</p>
+
+        <details class="qcard mini">
+          <summary>DAO가 뭘까?<span class="chevron">▸</span></summary>
+          <div class="body">
+            <p>"탈중앙화 자율 조직(Decentralized Autonomous Organization)"의 줄임말이에요. 사장님 한 명이 다 결정하는 회사와 달리, 토큰을 가진 사람들 전체가 투표로 중요한 결정을 내려요. 학생회를 떠올리면 쉬워요 — 회장 혼자 정하는 게 아니라 "이 데이터 제공자를 받아들일까요?" 같은 안건을 올리면 API3 토큰 보유자들이 투표하고, 그 결과대로 자동 실행돼요.</p>
+          </div>
+        </details>
+
+        <details class="qcard mini">
+          <summary>OEV 경매는 정확히 어떻게 돈을 벌게 할까?<span class="chevron">▸</span></summary>
+          <div class="body">
+            <p>오라클이 "이더리움 가격을 3,000달러→2,900달러로 바꿀게요"라고 업데이트하는 그 찰나에, 이 정보를 남들보다 먼저 알고 행동하면 돈 벌 기회가 생겨요(예: 그 순간 청산해서 보너스를 챙기거나 가격차를 이용해 사고파는 것).</p>
+            <p>원래는 눈치 빠른 봇이 이 기회를 공짜로 채갔는데, API3는 오라클이 실제로 가격을 반영하기 <b>직전</b>에 "이 업데이트로 제일 먼저 행동할 권리"를 경매에 부쳐요. 봇들이 이 권리를 사겠다고 입찰하고, 제일 높은 값을 낸 봇이 그 대가를 낸 다음 권리를 가져가요.</p>
+            <p><b>예시 계산</b> — 청산 기회의 가치가 1,000달러라면, 봇이 700달러에 낙찰받아 청산을 실행해요. 이 700달러 중 <b>80%(560달러)는 그 기회가 발생한 프로토콜</b>(예: Yei Finance)에 돌아가고, <b>나머지 20%(140달러)는 API3 OEV Network가 "프로토콜 수수료"로 자체 보유</b>해요. 봇은 낙찰가를 뺀 차익(1,000-700=300달러)을 가져가요. 원래는 봇이 1,000달러를 통째로 가져가고 프로토콜은 0원이었는데, 이제는 프로토콜도 대부분을 나눠 받는 구조로 바뀐 거예요. Yei Finance 한 곳만 해도 누적 $80,000+(약 1억 1천만 원)의 OEV 수익을 이렇게 냈어요.</p>
+            <p style="font-size:12.5px; opacity:0.85;">※ 참고로 Pyth 매출 모델에 나온 "1/3(약 33%)"은 이것과 다른 얘기예요 — 그건 Pyth가 번 돈으로 매달 PYTH 토큰을 시장에서 사들이는 비율이고, API3의 80:20 배분과는 무관해요.</p>
+          </div>
+        </details>
+
+        <details class="qcard mini">
+          <summary>스테이킹은 어떻게 작동할까?<span class="chevron">▸</span></summary>
+          <div class="body">
+            <p>최소 100 API3 토큰부터 DAO 풀에 스테이킹 가능하고, 스테이킹된 토큰은 <b>서비스 커버리지(일종의 보험) 담보</b>로도 쓰여요. 보상은 매주 지급되지만 <b>1년간 잠김(lock)</b> 후 순차적으로 풀려요. APR은 전체 공급량의 50% 스테이킹을 유도하도록 자동 조정돼요 (현재 약 18.75%).</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="flow">
+        <div class="flow-step"><div class="step-tag">Step 1 · 직접 운영</div><div class="step-text">환율·시세 정보를 가진 회사가 <b>자기 전용 창구를 직접 차려요</b> — 대신 전달해주는 중간 업체가 없어요</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step"><div class="step-tag">Step 2 · 직접 게시</div><div class="step-text">그 회사가 <b>자기 도장(서명)을 찍어서</b> 자기 데이터를 곧바로 체인에 올려요</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step"><div class="step-tag">Step 3 · 통합</div><div class="step-text">이렇게 여러 회사가 각자 올린 데이터를 <b>하나의 통합 채널</b>로 묶어서 정리해요</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step"><div class="step-tag">Step 4 · 사용</div><div class="step-text">앱들은 이 통합 채널을 구독해서 데이터를 받아 쓰고, 가격이 바뀌는 틈을 노린 차익거래 기회는 <b>경매</b>로 처리해서 그 수익을 앱에 나눠줘요</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step security"><div class="step-tag">🔒 안전장치</div><div class="step-text">회사들이 맡겨둔 보증금이, 문제가 생겼을 때 <b>보상해주는 보험금</b>처럼 쓰여요</div></div>
+      </div>
+    </div>
+
+    <p class="compare-note">💡 두 프로젝트 모두 "중간 검증 노드 제거"라는 퍼스트파티 오라클의 핵심 아이디어는 같지만, Pyth는 <b>슬래싱형 스테이킹</b>으로, API3는 <b>보험형 스테이킹 + OEV 재분배</b>로 신뢰 문제를 각자 다르게 풀고 있어요.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 결론 -->
+  <section class="block" id="conclusion">
+    <div class="section-head"><span class="emoji">✅</span><h2>결론</h2></div>
+
+    <details class="qcard" open>
+      <summary><span class="qnum">7</span> 퍼스트파티 오라클의 의의와 남은 과제<span class="chevron">▸</span></summary>
+      <div class="body">
+        <p>퍼스트파티 오라클은 "데이터 제공자와 노드 운영자가 수익을 나눠야 했던" 써드파티 오라클의 근본 문제를 해결했어요. 대신 그 대가로 "중앙화(소수에게 힘이 몰림)"와 "악의적 행동을 감시할 장치가 약해지는" 새로운 숙제를 떠안게 됐어요.</p>
+        <div class="warn-box">
+          <strong>2026년 현재 시사점</strong> — Pyth는 아직 Chainlink(45.75%)에 크게 못 미치지만 점유율을 빠르게 늘리며(120%↑) 기관 데이터 유통이라는 새 시장을 열고 있고, API3는 OEV 재분배라는 독자적인 수익 모델로 dApp과의 이해관계를 맞추려 하고 있어요. 두 사례 모두 "중앙화 리스크를 어떻게 경제적 인센티브로 상쇄할 것인가"가 여전히 진행형 과제라는 걸 보여줘요.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <details class="sources">
+    <summary>참고 자료 (최신 현황 데이터 출처)</summary>
+    <ul>
+      <li><a href="https://xangle.io/research/detail/783" target="_blank">쟁글 아카데미 - 퍼스트파티 오라클 원문</a></li>
+      <li><a href="https://solanafloor.com/news/pyth-network-market-share-up-120-ytd-closing-gap-chainlink" target="_blank">Pyth Network Market Share Up 120% YTD (SolanaFloor)</a></li>
+      <li><a href="https://www.pyth.network/publishers" target="_blank">Pyth Network Publishers 페이지</a></li>
+      <li><a href="https://www.pyth.network/blog/pyth-s-next-chapter-infrastructure-upgrade-and-a-revenue-based-economic-model" target="_blank">Pyth's Next Chapter: Revenue-Based Economic Model (Pyth Blog)</a></li>
+      <li><a href="https://docs.pyth.network/price-feeds/how-pyth-works" target="_blank">How Pyth Works (Pyth Docs)</a></li>
+      <li><a href="https://chainwire.org/2024/09/23/pyth-network-launches-oracle-integrity-staking-to-incentivize-high-quality-price-feeds/" target="_blank">Pyth Launches Oracle Integrity Staking (Chainwire)</a></li>
+      <li><a href="https://www.coingecko.com/learn/api3-case-study" target="_blank">API3 Case Study (CoinGecko Learn)</a></li>
+      <li><a href="https://www.koinx.com/staking-guides/how-to-stake-api3" target="_blank">How to Stake API3 (KoinX)</a></li>
+      <li><a href="https://dapi-docs.api3.org/explore/dao-members/rewards.html" target="_blank">API3 Inflationary Rewards (API3 Docs)</a></li>
+    </ul>
+  </details>
+
+  <footer>
+    퍼스트파티 오라클 스터디 발표자료 · 원문: <a href="https://xangle.io/research/detail/783" target="_blank">Xangle</a>
+  </footer>
+
+</div>
+</body>
+</html>
