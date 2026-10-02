@@ -1,6 +1,6 @@
 ---
 title: "2회차 - 솔라나 지갑, 그 너머"
-date: 2026-10-02
+date: 2026-08-21
 author: "hoxymola"
 categories: [솔라나]
 session: 2
@@ -17,4 +17,4 @@ session: 2
 - 왜 솔라나인가: 주소체계·서명·실행환경이 다른 독립 생태계, 사용자 수·거래 건수는 솔라나 / 자본·안정성은 이더리움 우위
 - 스왑과 슬리피지: AMM(x × y = k)에서 손해는 "풀 대비 비율"로 결정, 슬리피지 한도는 방패이자 샌드위치 봇에게 허용한 최대 손해액
 
-[전체 자료 보기]({{ "/assets/materials/2026-10-02-solana-wallet.html" | relative_url }})
+[전체 자료 보기]({{ "/assets/materials/2026-08-21-solana-wallet.html" | relative_url }})
