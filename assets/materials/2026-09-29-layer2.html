@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>레이어2란? — 발표자료</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --bg:#0b1020; --panel:#141b33; --panel2:#1b2442; --line:#2a3560;
+  --text:#eef1fa; --muted:#9aa6c8; --accent:#6c8cff; --accent2:#36d6c3; --warn:#ff9f5a; --bad:#ff6b8a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#05070f;color:var(--text);font-family:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center}
+.slide{position:absolute;inset:0;background:radial-gradient(1200px 600px at 100% 0%,#18224a 0%,var(--bg) 60%);padding:64px 80px;display:none;flex-direction:column;border-radius:6px;overflow:hidden}
+.slide.active{display:flex;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.kicker{color:var(--accent2);font-weight:700;font-size:18px;letter-spacing:.08em;margin-bottom:12px}
+h1{font-size:72px;font-weight:800;line-height:1.15;letter-spacing:-.02em}
+h2{font-size:44px;font-weight:800;letter-spacing:-.02em;margin-bottom:32px}
+h3{font-size:24px;font-weight:700;margin-bottom:10px}
+p,li{font-size:24px;line-height:1.6;color:#d7dcef}
+.muted{color:var(--muted)}
+.hl{color:var(--accent);font-weight:700}
+.hl2{color:var(--accent2);font-weight:700}
+ul.clean{list-style:none}
+ul.clean li{padding-left:28px;position:relative;margin-bottom:14px}
+ul.clean li::before{content:"";position:absolute;left:4px;top:15px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px;flex:1}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px}
+.card p,.card li{font-size:20px}
+.tag{display:inline-block;font-size:15px;font-weight:700;padding:4px 12px;border-radius:999px;margin-right:6px;margin-bottom:10px}
+.t-good{background:rgba(54,214,195,.15);color:var(--accent2)}
+.t-bad{background:rgba(255,107,138,.15);color:var(--bad)}
+.t-info{background:rgba(108,140,255,.15);color:var(--accent)}
+.quote{border-left:4px solid var(--accent);padding:14px 22px;background:var(--panel);border-radius:0 12px 12px 0;font-size:21px;color:#cfd6ef;margin-top:auto}
+.num{font-size:26px;font-weight:800;color:var(--accent);margin-right:10px}
+.footer{position:absolute;left:80px;right:80px;bottom:26px;display:flex;justify-content:space-between;font-size:14px;color:#5d6890}
+table{width:100%;border-collapse:collapse;font-size:19px}
+th,td{padding:14px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:16px}
+td:first-child{font-weight:700;white-space:nowrap}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.cover{justify-content:center}
+.cover .sub{font-size:28px;color:var(--muted);margin-top:24px}
+.cover .meta{margin-top:64px;font-size:20px;color:var(--muted)}
+.toc{counter-reset:t;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:18px 48px}
+.toc li{counter-increment:t;font-size:28px;font-weight:600;padding:18px 0;border-bottom:1px solid var(--line)}
+.toc li::before{content:"0" counter(t);color:var(--accent);font-weight:800;margin-right:18px}
+.center{align-items:center;justify-content:center;text-align:center}
+#notes{position:fixed;left:0;right:0;bottom:0;background:rgba(10,14,30,.96);border-top:1px solid var(--line);color:#cfd6ef;font-size:16px;line-height:1.6;padding:16px 28px 40px;display:none;max-height:32vh;overflow:auto}
+#notes b{color:var(--accent2)}
+#hud{position:fixed;right:18px;bottom:12px;font-size:13px;color:#5d6890;z-index:5}
+#bar{position:fixed;left:0;top:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s}
+.notes{display:none}
+@media print{
+  html,body{overflow:visible;background:#fff}
+  #stage{position:static;transform:none!important;width:auto;height:auto}
+  .slide{display:flex!important;position:relative;width:1280px;height:720px;page-break-after:always;animation:none}
+  #hud,#bar,#notes{display:none!important}
+  @page{size:1280px 720px;margin:0}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage">
+
+<!-- 1 표지 -->
+<section class="slide cover">
+  <div class="kicker">XANGLE ACADEMY · ARTICLE REVIEW</div>
+  <h1>레이어2(Layer 2)란?</h1>
+  <div class="sub">이더리움 확장성 문제를 푸는 5가지 방법</div>
+  <div class="meta">발표자 · 수연 &nbsp;|&nbsp; 원문: 쟁글 아카데미 「레이어2란?」 (2023.03.31)</div>
+  <div class="notes">오늘은 쟁글 아카데미의 「레이어2란?」 아티클을 정리해서 발표합니다. 레이어2가 왜 필요한지, 그리고 대표적인 5가지 방식이 어떻게 다른지를 중심으로 보겠습니다.</div>
+</section>
+
+<!-- 2 목차 -->
+<section class="slide">
+  <div class="kicker">AGENDA</div>
+  <h2>목차</h2>
+  <ol class="toc">
+    <li>등장 배경</li>
+    <li>레이어2의 정의</li>
+    <li>트릴레마 &amp; 속도의 원리</li>
+    <li>레이어2의 5가지 종류</li>
+    <li>한눈에 비교</li>
+    <li>정리 및 시사점</li>
+  </ol>
+  <div class="notes">배경 → 정의 → 필요성(트릴레마) → 종류별 설명 → 비교 → 정리 순서로 진행합니다.</div>
+</section>
+
+<!-- 3 배경 -->
+<section class="slide">
+  <div class="kicker">01 · 등장 배경</div>
+  <h2>이더리움이 붐빌수록 느리고 비싸진다</h2>
+  <div class="grid3" style="margin-top:10px">
+    <div class="card"><h3>📈 거래량 증가</h3><p>디앱·NFT·DeFi 확산으로 이더리움 일일 거래량이 꾸준히 증가</p></div>
+    <div class="card"><h3>🐢 처리 속도 부진</h3><p>블록에 담을 수 있는 거래 수는 한정 → 대기열이 길어짐</p></div>
+    <div class="card"><h3>💸 수수료 상승</h3><p>먼저 처리되려는 경쟁으로 가스비가 올라가 사용자 부담 증가</p></div>
+  </div>
+  <div class="quote">➡ 이 <span class="hl">병목 현상(bottleneck)</span>을 해결하기 위해 등장한 것이 레이어2입니다.</div>
+  <div class="notes">이더리움 사용량이 늘면서 처리 속도가 느려지고 수수료가 올라가는 문제가 생겼습니다. 이게 레이어2가 등장한 직접적인 이유입니다.</div>
+</section>
+
+<!-- 4 정의 -->
+<section class="slide">
+  <div class="kicker">02 · 정의</div>
+  <h2>레이어2 = 거래는 밖에서, 결과는 이더리움에</h2>
+  <svg viewBox="0 0 1120 330" width="1120" height="330" style="margin-top:4px">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0L10,5L0,10z" fill="#6c8cff"/></marker></defs>
+    <g font-family="Pretendard" font-size="20" fill="#d7dcef">
+      <rect x="0" y="20" width="220" height="200" rx="16" fill="#141b33" stroke="#2a3560"/>
+      <text x="110" y="60" text-anchor="middle" font-weight="700" font-size="22" fill="#eef1fa">사용자 거래</text>
+      <g fill="#6c8cff"><rect x="40" y="85" width="140" height="22" rx="6" opacity=".9"/><rect x="40" y="117" width="140" height="22" rx="6" opacity=".75"/><rect x="40" y="149" width="140" height="22" rx="6" opacity=".6"/><rect x="40" y="181" width="140" height="22" rx="6" opacity=".45"/></g>
+      <line x1="230" y1="120" x2="380" y2="120" stroke="#6c8cff" stroke-width="3" marker-end="url(#ar)"/>
+      <rect x="390" y="0" width="340" height="240" rx="18" fill="#1b2442" stroke="#36d6c3" stroke-width="2"/>
+      <text x="560" y="44" text-anchor="middle" font-weight="800" font-size="26" fill="#36d6c3">Layer 2</text>
+      <text x="560" y="100" text-anchor="middle">대량의 거래를 빠르게 처리</text>
+      <text x="560" y="140" text-anchor="middle">여러 거래를 묶고 압축</text>
+      <text x="560" y="180" text-anchor="middle" fill="#9aa6c8">(실행 담당)</text>
+      <line x1="740" y1="120" x2="890" y2="120" stroke="#6c8cff" stroke-width="3" marker-end="url(#ar)"/>
+      <text x="815" y="105" text-anchor="middle" font-size="16" fill="#9aa6c8">결과값만 기록</text>
+      <rect x="900" y="20" width="220" height="200" rx="16" fill="#141b33" stroke="#6c8cff" stroke-width="2"/>
+      <text x="1010" y="64" text-anchor="middle" font-weight="800" font-size="24" fill="#6c8cff">Layer 1</text>
+      <text x="1010" y="100" text-anchor="middle" font-size="18">이더리움</text>
+      <text x="1010" y="150" text-anchor="middle" font-size="18">보안 · 최종 확정</text>
+      <text x="1010" y="180" text-anchor="middle" font-size="16" fill="#9aa6c8">(정산 담당)</text>
+      <text x="560" y="300" text-anchor="middle" font-size="22" fill="#eef1fa">L1의 부담을 덜어 <tspan fill="#36d6c3" font-weight="700">속도 ↑ · 수수료 ↓</tspan></text>
+    </g>
+  </svg>
+  <div class="notes">레이어2는 이더리움(레이어1) 위에서 동작하는 별도 계층입니다. 실제 거래 처리는 레이어2가 맡고, 이더리움에는 결과값만 기록합니다. 비유하자면 고속도로 본선(L1)이 막히니 옆에 전용 처리 차선(L2)을 만들고, 정산만 본선에서 하는 구조입니다.</div>
+</section>
+
+<!-- 5 트릴레마 -->
+<section class="slide">
+  <div class="kicker">03 · 필요성</div>
+  <h2>블록체인 트릴레마</h2>
+  <div class="grid2">
+    <svg viewBox="0 0 480 420" width="480" height="420">
+      <g font-family="Pretendard">
+        <polygon points="240,40 440,380 40,380" fill="rgba(108,140,255,.08)" stroke="#6c8cff" stroke-width="3"/>
+        <circle cx="240" cy="40" r="14" fill="#6c8cff"/><circle cx="440" cy="380" r="14" fill="#6c8cff"/><circle cx="40" cy="380" r="14" fill="#36d6c3"/>
+        <text x="240" y="18" text-anchor="middle" fill="#eef1fa" font-size="22" font-weight="700">탈중앙화</text>
+        <text x="440" y="415" text-anchor="middle" fill="#eef1fa" font-size="22" font-weight="700">보안성</text>
+        <text x="40" y="415" text-anchor="middle" fill="#36d6c3" font-size="22" font-weight="700">확장성</text>
+        <text x="240" y="250" text-anchor="middle" fill="#9aa6c8" font-size="18">셋 중 둘만</text>
+        <text x="240" y="276" text-anchor="middle" fill="#9aa6c8" font-size="18">동시에 달성 가능</text>
+      </g>
+    </svg>
+    <div style="display:flex;flex-direction:column;justify-content:center">
+      <p>이상적인 블록체인은 <span class="hl">① 탈중앙화 ② 보안성 ③ 확장성</span>을 모두 갖춰야 하지만, 현실에서는 셋을 동시에 만족하기 어렵습니다.</p>
+      <p style="margin-top:22px">이더리움은 탈중앙화·보안성을 택한 대신 <span class="hl2">확장성</span>이 약점.</p>
+      <div class="card" style="margin-top:28px"><p><b>레이어2의 역할</b><br>L1의 보안성·탈중앙성은 그대로 두고, <span class="hl2">확장성만 L2에서 보완</span></p></div>
+    </div>
+  </div>
+  <div class="notes">원문 표현으로 "보안성 및 탈중앙화 정도를 훼손하지 않으면서 확장성을 증대하는 것은 어렵다"는 것이 트릴레마입니다. 레이어2는 L1을 직접 바꾸지 않고 위에 계층을 얹어 이 문제를 우회합니다.</div>
+</section>
+
+<!-- 6 성능 -->
+<section class="slide">
+  <div class="kicker">03 · 필요성</div>
+  <h2>얼마나 빨라지나?</h2>
+  <div class="grid2">
+    <div style="display:flex;flex-direction:column;justify-content:center;gap:34px">
+      <div>
+        <div class="muted" style="font-size:20px;margin-bottom:8px">이더리움 (L1)</div>
+        <div style="display:flex;align-items:center;gap:16px"><div style="height:44px;width:30px;background:#6c8cff;border-radius:6px"></div><span style="font-size:30px;font-weight:800">약 13~15 TPS</span></div>
+      </div>
+      <div>
+        <div class="muted" style="font-size:20px;margin-bottom:8px">레이어2</div>
+        <div style="display:flex;align-items:center;gap:16px"><div style="height:44px;width:320px;background:linear-gradient(90deg,#6c8cff,#36d6c3);border-radius:6px"></div><span style="font-size:30px;font-weight:800;color:var(--accent2);white-space:nowrap">10~100배↑</span></div>
+      </div>
+      <div>
+        <div class="muted" style="font-size:20px;margin-bottom:8px">발리디움 (최대)</div>
+        <div style="display:flex;align-items:center;gap:16px"><span style="font-size:30px;font-weight:800;color:var(--warn)">최대 ~10,000 TPS</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center">
+      <ul class="clean">
+        <li>TPS = 초당 처리 가능한 트랜잭션 수</li>
+        <li>이더리움은 <b>초당 약 15건</b> 수준</li>
+        <li>레이어2는 <b>10~100배 이상</b> 빠르게 처리 가능한 것으로 알려짐</li>
+        <li>병목이 줄어 <b>가스 수수료 부담도 감소</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer"><span>* 막대 길이는 개념적 표현이며 실제 비율과 다름</span><span></span></div>
+  <div class="notes">원문 수치: 이더리움 약 13~15 TPS, 레이어2는 약 10~100배 이상, 발리디움은 최대 10,000 TPS. 막대는 이해를 돕기 위한 개념도입니다.</div>
+</section>
+
+<!-- 6-1 L1은 왜 느린가 -->
+<section class="slide">
+  <div class="kicker">03 · 속도의 원리 ①</div>
+  <h2>먼저, 이더리움(L1)은 왜 느릴까?</h2>
+  <div class="grid3">
+    <div class="card"><h3>🌐 모두가 다 검증</h3><p>전 세계 수천 개 노드가 <b>모든 거래를 각자 다시 실행·검증</b>해야 블록이 확정</p></div>
+    <div class="card"><h3>📦 블록 용량 제한</h3><p>블록마다 처리할 수 있는 연산량(가스 한도)이 정해져 있고, 블록은 <b>약 12초마다</b> 하나씩 생성</p></div>
+    <div class="card"><h3>🤝 합의 대기</h3><p>여러 노드가 같은 결과에 <b>합의할 때까지</b> 기다려야 함</p></div>
+  </div>
+  <div class="quote">느린 건 결함이 아니라 <span class="hl">탈중앙화·보안의 대가</span> — 누구나 검증할 수 있게 하려면 한 블록에 담는 양을 늘리기 어렵다</div>
+  <div class="notes">L2가 왜 빠른지 이해하려면 L1이 왜 느린지부터 봐야 합니다. 이더리움은 수천 개 노드가 모든 거래를 똑같이 재실행해서 검증하고, 블록 용량도 제한되어 있습니다. 일반 PC로도 노드를 돌릴 수 있게 하려면 블록을 무작정 키울 수 없기 때문입니다. 즉 느림은 트릴레마에서 탈중앙화와 보안을 택한 대가입니다. (이 슬라이드와 다음 슬라이드는 원문 외 일반적 설명을 보충한 내용)</div>
+</section>
+
+<!-- 6-2 L2가 빠른 이유 -->
+<section class="slide">
+  <div class="kicker">03 · 속도의 원리 ②</div>
+  <h2>레이어2는 왜 더 빠를 수 있을까?</h2>
+  <div class="grid2" style="grid-template-columns:1fr 1fr;gap:20px;flex:0">
+    <div class="card"><h3><span class="num">1</span>실행을 L1 밖으로</h3><p>수천 노드의 재실행 대신, L2 운영자(시퀀서)가 <b>바로 처리</b> → 합의 대기 없이 즉시 응답</p></div>
+    <div class="card"><h3><span class="num">2</span>묶어서 한 번에 (배치)</h3><p>수백 건을 <b>하나의 L1 거래로 제출</b> → L1 비용을 사용자들이 나눠 냄</p></div>
+    <div class="card"><h3><span class="num">3</span>데이터 압축</h3><p>서명·불필요한 정보를 빼고 <b>꼭 필요한 데이터만</b> L1에 기록 → 같은 공간에 더 많은 거래</p></div>
+    <div class="card"><h3><span class="num">4</span>보안은 L1에 맡김</h3><p>L2가 무거운 합의를 직접 안 하고, <b>증명(사기/유효성)으로 L1에서 검증</b> → 가볍게 설계 가능</p></div>
+  </div>
+  <div class="quote" style="margin-top:22px">비유: 택배를 한 건씩 보내지 않고 <b>물류센터(L2)에서 모아 트럭 한 대(L1 거래 1건)</b>로 보내는 것 — 트럭비는 모두가 나눠 냄</div>
+  <div class="footer"><span>* 원문 외 일반적 설명 보충 · 참고: 2024년 이더리움 덴쿤 업그레이드(EIP-4844)로 L2의 L1 데이터 기록 비용이 추가로 낮아짐</span><span></span></div>
+  <div class="notes">핵심은 네 가지입니다. ① 실행을 L1 밖에서 하니 수천 노드의 합의를 기다릴 필요가 없고, ② 수백 건을 묶어 L1에는 한 건으로 올리니 비용이 나눠지고, ③ 데이터를 압축해 같은 공간에 더 많이 담고, ④ 보안 검증은 증명을 통해 L1에 맡기니 L2 자체는 가볍게 만들 수 있습니다. 결국 "무거운 일(검증·정산)은 L1, 빠른 일(실행)은 L2"로 역할을 나눈 게 속도의 비결입니다. 참고로 원문 작성 이후인 2024년 덴쿤 업그레이드로 L2가 L1에 데이터를 올리는 비용이 더 저렴해졌습니다.</div>
+</section>
+
+<!-- 7 종류 개요 -->
+<section class="slide">
+  <div class="kicker">04 · 종류</div>
+  <h2>레이어2의 5가지 종류</h2>
+  <div class="grid5">
+    <div class="card"><div class="num">1</div><h3 style="margin-top:12px">사이드체인</h3><p class="muted">독립된 별도 체인</p></div>
+    <div class="card"><div class="num">2</div><h3 style="margin-top:12px">스테이트 채널</h3><p class="muted">참여자끼리 오프체인 거래</p></div>
+    <div class="card" style="border-color:var(--accent2)"><div class="num" style="color:var(--accent2)">3</div><h3 style="margin-top:12px">롤업</h3><p class="muted">거래를 묶어서 한 번에</p></div>
+    <div class="card"><div class="num">4</div><h3 style="margin-top:12px">플라즈마</h3><p class="muted">차일드 체인에서 취합</p></div>
+    <div class="card"><div class="num">5</div><h3 style="margin-top:12px">발리디움</h3><p class="muted">데이터를 오프체인 저장</p></div>
+  </div>
+  <div class="quote">공통점: <b>이더리움 밖에서 처리하고 결과를 L1에 반영</b> · 차이점: <b>데이터를 어디에 두고, 보안을 누구에게 의존하는가</b></div>
+  <div class="notes">다섯 가지를 구분하는 핵심 기준은 "거래 데이터를 어디에 저장하느냐"와 "보안을 L1에 얼마나 의존하느냐"입니다. 이 관점으로 하나씩 보겠습니다.</div>
+</section>
+
+<!-- 8 사이드체인 -->
+<section class="slide">
+  <div class="kicker">04 · 종류 ① </div>
+  <h2>사이드체인 (Sidechain)</h2>
+  <div class="grid2">
+    <div>
+      <h3 class="hl2">작동 방식</h3>
+      <p>메인넷(L1)과 <b>2WP(2-way peg, 양방향 페그)</b>로 연결된 블록체인</p>
+      <ul class="clean" style="margin-top:18px">
+        <li>L1에서 자산을 <b>동결(lock)</b></li>
+        <li>사이드체인에서 <b>동일 가치의 코인</b>을 발행해 사용</li>
+        <li>돌아올 땐 반대로 소각 후 L1 자산 해제</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card"><span class="tag t-good">장점</span><p>L1과 독립적으로 운영 → 자유로운 설계·빠른 처리</p></div>
+      <div class="card"><span class="tag t-bad">한계</span><p>별도의 합의 알고리즘·블록 생성 규칙·검증자 노드를 보유 → <b>레이어2로 보지 않는 시각도 많음</b></p></div>
+      <div class="card"><span class="tag t-info">사례</span><p>폴리곤(PoS 체인)</p></div>
+    </div>
+  </div>
+  <div class="notes">사이드체인은 보안을 L1이 아니라 자체 검증자에 의존하기 때문에, 엄밀한 의미의 레이어2가 아니라는 의견도 있다는 점이 포인트입니다.</div>
+</section>
+
+<!-- 9 스테이트 채널 -->
+<section class="slide">
+  <div class="kicker">04 · 종류 ②</div>
+  <h2>스테이트 채널 (State Channel)</h2>
+  <div class="grid2">
+    <div>
+      <h3 class="hl2">작동 방식</h3>
+      <p><b>특정 참여자들 간의 거래</b>를 L1 밖에서 처리</p>
+      <ul class="clean" style="margin-top:18px">
+        <li>스마트 컨트랙트를 메인체인에 올려 <b>채널 개설</b></li>
+        <li>채널 안에서 무수히 거래 (오프체인)</li>
+        <li>채널 종료 시 <b>최종 상태만</b> L1에 기록</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card"><span class="tag t-good">장점</span><p>채널 내 거래는 즉시·저비용 (예: 반복 소액결제)</p></div>
+      <div class="card"><span class="tag t-bad">한계</span><p><b>채널에 참가하지 않은 대상과는 거래 불가</b> → 범용성 낮음</p></div>
+    </div>
+  </div>
+  <div class="notes">두 사람이 술집에서 외상 장부를 열고, 나갈 때 한 번에 계산하는 것과 비슷합니다. 대신 장부에 없는 사람과는 거래할 수 없다는 제약이 있습니다.</div>
+</section>
+
+<!-- 10 롤업 -->
+<section class="slide">
+  <div class="kicker">04 · 종류 ③ — 핵심</div>
+  <h2>롤업 (Rollup)</h2>
+  <p style="margin-bottom:24px">수백 개의 트랜잭션을 <b>L1의 단일 트랜잭션으로 묶어(roll-up)</b> 수수료를 모든 참여자에게 분배 → 사용자는 더 저렴하게. <span class="hl2">거래 데이터는 L1에 게시</span>됩니다.</p>
+  <div class="grid2" style="flex:0">
+    <div class="card">
+      <h3 style="color:var(--accent)">옵티미스틱 롤업</h3>
+      <p>거래가 <b>일단 유효하다고 가정</b>하고 제출, 이의가 있으면 사기 증명(Fraud Proof)으로 검증</p>
+      <p class="muted" style="margin-top:12px;font-size:18px">사례: 아비트럼, 폴리곤(나이트폴)</p>
+    </div>
+    <div class="card">
+      <h3 style="color:var(--accent2)">영지식(ZK) 롤업</h3>
+      <p>거래 묶음마다 <b>유효성 증명(Validity Proof)</b>을 수학적으로 생성해 L1에 제출</p>
+      <p class="muted" style="margin-top:12px;font-size:18px">사례: 폴리곤 제로(zkEVM)</p>
+    </div>
+  </div>
+  <div class="quote">핵심: 데이터가 L1에 있으므로 <b>이더리움의 보안을 그대로 물려받음</b> — 옵티미스틱은 "사후 검증", ZK는 "사전 증명"</div>
+  <div class="footer"><span>* 옵티미스틱/ZK 작동 원리는 원문 외 일반적 설명을 보충</span><span></span></div>
+  <div class="notes">롤업은 데이터를 L1에 올리기 때문에 L1 보안을 그대로 물려받는다는 게 가장 큰 장점입니다. 옵티미스틱은 "믿고 처리, 문제 있으면 이의 제기", ZK는 "처음부터 수학적 증명 첨부"라고 이해하면 쉽습니다. 이 두 방식의 세부 원리는 원문에는 짧게만 언급되어 있어 제가 보충한 내용입니다.</div>
+</section>
+
+<!-- 11 플라즈마 -->
+<section class="slide">
+  <div class="kicker">04 · 종류 ④</div>
+  <h2>플라즈마 (Plasma)</h2>
+  <div class="grid2">
+    <div>
+      <h3 class="hl2">작동 방식</h3>
+      <p>메인 체인(L1) 위에 생성되는 작은 <b>차일드 체인(child chain)</b>에서 거래를 취합한 뒤 L1에 반영</p>
+      <svg viewBox="0 0 460 190" width="460" height="190" style="margin-top:22px">
+        <g font-family="Pretendard" font-size="16">
+          <rect x="20" y="130" width="420" height="44" rx="10" fill="#1b2442" stroke="#6c8cff"/><text x="230" y="158" text-anchor="middle" fill="#6c8cff" font-weight="700">메인 체인 (L1)</text>
+          <rect x="40" y="20" width="110" height="40" rx="8" fill="#141b33" stroke="#36d6c3"/><text x="95" y="45" text-anchor="middle" fill="#d7dcef">차일드 체인</text>
+          <rect x="175" y="20" width="110" height="40" rx="8" fill="#141b33" stroke="#36d6c3"/><text x="230" y="45" text-anchor="middle" fill="#d7dcef">차일드 체인</text>
+          <rect x="310" y="20" width="110" height="40" rx="8" fill="#141b33" stroke="#36d6c3"/><text x="365" y="45" text-anchor="middle" fill="#d7dcef">차일드 체인</text>
+          <g stroke="#36d6c3" stroke-width="2" stroke-dasharray="4 4"><line x1="95" y1="62" x2="95" y2="128"/><line x1="230" y1="62" x2="230" y2="128"/><line x1="365" y1="62" x2="365" y2="128"/></g>
+        </g>
+      </svg>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card"><span class="tag t-good">장점</span><p>차일드 체인에 문제가 생기면 <b>자금을 안전하게 메인 체인으로 이동</b> 가능 → <b>사이드체인보다 보안성 우수</b></p></div>
+      <div class="card"><span class="tag t-info">포인트</span><p>사이드체인과 달리 최종 보안을 L1에 기대는 구조</p></div>
+    </div>
+  </div>
+  <div class="notes">플라즈마는 사이드체인과 비슷해 보이지만, 문제가 생겼을 때 L1으로 탈출할 수 있다는 점에서 보안성이 더 높습니다.</div>
+</section>
+
+<!-- 12 발리디움 -->
+<section class="slide">
+  <div class="kicker">04 · 종류 ⑤</div>
+  <h2>발리디움 (Validium)</h2>
+  <div class="grid2">
+    <div>
+      <h3 class="hl2">작동 방식</h3>
+      <p>거래 데이터를 <b>오프체인에 저장</b> — 트랜잭션이 L1에 저장되지 않음</p>
+      <div class="card" style="margin-top:24px;text-align:center">
+        <div class="muted" style="font-size:18px">처리 속도</div>
+        <div style="font-size:56px;font-weight:800;color:var(--warn)">~10,000 TPS</div>
+        <div class="muted" style="font-size:18px">+ 여러 개를 병렬 실행 가능</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card"><span class="tag t-good">장점</span><p>L1에 데이터를 올리지 않아 <b>압도적으로 빠름</b></p></div>
+      <div class="card"><span class="tag t-bad">한계</span><p>데이터 저장에 L1을 활용하지 않아 <b>보안성이 떨어짐</b></p></div>
+      <div class="card"><span class="tag t-info">비교</span><p>롤업과 달리 데이터가 L1 밖에 있음 → 속도와 보안의 트레이드오프</p></div>
+    </div>
+  </div>
+  <div class="notes">발리디움은 속도 면에서 가장 빠르지만, 데이터가 L1에 없다는 점이 보안상 약점입니다. 롤업과 비교하면 트릴레마의 트레이드오프가 잘 보입니다.</div>
+</section>
+
+<!-- 13 비교표 -->
+<section class="slide">
+  <div class="kicker">05 · 비교</div>
+  <h2>한눈에 비교</h2>
+  <table>
+    <thead><tr><th>구분</th><th>핵심 방식</th><th>거래 데이터 위치</th><th>강점</th><th>약점</th></tr></thead>
+    <tbody>
+      <tr><td><span class="dot" style="background:#9aa6c8"></span>사이드체인</td><td>2WP로 연결된 독립 체인</td><td>자체 체인</td><td>독립 운영</td><td>자체 합의·검증자 필요</td></tr>
+      <tr><td><span class="dot" style="background:#6c8cff"></span>스테이트 채널</td><td>참여자 간 오프체인 거래</td><td>채널 내부 (최종 상태만 L1)</td><td>즉시·저비용</td><td>채널 외 대상과 거래 불가</td></tr>
+      <tr><td><span class="dot" style="background:#36d6c3"></span>롤업</td><td>수백 건을 1건으로 묶음</td><td><b style="color:var(--accent2)">L1에 게시</b></td><td>L1 보안 계승·수수료 절감</td><td>—</td></tr>
+      <tr><td><span class="dot" style="background:#b18cff"></span>플라즈마</td><td>차일드 체인에서 취합</td><td>차일드 체인 (요약만 L1)</td><td>L1로 자금 탈출 가능</td><td>—</td></tr>
+      <tr><td><span class="dot" style="background:#ff9f5a"></span>발리디움</td><td>오프체인 데이터 저장</td><td>오프체인</td><td>최대 ~10,000 TPS</td><td>보안성 낮음</td></tr>
+    </tbody>
+  </table>
+  <div class="footer"><span>* 원문에 명시되지 않은 약점은 '—'로 표기</span><span></span></div>
+  <div class="notes">정리하면, 데이터를 L1에 가깝게 둘수록 보안은 올라가고, 멀리 둘수록 속도는 빨라집니다. 원문에서 약점을 따로 언급하지 않은 항목은 빈칸으로 두었습니다.</div>
+</section>
+
+<!-- 14 결론 -->
+<section class="slide">
+  <div class="kicker">06 · 정리</div>
+  <h2>정리 및 시사점</h2>
+  <div class="grid3">
+    <div class="card"><h3 class="hl">왜?</h3><p>이더리움의 느린 속도와 높은 수수료 = 확장성 문제</p></div>
+    <div class="card"><h3 class="hl">어떻게?</h3><p>처리는 L2, 결과만 L1 → 보안·탈중앙성 유지하며 확장성 보완</p></div>
+    <div class="card"><h3 class="hl">무엇을?</h3><p>5가지 방식마다 장단점이 달라 <b>목적에 맞게 선택</b></p></div>
+  </div>
+  <div class="quote">"각 레이어2 솔루션은 고유한 장단점이 있으며, 다양한 목적으로 활용되고 있다" — 대표 사례: <b>폴리곤, 아비트럼</b></div>
+  <div class="notes">핵심 메시지는 "레이어2는 하나의 기술이 아니라, 트릴레마 안에서 서로 다른 선택을 한 여러 해법의 묶음"이라는 것입니다. 서비스 관점에서는 속도·비용·보안 중 무엇이 중요한지에 따라 적합한 L2가 달라집니다.</div>
+</section>
+
+<!-- 15 Q&A -->
+<section class="slide center">
+  <div class="kicker">THANK YOU</div>
+  <h1>Q &amp; A</h1>
+  <p class="muted" style="margin-top:40px;font-size:20px">출처: 쟁글(Xangle) 아카데미, 「레이어2란?」, 2023.03.31<br>xangle.io/research/detail/1119</p>
+  <div class="notes">예상 질문: ① 사이드체인이 왜 L2가 아니라는 말이 있나? → 보안을 L1이 아닌 자체 검증자에 의존하기 때문. ② 롤업과 발리디움 차이? → 데이터가 L1에 있느냐 없느냐. ③ 옵티미스틱 vs ZK? → 사후 이의제기 방식 vs 사전 수학적 증명 방식.</div>
+</section>
+
+</div>
+
+<div id="notes"></div>
+<div id="hud"></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+const stage=document.getElementById('stage'),hud=document.getElementById('hud'),bar=document.getElementById('bar'),notesEl=document.getElementById('notes');
+let i=0,showNotes=false;
+function fit(){const s=Math.min(innerWidth/1280,innerHeight/720)*0.96;stage.style.transform=`translate(-50%,-50%) scale(${s})`;}
+function go(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  hud.textContent=`${i+1} / ${slides.length}   ←/→ 이동 · N 발표자 노트 · F 전체화면`;
+  bar.style.width=((i+1)/slides.length*100)+'%';
+  const nt=slides[i].querySelector('.notes');notesEl.innerHTML='<b>발표자 노트</b> — '+(nt?nt.innerHTML:'');
+  history.replaceState(null,'','#'+(i+1));}
+addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();go(i+1)}
+  else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();go(i-1)}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  else if(e.key.toLowerCase()==='n'){showNotes=!showNotes;notesEl.style.display=showNotes?'block':'none'}
+  else if(e.key.toLowerCase()==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+});
+addEventListener('click',e=>{if(e.target.closest('#notes'))return;go(e.clientX>innerWidth/2?i+1:i-1)});
+addEventListener('resize',fit);fit();
+go((parseInt(location.hash.slice(1))||1)-1);
+</script>
+</body>
+</html>
