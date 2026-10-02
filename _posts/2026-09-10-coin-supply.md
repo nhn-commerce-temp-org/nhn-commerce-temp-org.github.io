@@ -1,9 +1,9 @@
 ---
-title: "2회차 - 코인 발행량과 유통량"
-date: 2026-10-02
+title: "3회차 - 코인 발행량과 유통량"
+date: 2026-09-10
 author: "soozzang-lab"
 categories: [코인/토큰]
-session: 2
+session: 3
 ---
 
 쟁글 아카데미의 코인 발행량·유통량 관련 글을 읽고, 비슷해 보이지만
@@ -20,4 +20,4 @@ session: 2
 - 투명성: 발행 규칙이 코드로 정해져 있거나 타임락으로 해제 시점이 공개된 프로젝트는 예측이 가능하지만, 그렇지 않으면 사고가 반복됨
 - 정리: 세 숫자를 구분해서 보고, 투자 전에 공급·유통량 데이터를 확인하는 습관이 중요함
 
-[전체 자료 보기]({{ "/assets/materials/2026-10-02-coin-supply.html" | relative_url }})
+[전체 자료 보기]({{ "/assets/materials/2026-09-10-coin-supply.html" | relative_url }})
