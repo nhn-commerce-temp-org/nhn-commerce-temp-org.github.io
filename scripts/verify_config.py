@@ -3,7 +3,7 @@ import sys
 with open("_config.yml", encoding="utf-8") as f:
     config = f.read()
 
-required = ["title:", "theme: minima", "permalink:"]
+required = ["title:", "remote_theme: mmistakes/so-simple-theme", "permalink:"]
 missing = [key for key in required if key not in config]
 
 if missing:
