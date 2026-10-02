@@ -1,0 +1,19 @@
+{%- comment -%}
+  So Simple 기본 page-author.html 대체.
+  author는 GitHub 아이디이므로 GitHub 프로필 이미지를 쓰고, 스터디 회차(session)를 함께 표시한다.
+{%- endcomment -%}
+<div class="page-author h-card p-author">
+  {%- if page.author -%}
+    <img src="https://github.com/{{ page.author }}.png" class="author-avatar u-photo" alt="{{ page.author }}">
+  {%- endif -%}
+
+  <div class="author-info">
+    {%- if page.author -%}
+      <div class="author-name">
+        <a class="p-name" href="https://github.com/{{ page.author }}">{{ page.author }}</a>
+      </div>
+    {%- endif -%}
+    {% if page.session %}<div class="page-session">회차 {{ page.session }}</div>{% endif %}
+    {% if page.date %}{% include page-date.html %}{% endif %}
+  </div>
+</div>

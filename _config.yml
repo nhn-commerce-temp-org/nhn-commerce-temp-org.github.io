@@ -1,6 +1,8 @@
 title: My Blog Org
 description: "Organization 소속 여러 명이 함께 쓰는 블로그"
-theme: minima
+remote_theme: mmistakes/so-simple-theme@3.2.0
+locale: ko-KR
+date_format: "%Y-%m-%d"
 permalink: /:year/:month/:day/:title/
 markdown: kramdown
 timezone: Asia/Seoul
@@ -14,6 +16,8 @@ exclude:
   - CONTRIBUTING.md
   - vendor/
   - .bundle/
+  - Gemfile
+  - Gemfile.lock
 
 defaults:
   - scope:
@@ -22,5 +26,20 @@ defaults:
     values:
       layout: post
 
-header_pages:
-  - sessions.md
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+
+feed:
+  path: atom.xml
+
+google_fonts:
+  - name: "Noto Sans KR"
+    weights: "400,700"
+
+footer_links:
+  - title: Feed
+    url: atom.xml
+    icon: fas fa-rss-square

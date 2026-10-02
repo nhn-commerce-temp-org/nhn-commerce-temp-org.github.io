@@ -1,0 +1,6 @@
+# 상단 메뉴 (So Simple 테마)
+
+- title: 홈
+  url: /
+- title: 회차별 아카이브
+  url: /sessions/
