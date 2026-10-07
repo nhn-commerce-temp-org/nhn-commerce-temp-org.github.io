@@ -59,10 +59,13 @@ git 작업을 수행해 글을 올리는 것을 전제로 합니다. 아래 순�
    프롬프트에 응답할 수 없으므로, 반드시 push를 먼저 해야 함)
 6. `gh pr create --title "..." --body "..."`로 PR을 생성. PR 본문은
    `.github/PULL_REQUEST_TEMPLATE.md`의 체크리스트를 채워서 작성
-7. **PR을 올린 뒤에는 절대 스스로 병합(merge)하지 말 것.** 반드시
-   사람이 리뷰하고 승인한 뒤에, 리뷰어 또는 작성자가 Merge 버튼으로
-   직접 병합해야 배포가 시작됩니다. 승인만으로는 병합·배포가 되지
-   않습니다.
+7. PR을 올린 뒤 `gh pr checks <PR번호> --watch`로 `build-check`가
+   통과하는 것을 확인하고, `gh pr merge <PR번호> --merge --delete-branch`로
+   직접 병합할 것. 리뷰 승인은 필요하지 않습니다. 이력 관리를 위해
+   반드시 PR을 거쳐 병합하며(`main` 직접 푸시 금지), 병합 커밋이
+   남도록 `--merge` 방식을 사용합니다. 병합이 완료되면 Pages 배포가
+   시작됩니다. `build-check`가 실패하면 병합하지 말고 원인을 고친 뒤
+   다시 push할 것.
 
 ## 로컬 미리보기
 
@@ -72,8 +75,8 @@ PR을 올리면 `build-check` GitHub Actions가 자동으로 빌드 오류를
 
 ## 하지 말아야 할 것
 
-- `main` 브랜치에 직접 커밋/푸시하지 않기
-- 스스로 PR을 병합하지 않기
+- `main` 브랜치에 직접 커밋/푸시하지 않기 (반드시 PR을 거쳐 병합)
+- `build-check`가 실패한 PR을 병합하지 않기
 - front matter의 네 개 필드(`title`, `date`, `author`, `categories`)를
   빠뜨리지 않기
 - 심화자료 HTML 파일의 내용을 변환·재작성하지 않고 원본 그대로

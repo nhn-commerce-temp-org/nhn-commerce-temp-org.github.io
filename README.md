@@ -14,7 +14,9 @@ Organization 소속 여러 명이 함께 운영하는 Jekyll 블로그. 자세�
    권한 부여)
 4. **브랜치 보호**: Settings → Branches → `main`에 규칙 추가:
    - "Require a pull request before merging" 체크
-   - "Require approvals" 체크, 최소 1
+   - "Do not allow bypassing the above settings" 체크 (관리자 포함 직접 푸시 차단)
+   - "Require approvals"는 체크하지 않음 (승인 없이 작성자가 직접
+     병합 가능, `main` 직접 푸시만 차단)
 5. **Pages 설정**: Settings → Pages → Build and deployment → Source:
    "Deploy from a branch" → Branch: `main` / `/ (root)`
 6. **Organization/리포 이름을 나중에 바꾸는 경우**: Organization
