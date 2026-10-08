@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>블록체인 스터디 프로젝트 기획안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --paper: #ffffff;
+    --text: #1d2330;
+    --muted: #5d6676;
+    --line: #e2e6ec;
+    --accent: #3b5bdb;
+    --accent-soft: #edf1ff;
+    --tag: #e9f7ef;
+    --tag-text: #1e7a46;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12151b;
+      --paper: #1a1e26;
+      --text: #e6e9ef;
+      --muted: #9aa3b2;
+      --line: #2c323d;
+      --accent: #8ea2ff;
+      --accent-soft: #232a40;
+      --tag: #1b3326;
+      --tag-text: #7fd6a2;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12151b;
+    --paper: #1a1e26;
+    --text: #e6e9ef;
+    --muted: #9aa3b2;
+    --line: #2c323d;
+    --accent: #8ea2ff;
+    --accent-soft: #232a40;
+    --tag: #1b3326;
+    --tag-text: #7fd6a2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.6 "Noto Sans KR", system-ui, sans-serif;
+  }
+  .page {
+    max-width: 860px;
+    margin: 24px auto;
+    padding: 36px 40px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+  header { border-bottom: 2px solid var(--accent); padding-bottom: 14px; margin-bottom: 20px; }
+  .eyebrow { color: var(--accent); font-weight: 700; font-size: 12px; letter-spacing: .04em; }
+  h1 { margin: 4px 0 6px; font-size: 24px; line-height: 1.3; }
+  .meta { color: var(--muted); font-size: 13px; }
+  h2 { font-size: 15px; margin: 22px 0 8px; color: var(--accent); }
+  p { margin: 0 0 8px; }
+  ul { margin: 0; padding-left: 18px; }
+  li { margin: 2px 0; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .box { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+  .box h3 { margin: 0 0 6px; font-size: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 7px 8px; text-align: left; vertical-align: top; }
+  th { color: var(--muted); font-weight: 500; }
+  td:first-child { white-space: nowrap; font-weight: 500; }
+  .main-row td { background: var(--accent-soft); }
+  .tag { display: inline-block; background: var(--tag); color: var(--tag-text); border-radius: 4px; padding: 0 6px; font-size: 12px; font-weight: 500; }
+  .flow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0 4px; font-size: 13px; }
+  .flow span.step { background: var(--accent-soft); border-radius: 6px; padding: 3px 9px; }
+  .flow span.arrow { color: var(--muted); }
+  @media (max-width: 640px) {
+    .page { margin: 0; padding: 20px 16px; border-radius: 0; border-left: 0; border-right: 0; }
+    .grid { grid-template-columns: 1fr; }
+    .table-wrap { overflow-x: auto; }
+    td:first-child { white-space: normal; }
+  }
+  @media print {
+    body { background: #fff; font-size: 12px; }
+    .page { margin: 0; border: 0; padding: 0; max-width: none; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <header>
+    <div class="eyebrow">STUDY PROJECT PLAN</div>
+    <h1>기초 블록체인 스터디 프로젝트 기획안</h1>
+    <div class="meta">참여 4명 · 기간 약 8주 · 작성일 2026-10-08</div>
+  </header>
+
+  <h2>1. 목적</h2>
+  <p>개념 위주로 진행한 스터디를 <b>직접 만들어 보는 단계</b>로 넘깁니다. 블록체인 원리를 코드로 구현하고, 스마트 컨트랙트로 우리 스터디에서 실제로 쓸 서비스를 만들어 테스트넷에 배포합니다.</p>
+  <div class="grid">
+    <div class="box">
+      <h3>목표</h3>
+      <ul>
+        <li>해시 체인과 PoW가 위변조를 막는 원리를 코드로 이해</li>
+        <li>Solidity로 컨트랙트 작성, 테스트, 배포까지 직접 해보기</li>
+        <li>지갑을 연결하는 DApp 하나를 4명이 함께 완성</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>원칙</h3>
+      <ul>
+        <li>실제 자산은 쓰지 않고 <b>Sepolia 테스트넷</b>만 사용</li>
+        <li>매주 1회 모여 진행 상황 공유 + 코드 리뷰</li>
+        <li>결과물과 회고는 이 블로그에 글로 남기기</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. 로드맵</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>기간</th><th>프로젝트</th><th>배우는 것</th></tr></thead>
+    <tbody>
+      <tr><td>1~2주</td><td>미니 블록체인 직접 만들기 (Python/JS)</td><td>블록 구조, SHA-256 해시 체인, PoW 채굴, 체인 검증, 노드 동기화</td></tr>
+      <tr><td>3~4주</td><td>Solidity 기초 + 스터디 토큰(ERC-20) / 수료 NFT(ERC-721) 발행</td><td>Remix, OpenZeppelin, 토큰 표준 인터페이스</td></tr>
+      <tr class="main-row"><td>5~7주</td><td><b>스터디 출석·벌금 DApp</b> <span class="tag">메인</span></td><td>예치·출금, 권한 관리, 테스트 코드, 프론트에서 지갑 연결</td></tr>
+      <tr><td>8주~</td><td>Ethernaut 보안 문제 풀이</td><td>재진입 공격 같은 컨트랙트 취약점, 매주 한 문제씩 풀이 발표</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>3. 메인 프로젝트: 스터디 출석·벌금 DApp</h2>
+  <p>출석을 컨트랙트에 기록하고, 결석하면 예치금에서 벌금을 차감합니다. 매주 우리가 직접 쓰는 서비스라서 동기부여가 되고, 예치·출금·권한 관리 같은 핵심 패턴을 모두 다룹니다.</p>
+  <div class="flow">
+    <span class="step">① 멤버 등록 + 예치금 입금</span><span class="arrow">→</span>
+    <span class="step">② 회차별 출석 체크</span><span class="arrow">→</span>
+    <span class="step">③ 결석 시 벌금 차감</span><span class="arrow">→</span>
+    <span class="step">④ 종료 후 잔액 정산·출금</span>
+  </div>
+  <div class="grid" style="margin-top:10px">
+    <div class="box">
+      <h3>역할 분담</h3>
+      <ul>
+        <li><b>A · 컨트랙트</b>: Solidity로 출석·벌금·정산 로직 작성</li>
+        <li><b>B · 테스트</b>: Hardhat/Foundry 테스트, 예외 상황 검증</li>
+        <li><b>C · 프론트</b>: 지갑 연결, 출석 현황 화면</li>
+        <li><b>D · 배포·문서</b>: Sepolia 배포, README, 회고 글</li>
+      </ul>
+      <p class="meta" style="margin-top:6px">역할은 단계마다 돌아가며 맡아 모두 전 과정을 경험합니다.</p>
+    </div>
+    <div class="box">
+      <h3>완료 기준</h3>
+      <ul>
+        <li>Sepolia에 배포한 컨트랙트로 실제 1회 이상 출석 체크</li>
+        <li>핵심 함수 테스트 통과 (입금·출석·벌금·출금)</li>
+        <li>운영자만 출석을 기록할 수 있도록 권한 제한</li>
+        <li>스터디 종료 시 4명 모두 잔액 출금 성공</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>4. 도구와 준비물</h2>
+  <p>Remix (입문) → Hardhat 또는 Foundry · MetaMask · Sepolia 테스트넷 faucet · ethers.js · GitHub 저장소 1개(팀 공용)</p>
+
+  <h2>5. 예상 리스크</h2>
+  <ul>
+    <li><b>테스트넷 ETH 부족</b>: faucet 수령 한도가 있으니 1주차에 미리 받아두기</li>
+    <li><b>진도 차이</b>: 막히는 사람은 주간 모임에서 페어로 함께 해결</li>
+    <li><b>범위 확장</b>: 메인 프로젝트는 위 4단계 흐름까지만 완성하고, 추가 기능은 8주 이후로 미루기</li>
+  </ul>
+</main>
+</body>
+</html>
